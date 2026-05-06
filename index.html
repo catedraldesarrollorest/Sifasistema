@@ -4,14 +4,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>DAL Book — DAL Miami Export LLC</title>
+<title>SiFa — Sistema de Facturación</title>
 
 <!-- PWA: manifest inline via blob -->
 <meta name="theme-color" content="#0A0A0F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="DAL Book">
+<meta name="apple-mobile-web-app-title" content="SiFa">
 
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -36,9 +36,9 @@ const _SIFA_ICON_URL = 'data:image/svg+xml;base64,' + btoa(_SIFA_ICON_SVG);
 
 // ── Manifest inline ──
 const _manifest = {
-  name: 'DAL Book',
-  short_name: 'DAL Book',
-  description: 'DAL Miami Export LLC — Libro de Asientos',
+  name: 'SiFa',
+  short_name: 'SiFa',
+  description: 'SiFa — Sistema de Facturación',
   start_url: './',
   display: 'standalone',
   background_color: '#0A0A0F',
@@ -425,22 +425,22 @@ if ('serviceWorker' in navigator) {
 
   <!-- Brand SiFa -->
   <div id="sidebar-brand">
-    <div id="sidebar-logo-icon">DAL</div>
+    <div id="sidebar-logo-icon">S</div>
     <div id="sidebar-brand-text">
-      <div class="name">DAL Book</div>
-      <div class="sub">DAL Miami Export LLC</div>
+      <div class="name">SiFa</div>
+      <div class="sub">Sistema de Facturación</div>
     </div>
   </div>
 
-  <!-- DAL Miami — fijo -->
   <div id="sidebar-empresa">
     <div id="sidebar-empresa-label">Empresa activa</div>
-    <div id="sidebar-empresa-card" style="cursor:default">
-      <div id="sidebar-emp-logo">DAL</div>
+    <div id="sidebar-empresa-card" onclick="showSection('empresas')" title="Cambiar empresa">
+      <div id="sidebar-emp-logo">—</div>
       <div id="sidebar-emp-info">
-        <div id="sidebar-emp-nombre">DAL MIAMI EXPORT LLC</div>
-        <div id="sidebar-emp-sub">EIN: 93-1412443</div>
+        <div id="sidebar-emp-nombre">Selecciona empresa</div>
+        <div id="sidebar-emp-sub"></div>
       </div>
+      <span class="arrow">›</span>
     </div>
   </div>
 
@@ -449,6 +449,9 @@ if ('serviceWorker' in navigator) {
     <div class="nav-section-label">Principal</div>
     <button class="nav-tab active" onclick="showSection('dashboard')" id="tab-dashboard">
       <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+    </button>
+    <button class="nav-tab" onclick="showSection('empresas')" id="tab-empresas">
+      <span class="nav-icon">🏢</span><span class="nav-label">Empresas</span>
     </button>
 
     <div class="nav-section-label">Gestión</div>
@@ -484,7 +487,7 @@ if ('serviceWorker' in navigator) {
   <!-- Botón inicio -->
   <div id="sidebar-home-btn">
     <button onclick="showSection('dashboard')">
-      <span>⌂</span> DAL Book
+      <span>⌂</span> SiFa
     </button>
   </div>
 
@@ -504,7 +507,7 @@ if ('serviceWorker' in navigator) {
 
 <main>
 
-  <!-- portada eliminada — DAL Book arranca directo -->
+  
 
   <!-- DASHBOARD -->
   <div class="section active" id="section-dashboard">
@@ -624,6 +627,19 @@ if ('serviceWorker' in navigator) {
       <tbody id="documentosTable"></tbody></table>
     </div>
   </div>
+
+  <!-- SELECTOR DE EMPRESAS -->
+  <div class="section" id="section-empresas">
+    <div class="page-header">
+      <div>
+        <div class="page-title">SELECCIÓN DE <span>EMPRESA</span></div>
+        <div class="page-sub">Elige la empresa activa o agrega una nueva</div>
+      </div>
+      <button class="btn btn-primary" onclick="abrirModalNuevaEmpresa()">＋ Nueva Empresa</button>
+    </div>
+    <div id="empresasCards" style="display:flex;flex-wrap:wrap;gap:20px;margin-top:8px"></div>
+  </div>
+
 
 </main>
 </div><!-- /main-content -->
@@ -987,6 +1003,79 @@ if ('serviceWorker' in navigator) {
   </div>
 </div>
 
+<!-- MODAL EMPRESA -->
+<div class="modal-overlay" id="modalEmpresa" style="z-index:300">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-title" id="modalEmpresaTitle">NUEVA <span>EMPRESA</span></div>
+    <input type="hidden" id="emp_id">
+
+    <!-- Logo + paleta -->
+    <div style="display:flex;gap:16px;margin-bottom:18px;align-items:flex-start;flex-wrap:wrap">
+      <div>
+        <label>Logo</label>
+        <div id="emp_logo_preview" style="width:80px;height:80px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;margin-bottom:6px">🏢</div>
+        <input type="file" id="emp_logo_file" accept="image/*" style="display:none" onchange="previewLogo()">
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('emp_logo_file').click()">📷</button>
+          <button class="btn btn-secondary btn-sm" onclick="clearLogo()">✕</button>
+        </div>
+      </div>
+      <div style="flex:1">
+        <label id="emp_palette_label">Paleta automática</label>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <div id="swatch1" style="width:28px;height:28px;border-radius:50%;background:#6366F1;cursor:pointer"></div>
+          <div id="swatch2" style="width:28px;height:28px;border-radius:50%;background:#0EA5E9;cursor:pointer"></div>
+          <div id="swatch3" style="width:28px;height:28px;border-radius:50%;background:#22C55E;cursor:pointer"></div>
+        </div>
+        <input type="hidden" id="emp_color1" value="#6366F1">
+        <input type="hidden" id="emp_color2" value="#0EA5E9">
+        <input type="hidden" id="emp_color3" value="#22C55E">
+        <div style="display:flex;gap:12px">
+          <div style="flex:1;background:var(--surface2);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:9px;color:var(--text2);margin-bottom:4px">FIRMA</div>
+            <div id="firma_preview" style="min-height:32px;display:flex;align-items:center;justify-content:center"><span style="color:#bbb;font-size:11px">— escribe el CEO —</span></div>
+          </div>
+          <div style="flex:1;background:var(--surface2);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:9px;color:var(--text2);margin-bottom:4px">CUÑO</div>
+            <div id="cuno_preview" style="min-height:32px;display:flex;align-items:center;justify-content:center"><span style="color:#bbb;font-size:11px">— sube logo —</span></div>
+          </div>
+        </div>
+        <input type="hidden" id="emp_firma_svg">
+        <input type="hidden" id="emp_cuno_svg">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group"><label>Nombre / Razón Social *</label><input type="text" id="emp_nombre" placeholder="Ej: La Catedral SURL" oninput="actualizarCuno()"></div>
+      <div class="form-group"><label>Subtítulo</label><input type="text" id="emp_sub" placeholder="Ej: Libro de Asiento"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>NIF / CIF / EIN</label><input type="text" id="emp_ein" placeholder="Ej: B72720071"></div>
+      <div class="form-group"><label>Prefijo BD *</label><input type="text" id="emp_prefix" placeholder="Ej: lacatedral_"></div>
+    </div>
+    <div class="form-group"><label>Dirección</label><input type="text" id="emp_direccion" placeholder="Calle, Ciudad, País"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Email</label><input type="email" id="emp_email"></div>
+      <div class="form-group"><label>Teléfono</label><input type="text" id="emp_tel"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Banco</label><input type="text" id="emp_banco"></div>
+      <div class="form-group"><label>SWIFT / Routing</label><input type="text" id="emp_swift"></div>
+    </div>
+    <div class="form-group"><label>Cuenta</label><input type="text" id="emp_cuenta"></div>
+    <div class="form-row">
+      <div class="form-group"><label>CEO / Gerente</label><input type="text" id="emp_gerente" oninput="onCEONameChange()"></div>
+      <div class="form-group"><label>Cargo</label><input type="text" id="emp_cargo" placeholder="Ej: Gerente General"></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-danger btn-sm" id="btnEliminarEmpresa" onclick="deleteEmpresa(document.getElementById('emp_id').value)" style="margin-right:auto;display:none">🗑 Eliminar</button>
+      <button class="btn btn-secondary" onclick="closeModal('modalEmpresa')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEmpresa()">Guardar Empresa</button>
+    </div>
+  </div>
+</div>
+
+
 <div id="toast">✓</div>
 
 
@@ -1148,8 +1237,6 @@ function showSection(id) {
   const sidebar    = document.getElementById('sidebar');
   const topbar     = document.getElementById('topbar');
 
-  // empresas section disabled in DAL Book
-
   // Ocultar portada, mostrar sidebar y topbar
   secEmp.style.display  = 'none';
   sidebar.style.display = '';
@@ -1173,7 +1260,8 @@ function showSection(id) {
   if (id === 'mercancias')  renderMercancias();
   if (id === 'facturas')    renderFacturas();
   if (id === 'pagos')       renderPagos();
-  if (id === 'invoices')    renderInvoices();
+  if (id === 'invoices')    { renderInvoices(); renderDocumentos(); }
+  if (id === 'empresas')    renderEmpresas();
   if (id === 'calc')        renderCalc();
 }
 
@@ -1198,7 +1286,7 @@ function closeModal(id) {
   if(id==='modalMercancia') document.getElementById('modalMercanciaTitle').innerHTML='NUEVO <span>PRODUCTO</span>';
   if(id==='modalFactura')   { document.getElementById('modalFacturaTitle').innerHTML='NUEVA <span>FACTURA</span>'; document.getElementById('btnGuardarFactura').textContent='Guardar Factura'; }
   if(id==='modalPago')      { document.getElementById('modalPagoTitle').innerHTML='REGISTRAR <span>PAGO</span>'; document.getElementById('btnGuardarPago').textContent='Registrar Pago'; document.getElementById('pg_info').style.display='none'; }
-  // modalEmpresa disabled
+  if(id==='modalEmpresa')  { document.getElementById('modalEmpresaTitle').innerHTML='NUEVA <span>EMPRESA</span>'; }
 }
 document.querySelectorAll('.modal-overlay').forEach(m=>{ m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }); });
 
@@ -1513,7 +1601,7 @@ function renderPagos() {
 }
 
 // ── Editar empresa desde el dashboard ──
-function editEmpresaActiva() { return; } // DAL Book — empresa fija
+function editEmpresaActiva() { editEmpresaModal(empresaActual ? empresaActual.key : null); }
 
 // ═══ DASHBOARD ═══
 function renderDashboard() {
@@ -1521,8 +1609,7 @@ function renderDashboard() {
   const sub = document.getElementById('dashEmpresaNombre');
   const btnEdit = document.getElementById('btnEditarEmpresa') || {style:{}};
   if (sub) sub.textContent = empresaActual ? empresaActual.nombre : 'Selecciona una empresa para comenzar';
-  // btnEdit eliminado en DAL Book
-
+  
   const totalDeuda=facturas.reduce((s,f)=>s+parseFloat(f.deuda),0);
   const totalIngresado=pagos.reduce((s,p)=>s+p.monto,0);
   const totalSaldo=facturas.reduce((s,f)=>{const sal=getSaldo(f.id);return s+(sal>0?sal:0);},0);
@@ -2770,6 +2857,9 @@ function prepareModalEmpresa(key) {
     document.getElementById('emp_color2').value = '#0EA5E9';
     document.getElementById('emp_color3').value = '#22C55E';
   }
+  // Botón eliminar — solo en modo edición
+  const btnElim = document.getElementById('btnEliminarEmpresa');
+  if (btnElim) btnElim.style.display = key ? 'inline-flex' : 'none';
   document.getElementById('modalEmpresa').classList.add('open');
 }
 
@@ -2831,8 +2921,6 @@ function saveEmpresa() {
     empresaActual = data; applyEmpresaTheme(data);
   }
   closeModal('modalEmpresa');
-  // renderEmpresas — eliminado en DAL Book
-  
   updateBadges();
   toast(editKey ? 'Empresa actualizada ✅' : 'Empresa creada ✅');
 }
@@ -2893,7 +2981,7 @@ function deleteEmpresa(key) {
 
   delete todas[key];
   saveTodasEmpresas(todas);
-  // renderEmpresas — eliminado en DAL Book  updateBadges();
+  // updateBadges();
   toast('Empresa eliminada');
 }
 
@@ -3227,8 +3315,7 @@ function importarBackup(input) {
                     }
           updateBadges();
           renderDashboard();
-          // renderEmpresas — eliminado en DAL Book
-          input.value = '';
+                  input.value = '';
           toast(`✅ ${restaurados} colecciones restauradas correctamente`);
 
         } catch(err) {
@@ -3285,17 +3372,7 @@ function mostrarRecordatorioBackup(mensaje) {
 }
 
 
-// ═══ SiFa — Carga inicial ═══
-(function() {
-  try {
-    if (localStorage.getItem('sifa_auto_restored_v2')) return;
-    const data = {"sys_empresas_v2": {"dal": {"key": "dal", "nombre": "DAL MIAMI EXPORT LLC", "sub": "Export LLC — Libro de Asiento", "ein": "EIN: 93-1412443", "dbPrefix": "dalmiami_", "direccion": "3901 SW 78th CT Miami FL-33155", "email": "dalmiami9@gmail.com", "tel": "+1 786-839-1403", "colorPrimary": "#e02020", "colorSecondary": "#2060c0", "colorAccent": "#202020", "banco": "JPMORGAN CHASE BANK, N.A", "swift": "267084131", "cuenta": "960559521 USD", "gerente": "Diego Hernández", "cargoGerente": "Gerente Financiero", "presidente": "Alejandro De Lara", "firmaSVG": null, "cunoSVG": null, "logo": null}}, "dalmiami_clientes": [{"id": "mo9sye788uw1azyvi3u", "nombre": "La Catedral SURL", "cif": "50004348171", "pais": "Cuba", "direccion": "Calle 8 entre Calazada y 5ta, Plaza, La Habana", "telefono": "+5352832090", "email": "catedralrestaurantecuba@gmail.com", "notas": "", "creado": "2026-04-22T07:19:33.814Z"}, {"id": "mo9sye78q8octpmjl99", "nombre": "CEDA SURL", "cif": "50004244884", "pais": "Cuba", "direccion": "Santo Tomas y Subirana, Centro Habana", "telefono": "+53 5 2581003", "email": "cedasubirana@gmail.com", "notas": "", "creado": "2026-04-22T07:21:35.973Z"}, {"id": "mo9sye780o9eau46z3zj", "nombre": "Santa Barbara SURL", "cif": "", "pais": "Cuba", "direccion": "Calle M entre linea y 17, Plaza, La Habana", "telefono": "+53 5 2645177", "email": "", "notas": "", "creado": "2026-04-22T07:25:57.846Z"}, {"id": "mo9sye78m9jg6xyhc38", "nombre": "MERCY SURL", "pais": "Cuba"}], "dalmiami_mercancias": [{"id": "mo9satc69urowiwdae5", "nombre": "Frozen 4x10 Lb Poly- Bagged", "codigo": "", "unidad": "KG", "precio": 0, "categoria": "Pollo", "descripcion": ""}, {"id": "mo9sye78pb74h8bsdu", "nombre": "Frozen 4x10 Lb PolyBagged", "unidad": "Caja", "categoria": "Alimentos", "descripcion": "Pollo congelado 4x10 Lb en bolsa"}, {"id": "mo9sye7806ql2i6vv6fy", "nombre": "Frozen Pork Boneless Loin", "unidad": "KG", "categoria": "Alimentos", "descripcion": "Lomo de cerdo deshuesado congelado"}, {"id": "mo9sye78jbdr29ol7o", "nombre": "Sanderson Farms Frozen Half Bird", "unidad": "Caja", "categoria": "Alimentos", "descripcion": "Pollo entero Sanderson Farms congelado, medio"}, {"id": "moa14lrxze7mllcptu", "nombre": "Frozen 4x10 Lb Poly-Bagged", "unidad": "Caja", "categoria": "Pollo", "descripcion": "Pollo congelado 4x10 Lb en bolsa"}], "dalmiami_facturas": [{"id": "mo9sye78dlrqb2utm2e", "fecha": "2026-01-12", "numero": "2601", "clienteId": "mo9sye788uw1azyvi3u", "mercanciaId": "moa14lrxze7mllcptu", "deuda": 18627.9, "arrastre": 0, "estatus": "Pagado"}, {"id": "mo9sye78u0ataqo6keh", "fecha": "2026-01-12", "numero": "2602", "clienteId": "mo9sye78q8octpmjl99", "mercanciaId": "moa14lrxze7mllcptu", "deuda": 18627.9, "arrastre": 0, "estatus": "Pagado"}, {"id": "mo9sye78g7zukokv2hi", "fecha": "2026-01-12", "numero": "2603", "clienteId": "mo9sye78m9jg6xyhc38", "mercanciaId": "moa14lrxze7mllcptu", "deuda": 18627.9, "arrastre": 0, "estatus": "Pagado"}, {"id": "mo9sye78ip94gsj1qgc", "fecha": "2026-01-12", "numero": "2604", "clienteId": "mo9sye780o9eau46z3zj", "mercanciaId": "moa14lrxze7mllcptu", "deuda": 18627.9, "arrastre": 0, "estatus": "Pagado"}, {"id": "mo9sye788dfjrvow64", "fecha": "2026-02-15", "numero": "2605", "clienteId": "mo9sye788uw1azyvi3u", "mercanciaId": "mo9sye7806ql2i6vv6fy", "deuda": 33176, "arrastre": 0, "estatus": "Pagado parcialmente"}, {"id": "mo9sye78fg71fb6op6t", "fecha": "2026-02-15", "numero": "2606", "clienteId": "mo9sye78q8octpmjl99", "mercanciaId": "mo9sye7806ql2i6vv6fy", "deuda": 33168, "arrastre": 0, "estatus": "Pagado parcialmente"}, {"id": "mo9sye78gsoz1fsq2qm", "fecha": "2026-02-15", "numero": "2607", "clienteId": "mo9sye78m9jg6xyhc38", "mercanciaId": "mo9sye7806ql2i6vv6fy", "deuda": 33172, "arrastre": 0, "estatus": "Pagado parcialmente"}, {"id": "mo9sye7805el11envunk", "fecha": "2026-04-08", "numero": "2608", "clienteId": "mo9sye788uw1azyvi3u", "mercanciaId": "mo9sye78jbdr29ol7o", "deuda": 12372.75, "arrastre": 0, "estatus": "Pendiente"}, {"id": "mo9sye78uch4xlkbqg", "fecha": "2026-04-08", "numero": "2609", "clienteId": "mo9sye78q8octpmjl99", "mercanciaId": "mo9sye78jbdr29ol7o", "deuda": 12372.75, "arrastre": 0, "estatus": "Pendiente"}, {"id": "mo9sye78p72z8iuvcnj", "fecha": "2026-04-08", "numero": "2610", "clienteId": "mo9sye78m9jg6xyhc38", "mercanciaId": "mo9sye78jbdr29ol7o", "deuda": 12351.6, "arrastre": 0, "estatus": "Pendiente"}], "dalmiami_pagos": [{"id": "p001", "fecha": "2026-01-15", "facturaId": "mo9sye78dlrqb2utm2e", "monto": 19467.3, "notas": "CHASE BANK"}, {"id": "p002", "fecha": "2026-01-15", "facturaId": "mo9sye78u0ataqo6keh", "monto": 18627.9, "notas": "Chase bank"}, {"id": "p003", "fecha": "2026-01-15", "facturaId": "mo9sye78ip94gsj1qgc", "monto": 18627.9, "notas": "Pago recibido"}, {"id": "p004", "fecha": "2026-03-02", "facturaId": "mo9sye78fg71fb6op6t", "monto": 20000, "notas": "Pago recibido"}, {"id": "p005", "fecha": "2026-03-02", "facturaId": "mo9sye78gsoz1fsq2qm", "monto": 10000, "notas": "Pago recibido"}, {"id": "p006", "fecha": "2026-03-16", "facturaId": "mo9sye788dfjrvow64", "monto": 28275.16, "notas": "Pago recibido"}, {"id": "p007", "fecha": "2026-04-02", "facturaId": "mo9sye78g7zukokv2hi", "monto": 20000, "notas": "Chase bank"}, {"id": "p008", "fecha": "2026-04-05", "facturaId": "mo9sye78gsoz1fsq2qm", "monto": 14974.5, "notas": "THE BANK OF NEW YORK MELLON — Caribbean Online Services"}, {"id": "p009", "fecha": "2026-04-22", "facturaId": "mo9sye788dfjrvow64", "monto": 4900.84, "notas": "Wire Caribbean Online Services 22/04"}, {"id": "p010", "fecha": "2026-04-22", "facturaId": "mo9sye7805el11envunk", "monto": 12372.75, "notas": "Wire Caribbean Online Services 22/04"}, {"id": "p011", "fecha": "2026-04-22", "facturaId": "mo9sye78fg71fb6op6t", "monto": 5540.75, "notas": "Wire Caribbean Online Services 22/04"}, {"id": "p012", "fecha": "2026-04-22", "facturaId": "mo9sye78gsoz1fsq2qm", "monto": 6825.4, "notas": "Wire Caribbean Online Services 22/04"}], "dal_empresa_actual": "dal"};
-    Object.entries(data).forEach(([k,v]) => {
-      localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v));
-    });
-    localStorage.setItem('sifa_auto_restored_v2','1');
-  } catch(e) { console.error(e); }
-})();
+
 
 initEmpresas();
 
