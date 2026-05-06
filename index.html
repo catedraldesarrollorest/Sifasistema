@@ -4,14 +4,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>SiFa — Sistema Integral de Facturación y Asientos</title>
+<title>DAL Book — DAL Miami Export LLC</title>
 
 <!-- PWA: manifest inline via blob -->
 <meta name="theme-color" content="#0A0A0F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="SiFa">
+<meta name="apple-mobile-web-app-title" content="DAL Book">
 
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -20,7 +20,7 @@
 const _SIFA_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="110" fill="#0D0D1A"/>
   <text x="256" y="340" font-family="Arial Black,Impact,sans-serif" font-size="280" font-weight="900"
-    text-anchor="middle" fill="#EEEEF2" letter-spacing="-8">SiFa</text>
+    text-anchor="middle" fill="#EEEEF2" letter-spacing="-8">DAL</text>
   <rect x="158" y="370" width="196" height="8" rx="4" fill="url(#lg)"/>
   <defs>
     <linearGradient id="lg" x1="0" y1="0" x2="1" y2="0">
@@ -36,9 +36,9 @@ const _SIFA_ICON_URL = 'data:image/svg+xml;base64,' + btoa(_SIFA_ICON_SVG);
 
 // ── Manifest inline ──
 const _manifest = {
-  name: 'SiFa — Facturación y Asientos',
-  short_name: 'SiFa',
-  description: 'Sistema Integral de Facturación y Asientos',
+  name: 'DAL Book',
+  short_name: 'DAL Book',
+  description: 'DAL Miami Export LLC — Libro de Asientos',
   start_url: './',
   display: 'standalone',
   background_color: '#0A0A0F',
@@ -300,52 +300,16 @@ if ('serviceWorker' in navigator) {
   .page-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; line-height: 1; }
   .page-title span { color: var(--red); }
   .page-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
-  /* ── BOTONES 3D ── */
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 22px; border-radius: 12px;
-    font-size: 13px; font-weight: 700; cursor: pointer;
-    border: none; font-family: 'DM Sans', sans-serif; letter-spacing: .3px;
-    position: relative; user-select: none;
-    transition: transform .1s, box-shadow .1s, filter .1s;
-  }
-  .btn:active { transform: translateY(3px) !important; }
-
-  .btn-primary {
-    color: white;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--red) 78%, white 22%) 0%, var(--red) 55%, var(--red-dark) 100%);
-    box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 -1px 0 rgba(0,0,0,.25) inset, 0 4px 0 var(--red-dark), 0 6px 12px rgba(0,0,0,.4);
-  }
-  .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
-  .btn-primary:active { box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 -1px 0 rgba(0,0,0,.25) inset, 0 1px 0 var(--red-dark), 0 2px 6px rgba(0,0,0,.4); }
-
-  .btn-secondary {
-    color: var(--text);
-    background: linear-gradient(180deg, #2E2E3E 0%, var(--surface3) 55%, #18181F 100%);
-    border: 1px solid var(--border);
-    box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 -1px 0 rgba(0,0,0,.3) inset, 0 4px 0 #0D0D12, 0 6px 12px rgba(0,0,0,.4);
-  }
-  .btn-secondary:hover { filter: brightness(1.12); transform: translateY(-1px); }
-  .btn-secondary:active { box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 -1px 0 rgba(0,0,0,.3) inset, 0 1px 0 #0D0D12, 0 2px 6px rgba(0,0,0,.4); }
-
-  .btn-blue {
-    color: white;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--blue) 78%, white 22%) 0%, var(--blue) 55%, var(--blue-dark) 100%);
-    box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 -1px 0 rgba(0,0,0,.25) inset, 0 4px 0 var(--blue-dark), 0 6px 12px rgba(0,0,0,.4);
-  }
-  .btn-blue:hover { filter: brightness(1.1); transform: translateY(-1px); }
-  .btn-blue:active { box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 -1px 0 rgba(0,0,0,.25) inset, 0 1px 0 var(--blue-dark), 0 2px 6px rgba(0,0,0,.4); }
-
-  .btn-danger {
-    color: var(--pink);
-    background: linear-gradient(180deg, #2A1A1A 0%, #1E1212 100%);
-    border: 1px solid var(--pink);
-    box-shadow: 0 1px 0 rgba(255,107,107,.12) inset, 0 4px 0 #0D0508, 0 6px 12px rgba(0,0,0,.4);
-  }
-  .btn-danger:hover { filter: brightness(1.15); transform: translateY(-1px); }
-  .btn-danger:active { box-shadow: 0 1px 0 rgba(255,107,107,.12) inset, 0 1px 0 #0D0508, 0 2px 6px rgba(0,0,0,.4); }
-
-  .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 9px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; font-family: 'DM Sans', sans-serif; letter-spacing: .3px; }
+  .btn-primary { background: var(--red); color: white; }
+  .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+  .btn-secondary { background: var(--surface3); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--surface2); }
+  .btn-blue { background: var(--blue); color: white; }
+  .btn-blue:hover { background: var(--blue-dark); transform: translateY(-1px); }
+  .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+  .btn-danger { background: transparent; color: var(--pink); border: 1px solid var(--pink); }
+  .btn-danger:hover { background: rgba(255,107,107,.1); }
   /* ── LISTAS DE FILAS (reemplaza cards-grid) ── */
   .cards-grid { display: flex; flex-direction: column; gap: 0; margin-bottom: 24px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
   .list-row {
@@ -461,23 +425,22 @@ if ('serviceWorker' in navigator) {
 
   <!-- Brand SiFa -->
   <div id="sidebar-brand">
-    <div id="sidebar-logo-icon">SiFa</div>
+    <div id="sidebar-logo-icon">DAL</div>
     <div id="sidebar-brand-text">
-      <div class="name">SiFa</div>
-      <div class="sub">Facturación · Asientos</div>
+      <div class="name">DAL Book</div>
+      <div class="sub">DAL Miami Export LLC</div>
     </div>
   </div>
 
-  <!-- Empresa activa -->
+  <!-- DAL Miami — fijo -->
   <div id="sidebar-empresa">
     <div id="sidebar-empresa-label">Empresa activa</div>
-    <div id="sidebar-empresa-card" onclick="showSection('empresas')" title="Cambiar empresa">
-      <div id="sidebar-emp-logo">—</div>
+    <div id="sidebar-empresa-card" style="cursor:default">
+      <div id="sidebar-emp-logo">DAL</div>
       <div id="sidebar-emp-info">
-        <div id="sidebar-emp-nombre">Sin empresa</div>
-        <div id="sidebar-emp-sub">Toca para seleccionar</div>
+        <div id="sidebar-emp-nombre">DAL MIAMI EXPORT LLC</div>
+        <div id="sidebar-emp-sub">EIN: 93-1412443</div>
       </div>
-      <span class="arrow">⇄</span>
     </div>
   </div>
 
@@ -507,30 +470,34 @@ if ('serviceWorker' in navigator) {
       <span class="nav-icon">💰</span><span class="nav-label">Cobros</span>
       <span class="badge" id="badge-pagos">0</span>
     </button>
+    <button class="nav-tab" onclick="showSection('gastos')" id="tab-gastos">
+      <span class="nav-icon">📤</span><span class="nav-label">Gastos</span>
+      <span class="badge" id="badge-gastos">0</span>
+    </button>
     <button class="nav-tab" onclick="showSection('invoices')" id="tab-invoices">
-      <span class="nav-icon">📋</span><span class="nav-label">Doc. Primarios</span>
+      <span class="nav-icon">🧾</span><span class="nav-label">Facturas</span>
       <span class="badge" id="badge-invoices">0</span>
     </button>
     <button class="nav-tab" onclick="showSection('documentos')" id="tab-documentos">
-      <span class="nav-icon">📄</span><span class="nav-label">Doc. Secundarios</span>
+      <span class="nav-icon">📝</span><span class="nav-label">Ofertas</span>
       <span class="badge" id="badge-documentos">0</span>
     </button>
 
+
     <div class="nav-section-label">Herramientas</div>
+    <button class="nav-tab" onclick="showSection('pnl')" id="tab-pnl">
+      <span class="nav-icon">📊</span><span class="nav-label">Estado de Resultados</span>
+    </button>
     <button class="nav-tab" onclick="showSection('calc')" id="tab-calc">
       <span class="nav-icon">🧮</span><span class="nav-label">Precios</span>
       <span class="badge" id="badge-calc">0</span>
-    </button>
-    <button class="nav-tab" onclick="showSection('empresas')" id="tab-empresas">
-      <span class="nav-icon">🏢</span><span class="nav-label">Empresas</span>
-      <span class="badge" id="badge-empresas">0</span>
     </button>
   </nav>
 
   <!-- Botón inicio -->
   <div id="sidebar-home-btn">
-    <button onclick="showSection('empresas')">
-      <span>⌂</span> Pantalla de inicio
+    <button onclick="showSection('dashboard')">
+      <span>⌂</span> DAL Book
     </button>
   </div>
 
@@ -550,35 +517,7 @@ if ('serviceWorker' in navigator) {
 
 <main>
 
-  <!-- ═══ PORTADA / SELECTOR DE EMPRESAS ═══ -->
-  <div class="section" id="section-empresas" style="padding:0;margin:0;max-width:100%;position:fixed;inset:0;overflow-y:auto;z-index:300;background:#0A0A0F;display:none">
-
-    <!-- HERO PORTADA -->
-    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px 32px;background:radial-gradient(ellipse 80% 60% at 50% -10%,#16163A 0%,#0A0A0F 70%)">
-
-      <!-- Logo enorme -->
-      <div style="margin-bottom:40px;text-align:center;user-select:none">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:min(18vw,120px);letter-spacing:10px;line-height:1;color:#EEEEF2;opacity:.95">SiFa</div>
-        <div style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#333348;margin-top:2px">Sistema Integral de Facturación y Asientos</div>
-      </div>
-
-      <!-- Pregunta -->
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;color:#55556A;margin-bottom:40px;text-align:center;text-transform:uppercase">¿Con qué empresa trabajas hoy?</div>
-
-      <!-- Tarjetas -->
-      <div id="empresasCards" style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;width:100%;max-width:1100px;margin-bottom:48px"></div>
-
-      <!-- CTA Nueva empresa -->
-      <button id="btnNuevaEmpresaPortada" onclick="openModal('modalEmpresa')"
-        style="display:flex;align-items:center;gap:10px;padding:14px 36px;background:transparent;border:1.5px dashed #2A2A38;border-radius:14px;color:#55556A;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .25s;letter-spacing:.5px"
-        onmouseover="this.style.borderColor='#6366F1';this.style.color='#EEEEF2';this.style.background='#6366F108'"
-        onmouseout="this.style.borderColor='#2A2A38';this.style.color='#55556A';this.style.background='transparent'">
-        <span style="font-size:18px;line-height:1">＋</span> Agregar empresa
-      </button>
-
-    </div><!-- /hero -->
-
-  </div><!-- /section-empresas -->
+  <!-- portada eliminada — DAL Book arranca directo -->
 
   <!-- DASHBOARD -->
   <div class="section active" id="section-dashboard">
@@ -588,11 +527,11 @@ if ('serviceWorker' in navigator) {
         <div class="page-sub" id="dashEmpresaNombre">Selecciona una empresa para comenzar</div>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <button id="btnEditarEmpresa" class="btn btn-secondary btn-sm" onclick="editEmpresaActiva()" style="display:none">✏️ Editar empresa</button>
+        <button id="btnActualizarClaude" class="btn btn-secondary btn-sm" onclick="abrirProtocoloClaude()" style="display:none;background:linear-gradient(135deg,#6366F1,#0EA5E9);color:white;border:none" title="Actualizar gastos con Claude">🤖 Actualizar con Claude</button>
         <button class="btn btn-secondary btn-sm" onclick="abrirRecuperacion()" title="Recuperar datos de versiones anteriores">🔄 Recuperar datos</button>
         <button class="btn btn-secondary btn-sm" onclick="exportarBackup()" title="Descargar copia de seguridad">💾 Backup</button>
-        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('inputImportBackup').click()" title="Restaurar desde copia de seguridad">📂 Restaurar</button>
-        <input type="file" id="inputImportBackup" accept=".json" style="display:none" onchange="importarBackup(this)">
+        <label for="inputImportBackup" class="btn btn-secondary btn-sm" style="cursor:pointer">📂 Restaurar</label>
+        <input type="file" id="inputImportBackup" accept=".json" style="position:fixed;top:-100px;left:-100px;width:1px;height:1px;opacity:0" onchange="importarBackup(this)">
         <button class="btn btn-primary" id="btnCompartirDash" onclick="compartirDashboard()">⬆️ Exportar PDF</button>
       </div>
     </div>
@@ -657,6 +596,178 @@ if ('serviceWorker' in navigator) {
     </div>
   </div>
 
+  <!-- GASTOS -->
+  <div class="section" id="section-gastos">
+    <div class="page-header">
+      <div>
+        <div class="page-title">REGISTRO DE <span>GASTOS</span></div>
+        <div class="page-sub">Egresos y pagos operacionales de la empresa activa</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <select id="filtroMesGasto" onchange="renderGastos()" style="padding:9px 14px;font-size:13px;width:auto">
+          <option value="">Todos los meses</option>
+          <option value="01">Enero</option><option value="02">Febrero</option>
+          <option value="03">Marzo</option><option value="04">Abril</option>
+          <option value="05">Mayo</option><option value="06">Junio</option>
+          <option value="07">Julio</option><option value="08">Agosto</option>
+          <option value="09">Septiembre</option><option value="10">Octubre</option>
+          <option value="11">Noviembre</option><option value="12">Diciembre</option>
+        </select>
+        <select id="filtroCatGasto" onchange="renderGastos()" style="padding:9px 14px;font-size:13px;width:auto">
+          <option value="">Todas las categorías</option>
+          <option value="Operacional">⚙️ Operacional</option>
+          <option value="Nómina">👥 Nómina</option>
+          <option value="Logística">🚚 Logística</option>
+          <option value="Alquiler">🏠 Alquiler</option>
+          <option value="Servicios">💡 Servicios</option>
+          <option value="Impuestos">🏛️ Impuestos</option>
+          <option value="Bancario">🏦 Bancario</option>
+          <option value="Otro">📋 Otro</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('modalGasto')">＋ Nuevo Gasto</button>
+      </div>
+    </div>
+    <!-- Stat cards de gastos -->
+    <div class="stats-row" id="gastosStatsRow"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr>
+          <th>Fecha</th>
+          <th>Categoría</th>
+          <th>Concepto</th>
+          <th>Proveedor</th>
+          <th>Monto</th>
+          <th>Método</th>
+          <th>Notas</th>
+          <th>Acciones</th>
+        </tr></thead>
+        <tbody id="gastosTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ESTADO DE RESULTADOS / P&L -->
+  <div class="section" id="section-pnl">
+    <div class="page-header">
+      <div>
+        <div class="page-title">ESTADO DE <span>RESULTADOS</span></div>
+        <div class="page-sub" id="pnlSubtitle">Profit & Loss — Clasificación IRS · Schedule C compatible</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <select id="pnlAnio" onchange="renderPnl()" style="padding:9px 14px;font-size:13px;width:auto">
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+        </select>
+        <select id="pnlMes" onchange="renderPnl()" style="padding:9px 14px;font-size:13px;width:auto">
+          <option value="">Año completo</option>
+          <option value="01">Enero</option><option value="02">Febrero</option>
+          <option value="03">Marzo</option><option value="04">Abril</option>
+          <option value="05">Mayo</option><option value="06">Junio</option>
+          <option value="07">Julio</option><option value="08">Agosto</option>
+          <option value="09">Septiembre</option><option value="10">Octubre</option>
+          <option value="11">Noviembre</option><option value="12">Diciembre</option>
+        </select>
+        <button class="btn btn-primary" onclick="exportarPnlPDF()">📄 Exportar PDF</button>
+      </div>
+    </div>
+
+    <!-- Aviso IRS -->
+    <div id="pnlIrsNotice" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:flex-start;gap:12px">
+      <span style="font-size:20px;flex-shrink:0">⚠️</span>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7">
+        <strong style="color:var(--orange)">Nota Form 1065:</strong> DAL Miami Export LLC es una <strong>Partnership</strong> — presenta Form 1065 (no Schedule C). 
+        Los egresos de <em>Logística</em> se reportan como <strong>Cost of Goods Sold (L2)</strong>. 
+        Gastos marcados con ⚠️ requieren revisión con el CPA (Dailin Pages / RO Miami) antes de presentar — pueden ser personales o no deducibles.
+        <strong style="color:var(--orange)"> SiFa no reemplaza el criterio del contador.</strong>
+      </div>
+    </div>
+
+    <!-- KPIs superiores -->
+    <div class="stats-row" id="pnlKpis" style="margin-bottom:28px"></div>
+
+    <!-- Tabla P&L principal -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px" id="pnlGrid">
+
+      <!-- Columna INGRESOS -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--green)">INGRESOS</div>
+          <div style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1px">Gross Revenue</div>
+        </div>
+        <div id="pnlIngresos"></div>
+        <div id="pnlTotalIngresos" style="padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(34,197,94,.05)">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--green)">TOTAL INGRESOS</span>
+          <span id="pnlTotalIngresosVal" class="mono" style="font-size:16px;font-weight:700;color:var(--green)">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Columna EGRESOS -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--pink)">EGRESOS</div>
+          <div style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1px">Schedule C · IRS</div>
+        </div>
+        <div id="pnlEgresos"></div>
+        <div id="pnlTotalEgresos" style="padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(255,107,107,.05)">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--pink)">TOTAL EGRESOS</span>
+          <span id="pnlTotalEgresosVal" class="mono" style="font-size:16px;font-weight:700;color:var(--pink)">$0.00</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Resultado neto — el número grande -->
+    <div id="pnlResultadoNeto" style="border-radius:16px;padding:28px 32px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border:2px solid var(--border)">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px" id="pnlNetoLabel">UTILIDAD NETA</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:1.5px" id="pnlNetoMargen">L22 · Ordinary Income/Loss · Form 1065 Partnership</div>
+      </div>
+      <div style="text-align:right">
+        <div id="pnlNetoVal" style="font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;line-height:1">—</div>
+        <div id="pnlNetoSubtitle" style="font-size:12px;color:var(--text2);margin-top:4px">Margen neto: —</div>
+      </div>
+    </div>
+
+    <!-- Desglose mensual (tabla) -->
+    <div class="section-label">Desglose mensual</div>
+    <div class="table-wrapper" style="margin-bottom:24px">
+      <table>
+        <thead><tr>
+          <th>Mes</th>
+          <th style="text-align:right">Ingresos</th>
+          <th style="text-align:right">COGS</th>
+          <th style="text-align:right">Gastos Op.</th>
+          <th style="text-align:right">Total Egresos</th>
+          <th style="text-align:right">Resultado</th>
+          <th style="text-align:center">Margen</th>
+        </tr></thead>
+        <tbody id="pnlMensualTable"></tbody>
+      </table>
+    </div>
+
+    <!-- Nota protocolo Claude -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="font-size:20px">🤖</span>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--text)">PROTOCOLO DE ACTUALIZACIÓN MENSUAL CON <span style="color:var(--red)">CLAUDE</span></div>
+      </div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.9">
+        Este sistema fue construido y es mantenido con asistencia de <strong style="color:var(--text)">Claude (Anthropic)</strong>.<br>
+        Para actualizar los gastos cada mes, abre un chat nuevo en <strong style="color:var(--text)">claude.ai</strong> y escribe exactamente:<br>
+        <div style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--green);line-height:1.8">
+          "Actualización SiFa — estado de cuenta [MES] [AÑO]"<br>
+          → Adjunta el PDF del estado de cuenta Chase<br>
+          → Adjunta el archivo index.html de SiFa
+        </div>
+        Claude extraerá los egresos nuevos, los clasificará por categoría IRS, los añadirá al módulo de Gastos y entregará el HTML actualizado.<br>
+        <strong style="color:var(--orange)">No duplicará transacciones si ya existen en el archivo.</strong><br><br>
+        <span style="color:var(--text2);font-size:11px">Cuenta Chase · Business Complete Checking · Acc: ****9521 · DAL MIAMI EXPORT LLC · EIN: 93-1412443</span>
+      </div>
+    </div>
+
+  </div><!-- /section-pnl -->
+
   <!-- PRECIOS -->
   <div class="section" id="section-calc">
     <div class="page-header">
@@ -670,32 +781,32 @@ if ('serviceWorker' in navigator) {
 
 
   <!-- INVOICES -->
-  <!-- DOCUMENTOS PRIMARIOS (generan deuda) -->
+  <!-- FACTURAS / INVOICES (generan deuda) -->
   <div class="section" id="section-invoices">
     <div class="page-header">
       <div>
-        <div class="page-title">FACTURAS / <span>INVOICES</span></div>
-        <div class="page-sub">Documentos financieros — crean deuda — contabilizables</div>
+        <div class="page-title">REGISTRO DE <span>FACTURAS</span></div>
+        <div class="page-sub">Documentos contabilizados — crean deuda · consecutivo FA-xxxx</div>
       </div>
-      <button class="btn btn-primary" onclick="abrirNuevoDocFinanciero()">＋ Nueva Factura / Invoice</button>
+      <button class="btn btn-primary" onclick="abrirNuevaFacturaDoc()">＋ Nueva Factura</button>
     </div>
     <div class="table-wrapper">
-      <table><thead><tr><th>Fecha</th><th>N° Documento</th><th>Tipo</th><th>Emisor</th><th>Cliente</th><th>Total</th><th>Acciones</th></tr></thead>
+      <table><thead><tr><th>Fecha</th><th>N° Factura</th><th>Emisor</th><th>Cliente</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead>
       <tbody id="invoicesTable"></tbody></table>
     </div>
   </div>
 
-  <!-- DOCUMENTOS SECUNDARIOS (no generan deuda) -->
+  <!-- DOCUMENTOS COMPLEMENTARIOS (no generan deuda) -->
   <div class="section" id="section-documentos">
     <div class="page-header">
       <div>
-        <div class="page-title">DOCUMENTOS <span>COMPLEMENTARIOS</span></div>
-        <div class="page-sub">Conduces, órdenes de entrega y más — sin impacto contable</div>
+        <div class="page-title">REGISTRO DE <span>OFERTAS</span></div>
+        <div class="page-sub">Cotizaciones y proformas · consecutivo OF-xxxx · convertibles a Factura</div>
       </div>
-      <button class="btn btn-primary" onclick="abrirNuevoDocComplementario()">＋ Nuevo Documento</button>
+      <button class="btn btn-primary" onclick="abrirNuevaOferta()">＋ Nueva Oferta</button>
     </div>
     <div class="table-wrapper">
-      <table><thead><tr><th>Fecha</th><th>N° Documento</th><th>Tipo</th><th>Emisor</th><th>Cliente / Destinatario</th><th>Acciones</th></tr></thead>
+      <table><thead><tr><th>Fecha</th><th>N° Oferta</th><th>Emisor</th><th>Cliente</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead>
       <tbody id="documentosTable"></tbody></table>
     </div>
   </div>
@@ -792,6 +903,98 @@ if ('serviceWorker' in navigator) {
   </div>
 </div>
 
+<!-- MODAL PROTOCOLO CLAUDE — Solo DAL Miami -->
+<div class="modal-overlay" id="modalClaude">
+  <div class="modal" style="max-width:580px">
+    <div class="modal-title">ACTUALIZAR CON <span>CLAUDE</span></div>
+
+    <div style="background:linear-gradient(135deg,#6366F115,#0EA5E915);border:1px solid #6366F133;border-radius:12px;padding:16px 18px;margin-bottom:20px">
+      <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Meses ya cargados en SiFa</div>
+      <div id="claudeMesesCargados" style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px"></div>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <label>Próximo mes a cargar</label>
+      <select id="claudeMesTarget" onchange="actualizarMensajeClaude()" style="font-weight:700">
+        <option value="Abril 2026">Abril 2026</option>
+        <option value="Mayo 2026">Mayo 2026</option>
+        <option value="Junio 2026">Junio 2026</option>
+        <option value="Julio 2026">Julio 2026</option>
+        <option value="Agosto 2026">Agosto 2026</option>
+        <option value="Septiembre 2026">Septiembre 2026</option>
+        <option value="Octubre 2026">Octubre 2026</option>
+        <option value="Noviembre 2026">Noviembre 2026</option>
+        <option value="Diciembre 2026">Diciembre 2026</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <label>Mensaje para Claude — listo para copiar y pegar</label>
+      <div id="claudeMensaje" style="background:var(--surface3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--green);line-height:1.9;white-space:pre-wrap;user-select:all;cursor:text"></div>
+    </div>
+
+    <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:11px;color:var(--text2);line-height:1.8">
+      <strong style="color:var(--orange)">Pasos:</strong><br>
+      1. Toca <strong>"Copiar mensaje"</strong> abajo<br>
+      2. Abre <strong>claude.ai</strong> → busca este chat <em>"SiFa / DAL Miami"</em><br>
+      3. Pega el mensaje + adjunta el PDF del estado de cuenta Chase<br>
+      4. Claude te entrega el HTML actualizado con los nuevos gastos
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modalClaude')">Cerrar</button>
+      <button class="btn btn-secondary" onclick="window.open('https://claude.ai','_blank')" style="gap:6px">🌐 Abrir Claude.ai</button>
+      <button class="btn btn-primary" onclick="copiarMensajeClaude()" id="btnCopiarClaude">📋 Copiar mensaje</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GASTO -->
+<div class="modal-overlay" id="modalGasto">
+  <div class="modal">
+    <div class="modal-title" id="modalGastoTitle">NUEVO <span>GASTO</span></div>
+    <input type="hidden" id="gasto_id">
+    <div class="form-row">
+      <div class="form-group"><label>Fecha *</label><input type="date" id="gasto_fecha"></div>
+      <div class="form-group">
+        <label>Categoría *</label>
+        <select id="gasto_categoria">
+          <option value="Operacional">⚙️ Operacional</option>
+          <option value="Nómina">👥 Nómina</option>
+          <option value="Logística">🚚 Logística</option>
+          <option value="Alquiler">🏠 Alquiler</option>
+          <option value="Servicios">💡 Servicios</option>
+          <option value="Impuestos">🏛️ Impuestos</option>
+          <option value="Bancario">🏦 Bancario</option>
+          <option value="Otro">📋 Otro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Concepto *</label><input type="text" id="gasto_concepto" placeholder="Ej: Pago de flete, Salario marzo, Renta almacén..."></div>
+    <div class="form-row">
+      <div class="form-group"><label>Monto (US$) *</label><input type="number" id="gasto_monto" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="form-group">
+        <label>Método de pago</label>
+        <select id="gasto_metodo">
+          <option value="Transferencia">💳 Transferencia</option>
+          <option value="Efectivo">💵 Efectivo</option>
+          <option value="Cheque">📝 Cheque</option>
+          <option value="Zelle">📱 Zelle</option>
+          <option value="ACH">🏦 ACH</option>
+          <option value="Otro">📋 Otro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Proveedor / Beneficiario</label><input type="text" id="gasto_proveedor" placeholder="Ej: UPS, Empleado X, Landlord..."></div>
+    <div class="form-group"><label>Referencia / N° de operación</label><input type="text" id="gasto_referencia" placeholder="Ej: TRF-00123, CHK-456..."></div>
+    <div class="form-group"><label>Notas</label><textarea id="gasto_notas" rows="2" placeholder="Información adicional..."></textarea></div>
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modalGasto')">Cancelar</button>
+      <button class="btn btn-primary" id="btnGuardarGasto" onclick="saveGasto()">Registrar Gasto</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL INVOICE -->
 <div class="modal-overlay" id="modalInvoice" style="z-index:250;overflow-y:auto">
   <div class="modal" style="max-width:700px">
@@ -847,7 +1050,7 @@ if ('serviceWorker' in navigator) {
     <div class="form-row">
       <div class="form-group"><label>Fecha *</label><input type="date" id="inv_fecha"></div>
       <div class="form-group"><label>Moneda</label>
-        <select id="inv_moneda" onchange="calcTotales();[1,2,3,4,5,6,7,8,9,10].forEach(calcLinea)"><option value="USD">USD — Dólar</option><option value="EUR">EUR — Euro</option><option value="CUP">CUP — Peso Cubano</option><option value="MLC">MLC — Moneda Libremente Convertible</option></select>
+        <select id="inv_moneda" onchange="calcTotales();[1,2,3,4].forEach(calcLinea)"><option value="USD">USD — Dólar</option><option value="EUR">EUR — Euro</option><option value="CUP">CUP — Peso Cubano</option><option value="MLC">MLC — Moneda Libremente Convertible</option></select>
       </div>
     </div>
 
@@ -859,13 +1062,7 @@ if ('serviceWorker' in navigator) {
       </div>
       <div class="form-group">
         <label>Proveedor</label>
-        <select id="inv_proveedor_sel" onchange="onSelectProveedor()" style="margin-bottom:6px">
-          <option value="">— Ninguno —</option>
-          <option value="1183">1183 — Mercado AZ</option>
-          <option value="1184">1184 — Mercado AZ</option>
-          <option value="__nuevo__">＋ Escribir nuevo...</option>
-        </select>
-        <input type="text" id="inv_proveedor" placeholder="Escribe el proveedor..." style="display:none">
+        <input type="text" id="inv_proveedor" placeholder="Nombre del proveedor (opcional)">
       </div>
     </div>
 
@@ -933,54 +1130,6 @@ if ('serviceWorker' in navigator) {
             <td style="padding:3px"><input type="number" id="inv_price_4" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0.00" step="0.01" oninput="calcLinea(4)"></td>
             <td style="padding:3px;text-align:right;font-weight:600;color:var(--green)" id="inv_imp_4">—</td>
           </tr>
-          <tr id="inv_lin_5">
-            <td style="padding:3px"><select id="inv_prod_5" style="width:100%;padding:5px;font-size:12px" onchange="onSelectProd(5)"><option value="">— Producto —</option></select></td>
-            <td style="padding:3px"><input type="text" id="inv_cod_5" style="width:100%;padding:5px;font-size:11px;font-family:monospace" placeholder="—"></td>
-            <td style="padding:3px"><input type="text" id="inv_um_5" style="width:100%;padding:5px;font-size:12px;text-align:center" placeholder="KG"></td>
-            <td style="padding:3px"><input type="number" id="inv_qty_5" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0" step="0.001" oninput="calcLinea(5)"></td>
-            <td style="padding:3px"><input type="number" id="inv_price_5" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0.00" step="0.01" oninput="calcLinea(5)"></td>
-            <td style="padding:3px;text-align:right;font-weight:600;color:var(--green)" id="inv_imp_5">—</td>
-          </tr>
-          <tr id="inv_lin_6">
-            <td style="padding:3px"><select id="inv_prod_6" style="width:100%;padding:5px;font-size:12px" onchange="onSelectProd(6)"><option value="">— Producto —</option></select></td>
-            <td style="padding:3px"><input type="text" id="inv_cod_6" style="width:100%;padding:5px;font-size:11px;font-family:monospace" placeholder="—"></td>
-            <td style="padding:3px"><input type="text" id="inv_um_6" style="width:100%;padding:5px;font-size:12px;text-align:center" placeholder="KG"></td>
-            <td style="padding:3px"><input type="number" id="inv_qty_6" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0" step="0.001" oninput="calcLinea(6)"></td>
-            <td style="padding:3px"><input type="number" id="inv_price_6" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0.00" step="0.01" oninput="calcLinea(6)"></td>
-            <td style="padding:3px;text-align:right;font-weight:600;color:var(--green)" id="inv_imp_6">—</td>
-          </tr>
-          <tr id="inv_lin_7">
-            <td style="padding:3px"><select id="inv_prod_7" style="width:100%;padding:5px;font-size:12px" onchange="onSelectProd(7)"><option value="">— Producto —</option></select></td>
-            <td style="padding:3px"><input type="text" id="inv_cod_7" style="width:100%;padding:5px;font-size:11px;font-family:monospace" placeholder="—"></td>
-            <td style="padding:3px"><input type="text" id="inv_um_7" style="width:100%;padding:5px;font-size:12px;text-align:center" placeholder="KG"></td>
-            <td style="padding:3px"><input type="number" id="inv_qty_7" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0" step="0.001" oninput="calcLinea(7)"></td>
-            <td style="padding:3px"><input type="number" id="inv_price_7" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0.00" step="0.01" oninput="calcLinea(7)"></td>
-            <td style="padding:3px;text-align:right;font-weight:600;color:var(--green)" id="inv_imp_7">—</td>
-          </tr>
-          <tr id="inv_lin_8">
-            <td style="padding:3px"><select id="inv_prod_8" style="width:100%;padding:5px;font-size:12px" onchange="onSelectProd(8)"><option value="">— Producto —</option></select></td>
-            <td style="padding:3px"><input type="text" id="inv_cod_8" style="width:100%;padding:5px;font-size:11px;font-family:monospace" placeholder="—"></td>
-            <td style="padding:3px"><input type="text" id="inv_um_8" style="width:100%;padding:5px;font-size:12px;text-align:center" placeholder="KG"></td>
-            <td style="padding:3px"><input type="number" id="inv_qty_8" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0" step="0.001" oninput="calcLinea(8)"></td>
-            <td style="padding:3px"><input type="number" id="inv_price_8" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0.00" step="0.01" oninput="calcLinea(8)"></td>
-            <td style="padding:3px;text-align:right;font-weight:600;color:var(--green)" id="inv_imp_8">—</td>
-          </tr>
-          <tr id="inv_lin_9">
-            <td style="padding:3px"><select id="inv_prod_9" style="width:100%;padding:5px;font-size:12px" onchange="onSelectProd(9)"><option value="">— Producto —</option></select></td>
-            <td style="padding:3px"><input type="text" id="inv_cod_9" style="width:100%;padding:5px;font-size:11px;font-family:monospace" placeholder="—"></td>
-            <td style="padding:3px"><input type="text" id="inv_um_9" style="width:100%;padding:5px;font-size:12px;text-align:center" placeholder="KG"></td>
-            <td style="padding:3px"><input type="number" id="inv_qty_9" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0" step="0.001" oninput="calcLinea(9)"></td>
-            <td style="padding:3px"><input type="number" id="inv_price_9" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0.00" step="0.01" oninput="calcLinea(9)"></td>
-            <td style="padding:3px;text-align:right;font-weight:600;color:var(--green)" id="inv_imp_9">—</td>
-          </tr>
-          <tr id="inv_lin_10">
-            <td style="padding:3px"><select id="inv_prod_10" style="width:100%;padding:5px;font-size:12px" onchange="onSelectProd(10)"><option value="">— Producto —</option></select></td>
-            <td style="padding:3px"><input type="text" id="inv_cod_10" style="width:100%;padding:5px;font-size:11px;font-family:monospace" placeholder="—"></td>
-            <td style="padding:3px"><input type="text" id="inv_um_10" style="width:100%;padding:5px;font-size:12px;text-align:center" placeholder="KG"></td>
-            <td style="padding:3px"><input type="number" id="inv_qty_10" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0" step="0.001" oninput="calcLinea(10)"></td>
-            <td style="padding:3px"><input type="number" id="inv_price_10" style="width:100%;padding:5px;font-size:12px;text-align:right" placeholder="0.00" step="0.01" oninput="calcLinea(10)"></td>
-            <td style="padding:3px;text-align:right;font-weight:600;color:var(--green)" id="inv_imp_10">—</td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -1036,7 +1185,8 @@ if ('serviceWorker' in navigator) {
 
     <div class="form-actions">
       <button class="btn btn-secondary" onclick="closeModal('modalInvoice')">Cancelar</button>
-      <button class="btn btn-primary" id="btnGuardarDoc" onclick="this.disabled=true;this.textContent='⏳ Guardando…';facturacion()">💾 Guardar e Imprimir</button>
+      <button class="btn btn-blue" onclick="guardarInvoice()">💾 Guardar</button>
+      <button class="btn btn-primary" onclick="generarInvoice()">📋 Generar PDF</button>
     </div>
   </div>
 </div>
@@ -1114,115 +1264,6 @@ if ('serviceWorker' in navigator) {
   </div>
 </div>
 
-<!-- MODAL EMPRESA -->
-<div class="modal-overlay" id="modalEmpresa" style="z-index:260">
-  <div class="modal" style="max-width:660px">
-    <div class="modal-title" id="modalEmpresaTitle">NUEVA <span>EMPRESA</span></div>
-    <input type="hidden" id="emp_id">
-
-    <!-- ① LOGOTIPO -->
-    <div style="background:var(--surface2);border-radius:14px;padding:20px;margin-bottom:20px">
-      <div class="section-label" style="margin-bottom:14px">① Logotipo</div>
-      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
-        <div id="emp_logo_preview" style="width:120px;height:80px;background:repeating-conic-gradient(#1A1A24 0% 25%,#22222E 0% 50%) 0/16px 16px;border:2px dashed var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;overflow:hidden">🏢</div>
-        <div style="flex:1;min-width:180px">
-          <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Sube el logo de la empresa. Los colores del tema se detectan automáticamente.</div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <div id="swatch1" style="width:20px;height:20px;border-radius:50%;background:#6366F1;border:2px solid var(--border)"></div>
-            <div id="swatch2" style="width:20px;height:20px;border-radius:50%;background:#0EA5E9;border:2px solid var(--border)"></div>
-            <div id="swatch3" style="width:20px;height:20px;border-radius:50%;background:#22C55E;border:2px solid var(--border)"></div>
-            <span id="emp_palette_label" style="font-size:11px;color:var(--text2)">Paleta automática</span>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <input type="file" id="emp_logo_file" accept="image/*" onchange="previewLogo()" style="display:none">
-          <input type="color" id="emp_color1" value="#6366F1" style="display:none">
-          <input type="color" id="emp_color2" value="#0EA5E9" style="display:none">
-          <input type="color" id="emp_color3" value="#22C55E" style="display:none">
-          <button class="btn btn-primary btn-sm" onclick="document.getElementById('emp_logo_file').click()">📁 Subir logo</button>
-          <button class="btn btn-danger btn-sm" onclick="clearLogo()">✕ Quitar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ② DATOS DE LA EMPRESA -->
-    <div class="section-label" style="margin-bottom:14px">② Datos de la empresa</div>
-    <div class="form-row">
-      <div class="form-group"><label>Nombre completo *</label><input type="text" id="emp_nombre" placeholder="Ej: DAL Miami Export LLC"></div>
-      <div class="form-group"><label>Subtítulo / Actividad</label><input type="text" id="emp_sub" placeholder="Ej: Export & Import"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>NIF / EIN / CIF / RUT</label><input type="text" id="emp_ein" placeholder="Ej: 93-1412443"></div>
-      <div class="form-group"><label>Prefijo BD *</label><input type="text" id="emp_prefix" placeholder="Ej: dalmiami_" oninput="this.value=this.value.replace(/[^a-z0-9_]/gi,'').toLowerCase()"><div style="font-size:10px;color:var(--text2);margin-top:4px">Identificador único, no cambia después</div></div>
-    </div>
-    <div class="form-group"><label>Dirección fiscal</label><input type="text" id="emp_direccion" placeholder="Ej: 3901 SW 78th CT Miami FL-33155"></div>
-    <div class="form-row">
-      <div class="form-group"><label>Email</label><input type="email" id="emp_email" placeholder="contacto@empresa.com"></div>
-      <div class="form-group"><label>Teléfono</label><input type="text" id="emp_tel" placeholder="+1 786 000 0000"></div>
-    </div>
-
-    <!-- ③ DATOS BANCARIOS -->
-    <div style="background:var(--surface2);border-radius:12px;padding:16px;margin-bottom:20px">
-      <div class="section-label" style="margin-bottom:12px">③ Datos bancarios (aparecen en documentos)</div>
-      <div class="form-row">
-        <div class="form-group"><label>Banco</label><input type="text" id="emp_banco" placeholder="Ej: JPMorgan Chase Bank"></div>
-        <div class="form-group"><label>SWIFT / BIC / ABA</label><input type="text" id="emp_swift" placeholder="Ej: 267084131"></div>
-      </div>
-      <div class="form-group"><label>N° Cuenta / IBAN</label><input type="text" id="emp_cuenta" placeholder="Ej: ES91 2100 0418 4502 0005 1332"></div>
-    </div>
-
-    <!-- ④ CEO & FIRMA + CUÑO -->
-    <div style="background:var(--surface2);border-radius:14px;padding:20px;margin-bottom:20px">
-      <div class="section-label" style="margin-bottom:16px">④ CEO — Firma &amp; Cuño (aparecen en todos los documentos)</div>
-
-      <div class="form-row" style="margin-bottom:16px">
-        <div class="form-group">
-          <label>Nombre del CEO *</label>
-          <input type="text" id="emp_gerente" placeholder="Ej: Diego Hernández" oninput="onCEONameChange()">
-        </div>
-        <div class="form-group">
-          <label>Cargo</label>
-          <input type="text" id="emp_cargo" placeholder="Ej: Chief Executive Officer">
-        </div>
-      </div>
-      <!-- Oculto por compatibilidad -->
-      <input type="hidden" id="emp_presidente">
-
-      <!-- Previews firma + cuño -->
-      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px">
-
-        <!-- Firma SVG -->
-        <div style="flex:1;min-width:200px">
-          <div style="font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Firma generada</div>
-          <div id="firma_preview" style="background:white;border-radius:10px;padding:16px 20px;min-height:80px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)">
-            <span style="color:#bbb;font-size:12px">— escribe el nombre del CEO —</span>
-          </div>
-          <button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%" onclick="generarFirmaSVG()">↺ Regenerar firma</button>
-        </div>
-
-        <!-- Cuño/Sello -->
-        <div style="flex:1;min-width:160px">
-          <div style="font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Cuño de empresa</div>
-          <div id="cuno_preview" style="background:white;border-radius:10px;padding:12px;min-height:80px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)">
-            <span style="color:#bbb;font-size:12px">— sube el logo —</span>
-          </div>
-          <div style="font-size:10px;color:var(--text2);margin-top:6px;text-align:center">Se genera automáticamente del logo</div>
-        </div>
-
-      </div>
-
-      <!-- SVG almacenado (hidden) -->
-      <input type="hidden" id="emp_firma_svg">
-      <input type="hidden" id="emp_cuno_svg">
-    </div>
-
-    <div class="form-actions">
-      <button class="btn btn-secondary" onclick="closeModal('modalEmpresa')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveEmpresa()">💾 Guardar Empresa</button>
-    </div>
-  </div>
-</div>
-
 <div id="toast">✓</div>
 
 
@@ -1261,10 +1302,13 @@ function getEmpresa(key) { return getTodasEmpresas()[key] || null; }
 let empresaActual = null, _logoBase64 = null;
 let clientes=[], mercancias=[], facturas=[], pagos=[];
 let invoices=[], calculos=[], anticipios=[];
+let gastos=[];
 let concClienteId=null, excedentePendiente=null;
 
 // ═══ CARGAR DATOS AISLADOS POR EMPRESA ═══
 function cargarDatosEmpresa(emp) {
+  // Flush inmediato de la empresa anterior antes de cargar la nueva
+  // Esto garantiza que datos en memoria no persisten entre cambios
   clientes   = [];
   mercancias = [];
   facturas   = [];
@@ -1272,6 +1316,7 @@ function cargarDatosEmpresa(emp) {
   invoices   = [];
   calculos   = [];
   anticipios = [];
+  gastos     = [];
 
   empresaActual = emp;
   window._empresaPrefix = emp.dbPrefix;
@@ -1283,26 +1328,12 @@ function cargarDatosEmpresa(emp) {
   invoices   = JSON.parse(localStorage.getItem(p + 'invoices')   || '[]');
   calculos   = JSON.parse(localStorage.getItem(p + 'calculos')   || '[]');
   anticipios = JSON.parse(localStorage.getItem(p + 'anticipos')  || '[]');
-
-  // Deduplicar facturas — quedarse con la primera por número+cliente
-  const seenF = {};
-  facturas = facturas.filter(f => {
-    const key = f.numero + '_' + f.clienteId;
-    if (seenF[key]) return false;
-    seenF[key] = true;
-    return true;
-  });
-  localStorage.setItem(p + 'facturas', JSON.stringify(facturas));
-
-  // Deduplicar invoices — quedarse con el primero por número+emisora
-  const seenI = {};
-  invoices = invoices.filter(inv => {
-    const key = (inv.numero || '') + '_' + (inv.emisoraKey || '');
-    if (seenI[key]) return false;
-    seenI[key] = true;
-    return true;
-  });
-  localStorage.setItem(p + 'invoices', JSON.stringify(invoices));
+  gastos     = JSON.parse(localStorage.getItem(p + 'gastos')     || '[]');
+  // Seed de gastos bancarios si la empresa es DAL Miami y no hay gastos aún
+  if (emp.dbPrefix === 'dalmiami_' && gastos.length === 0) {
+    // Se ejecuta tras completar init
+    setTimeout(seedGastosDalMiami, 0);
+  }
 }
 
 // ═══ SELECCIONAR EMPRESA ═══
@@ -1313,7 +1344,8 @@ function seleccionarEmpresa(key) {
   cargarDatosEmpresa(emp);
   applyEmpresaTheme(emp);
   updateBadges();
-  showSection('empresas'); // se queda en empresas, activa resaltada
+  showSection('dashboard');
+  actualizarBtnClaude();
 }
 
 function seleccionarEmpresaDirecta(key) {
@@ -1324,12 +1356,13 @@ function seleccionarEmpresaDirecta(key) {
   updateBadges();
   showSection('dashboard');
   toast('Empresa activa: '+emp.nombre);
+  actualizarBtnClaude();
 }
 
 // ═══ TEMA ═══
 // ═══ SELECTOR VISUAL ═══
 // Ya no hay overlay — el selector ES la sección empresas
-function abrirSelectorEmpresas() { showSection('empresas'); }
+function abrirSelectorEmpresas() { showSection('dashboard'); }
 // ═══ SAVE — con verificación de empresa activa ═══
 function _assertEmpresa() {
   if (!empresaActual) { console.error('SiFa: save() sin empresa activa'); return false; }
@@ -1358,6 +1391,10 @@ function saveCalcDB() {
 function saveAnticipos() {
   if (!_assertEmpresa()) return;
   localStorage.setItem(empresaActual.dbPrefix + 'anticipos', JSON.stringify(anticipios));
+}
+function saveGastosDB() {
+  if (!_assertEmpresa()) return;
+  localStorage.setItem(empresaActual.dbPrefix + 'gastos', JSON.stringify(gastos));
 }
 
 // ═══ UTILS ═══
@@ -1389,27 +1426,20 @@ const _SECTION_TITLES = {
   mercancias:  'CATÁLOGO DE <span>PRODUCTOS</span>',
   facturas:    'REGISTRO DE <span>FACTURAS</span>',
   pagos:       'REGISTRO DE <span>COBROS</span>',
-  invoices:    'DOCUMENTOS <span>PRIMARIOS</span>',
-  documentos:  'DOCUMENTOS <span>SECUNDARIOS</span>',
+  invoices:    'REGISTRO DE <span>FACTURAS</span>',
+  documentos:  'REGISTRO DE <span>OFERTAS</span>',
   calc:        'FORMACIÓN DE <span>PRECIOS</span>',
+  gastos:      'REGISTRO DE <span>GASTOS</span>',
+  pnl:         'ESTADO DE <span>RESULTADOS</span>',
   empresas:    'SELECCIÓN DE <span>EMPRESA</span>',
 };
 
 function showSection(id) {
-  const secEmp     = document.getElementById('section-empresas');
+  const secEmp     = document.getElementById('section-empresas') || {style:{}};
   const sidebar    = document.getElementById('sidebar');
   const topbar     = document.getElementById('topbar');
 
-  if (id === 'empresas') {
-    // Mostrar portada fija — tapa todo
-    secEmp.style.display       = 'flex';
-    secEmp.style.flexDirection = 'column';
-    sidebar.style.display      = 'none';
-    topbar.style.display       = 'none';
-    renderEmpresas();
-    closeSidebar();
-    return;
-  }
+  // empresas section disabled in DAL Book
 
   // Ocultar portada, mostrar sidebar y topbar
   secEmp.style.display  = 'none';
@@ -1437,6 +1467,8 @@ function showSection(id) {
   if (id === 'invoices')    renderInvoices();
   if (id === 'documentos')  renderDocumentos();
   if (id === 'calc')        renderCalc();
+  if (id === 'gastos')      renderGastos();
+  if (id === 'pnl')         renderPnl();
 }
 
 
@@ -1449,23 +1481,19 @@ function openModal(id) {
   if(id==='modalPago')     populatePagoSelects();
   if(id==='modalInvoice')  populateInvoiceModal();
   if(id==='modalCalc')     { populateCalcModal(); document.getElementById('modalCalcTitle').innerHTML='NUEVO <span>CÁLCULO</span>'; }
-  if(id==='modalEmpresa')  prepareModalEmpresa(null);
+  // modalEmpresa disabled
+  if(id==='modalGasto')    { document.getElementById('modalGastoTitle').innerHTML='NUEVO <span>GASTO</span>'; document.getElementById('btnGuardarGasto').textContent='Registrar Gasto'; }
   document.getElementById(id).classList.add('open');
   document.querySelectorAll('#'+id+' input[type=date]').forEach(i=>{ if(!i.value) i.value=new Date().toISOString().split('T')[0]; });
 }
 function closeModal(id) {
   document.getElementById(id).classList.remove('open');
-  // Rehabilitar botón de guardar por si acaso
-  if (id === 'modalInvoice') {
-    const btn = document.getElementById('btnGuardarDoc');
-    if (btn) { btn.disabled = false; btn.innerHTML = '💾 Guardar e Imprimir'; }
-  }
   document.querySelectorAll('#'+id+' input:not([type=color]):not([type=file]), #'+id+' select, #'+id+' textarea').forEach(el=>{ el.value=''; });
   if(id==='modalCliente')   document.getElementById('modalClienteTitle').innerHTML='NUEVO <span>CLIENTE</span>';
   if(id==='modalMercancia') document.getElementById('modalMercanciaTitle').innerHTML='NUEVO <span>PRODUCTO</span>';
   if(id==='modalFactura')   { document.getElementById('modalFacturaTitle').innerHTML='NUEVA <span>FACTURA</span>'; document.getElementById('btnGuardarFactura').textContent='Guardar Factura'; }
   if(id==='modalPago')      { document.getElementById('modalPagoTitle').innerHTML='REGISTRAR <span>PAGO</span>'; document.getElementById('btnGuardarPago').textContent='Registrar Pago'; document.getElementById('pg_info').style.display='none'; }
-  if(id==='modalEmpresa')   { _logoBase64=null; document.getElementById('emp_logo_preview').innerHTML='🏢'; document.getElementById('emp_logo_file').value=''; document.getElementById('emp_prefix').readOnly=false; document.getElementById('modalEmpresaTitle').innerHTML='NUEVA <span>EMPRESA</span>'; }
+  // modalEmpresa disabled
 }
 document.querySelectorAll('.modal-overlay').forEach(m=>{ m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }); });
 
@@ -1560,7 +1588,7 @@ function saveMercancia() {
     const linea = window._invLineaPendiente;
     window._invLineaPendiente = null;
     // Actualizar selectores del invoice
-    [1,2,3,4,5,6,7,8,9,10].forEach(n => {
+    [1,2,3,4].forEach(n => {
       const sel = document.getElementById('inv_prod_' + n);
       if (!sel) return;
       const cur = sel.value;
@@ -1780,26 +1808,22 @@ function renderPagos() {
 }
 
 // ── Editar empresa desde el dashboard ──
-function editEmpresaActiva() {
-  if (!empresaActual) return;
-  const actKey = localStorage.getItem('dal_empresa_actual');
-  if (actKey) editEmpresaModal(actKey);
-}
+function editEmpresaActiva() { return; } // DAL Book — empresa fija
 
 // ═══ DASHBOARD ═══
 function renderDashboard() {
   // Mostrar nombre empresa y botón editar
   const sub = document.getElementById('dashEmpresaNombre');
-  const btnEdit = document.getElementById('btnEditarEmpresa');
+  const btnEdit = document.getElementById('btnEditarEmpresa') || {style:{}};
   if (sub) sub.textContent = empresaActual ? empresaActual.nombre : 'Selecciona una empresa para comenzar';
-  if (btnEdit) btnEdit.style.display = empresaActual ? 'inline-flex' : 'none';
+  // btnEdit eliminado en DAL Book
 
   const totalDeuda=facturas.reduce((s,f)=>s+parseFloat(f.deuda),0);
-  // Total cobrado = suma de pagos reales recibidos (bruto, igual que en las filas)
   const totalIngresado=pagos.reduce((s,p)=>s+p.monto,0);
   const totalSaldo=facturas.reduce((s,f)=>{const sal=getSaldo(f.id);return s+(sal>0?sal:0);},0);
   const pendientes=facturas.filter(f=>getEstatus(f.id)!=='Pagado').length;
-  document.getElementById('statsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Total Facturado</div><div class="stat-value blue">$${(totalDeuda/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Total Ingresado</div><div class="stat-value green">$${(totalIngresado/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Saldo por Cobrar</div><div class="stat-value ${totalSaldo>0?'red':'green'}">$${(Math.abs(totalSaldo)/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Pendientes</div><div class="stat-value orange">${pendientes}</div></div>`;
+  const totalGastosD=gastos.reduce((s,g)=>s+(parseFloat(g.monto)||0),0);
+  document.getElementById('statsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Total Facturado</div><div class="stat-value blue">$${(totalDeuda/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Total Ingresado</div><div class="stat-value green">$${(totalIngresado/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Saldo por Cobrar</div><div class="stat-value ${totalSaldo>0?'red':'green'}">$${(Math.abs(totalSaldo)/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Total Gastos</div><div class="stat-value" style="color:var(--pink)">$${(totalGastosD/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Pendientes</div><div class="stat-value orange">${pendientes}</div></div>`;
   const tbody=document.getElementById('dashboardTable');
   const recent=[...facturas].sort((a,b)=>a.fecha<b.fecha?-1:1);
   if(!recent.length){tbody.innerHTML=`<tr><td colspan="8"><div class="empty"><div class="empty-icon">📊</div><div class="empty-text">Sin datos aún</div></div></td></tr>`;return;}
@@ -1828,9 +1852,13 @@ function compartirDashboard() {
       return `<tr style="background:${i%2===0?'#f8f8fc':'#fff'}"><td style="border-left:3px solid ${bc};padding:7px 8px;font-size:11px">${fmtDate(f.fecha)}</td><td style="padding:7px 8px;font-size:11px">${f.numero}</td><td style="padding:7px 8px;font-size:11px">${c?c.nombre:'—'}</td><td style="padding:7px 8px;font-size:10px">${m?m.nombre.substring(0,26):'—'}</td><td style="padding:7px 8px;text-align:right;font-size:11px">${fmtUSD(f.deuda)}</td><td style="padding:7px 8px;text-align:right;color:#16a34a;font-size:11px">${fmtUSD(ingreso)}</td><td style="padding:7px 8px;text-align:right;font-weight:700;color:${sc};font-size:11px">${fmtUSD(saldo)}</td><td style="padding:7px 8px;font-size:10px;color:${bc};font-weight:700">${est}</td></tr>`;
     }).join('');
     const pc=empresaActual?empresaActual.colorPrimary:'#E8202A';
-    const logoH=empresaActual&&empresaActual.logo?`<img src="${empresaActual.logo}" style="height:44px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));background:transparent">`:`<div style="font-size:20px;font-weight:900"><span style="color:${pc}">${empresaActual?empresaActual.nombre.split(' ')[0]:'DAL'}</span> ${empresaActual?empresaActual.nombre.split(' ').slice(1).join(' '):'MIAMI EXPORT LLC'}</div>`;
+    const logoH=empresaActual&&empresaActual.logo?`<img src="${empresaActual.logo}" style="height:44px;object-fit:contain">`:`<div style="font-size:20px;font-weight:900"><span style="color:${pc}">${empresaActual?empresaActual.nombre.split(' ')[0]:'DAL'}</span> ${empresaActual?empresaActual.nombre.split(' ').slice(1).join(' '):'MIAMI EXPORT LLC'}</div>`;
     const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Informe</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;color:#1a1a2e;background:#fff;padding:28px}@media print{body{padding:0}}</style></head><body><div style="border-bottom:3px solid ${pc};padding-bottom:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-start"><div>${logoH}<div style="font-size:9px;color:#666;margin-top:4px;line-height:1.7">${empresaActual?empresaActual.direccion+' · '+empresaActual.ein:''}</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:700;color:${pc}">INFORME FINANCIERO</div><div style="font-size:9px;color:#888;margin-top:3px;line-height:1.7">${hoy}<br><strong>Confidencial</strong></div></div></div><div style="display:flex;gap:8px;margin-bottom:16px"><div style="flex:1;border:1px solid #dde;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">Total Facturado</div><div style="font-size:13px;font-weight:700;color:#1A3CCC">${fmtUSD(totalDeuda)}</div></div><div style="flex:1;border:1px solid #dde;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">Total Cobrado</div><div style="font-size:13px;font-weight:700;color:#16a34a">${fmtUSD(totalIngresado)}</div></div><div style="flex:1;border:1px solid #dde;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">Saldo por Cobrar</div><div style="font-size:13px;font-weight:700;color:${totalSaldo>0?'#dc2626':'#16a34a'}">${fmtUSD(Math.abs(totalSaldo))}</div></div><div style="flex:1;border:1px solid #dde;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">Tasa Cobro</div><div style="font-size:13px;font-weight:700;color:#f59e0b">${tasaCobro}%</div></div></div><table style="width:100%;border-collapse:collapse;margin-bottom:16px"><thead><tr style="background:#0f0f14;color:#fff"><th style="padding:7px;text-align:left;font-size:8px">FECHA</th><th style="padding:7px;text-align:left;font-size:8px">N°</th><th style="padding:7px;text-align:left;font-size:8px">CLIENTE</th><th style="padding:7px;text-align:left;font-size:8px">PRODUCTO</th><th style="padding:7px;text-align:right;font-size:8px">FACT.</th><th style="padding:7px;text-align:right;font-size:8px">COBRADO</th><th style="padding:7px;text-align:right;font-size:8px">SALDO</th><th style="padding:7px;text-align:left;font-size:8px">ESTADO</th></tr></thead><tbody>${rows}</tbody></table><div style="border-top:1px solid #e0e0e8;padding-top:10px;display:flex;justify-content:space-between"><div><div style="width:140px;border-bottom:1px solid #aaa;margin-bottom:3px;height:20px"></div><div style="font-weight:700;font-size:10px">${empresaActual?empresaActual.gerente:''}</div><div style="font-size:8px;color:#888;text-transform:uppercase">${empresaActual?empresaActual.cargoGerente:''}</div></div><div style="text-align:right;font-size:8px;color:#aaa;line-height:1.8">${hoy}</div></div></body></html>`;
-    abrirEnVentana(html);
+    const blob=new Blob([html],{type:'text/html'}); const url=URL.createObjectURL(blob);
+    const win=window.open(url,'_blank');
+    if(!win) toast('Permite ventanas emergentes','error');
+    else setTimeout(()=>{try{win.print();}catch(e){}},1200);
+    setTimeout(()=>URL.revokeObjectURL(url),20000);
   } catch(err){console.error(err);toast('Error al generar informe','error');}
   finally{btn.textContent='⬆️ Compartir PDF';btn.disabled=false;}
 }
@@ -1859,9 +1887,11 @@ function _abrirVentanaConciliacion(clienteId,desde,hasta) {
   const nBg=sf>0.01?'#fff1f2':sf<-0.01?'#f0fdf4':'#f0f9ff', nBorder=sf>0.01?'#E8202A':sf<-0.01?'#16a34a':'#1A3CCC';
   const nTxt=sf>0.01?`Estimado cliente <strong>${cliente.nombre}</strong>, presenta un saldo pendiente de <strong>${fmtUSD(sf)}</strong>. Le agradecemos gestionar su pago a la brevedad.`:sf<-0.01?`Estimado cliente <strong>${cliente.nombre}</strong>, tiene un crédito de <strong>${fmtUSD(Math.abs(sf))}</strong>.`:`Estimado cliente <strong>${cliente.nombre}</strong>, su cuenta se encuentra completamente al día.`;
   const pc1=empresaActual?empresaActual.colorPrimary:'#E8202A';
-  const logoH=empresaActual&&empresaActual.logo?`<img src="${empresaActual.logo}" style="height:38px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));background:transparent">`:`<div style="font-size:16px;font-weight:900"><span style="color:${pc1}">${empresaActual?empresaActual.nombre.split(' ')[0]:'DAL'}</span> ${empresaActual?empresaActual.nombre.split(' ').slice(1).join(' '):'MIAMI EXPORT LLC'}</div>`;
-  const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Estado de Cuenta - ${cliente.nombre}</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;color:#1a1a2e;background:#f0f0f0;font-size:11px}#doc-sheet{background:#fff;max-width:800px;margin:70px auto 40px;padding:28px;box-shadow:0 2px 16px rgba(0,0,0,.15)}#action-bar{position:fixed;top:0;left:0;right:0;height:56px;background:#1a1a2e;border-bottom:3px solid ${pc1};display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:999;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.4)}.ab-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0}.ab-print{background:${pc1};color:#fff}.ab-print:hover{opacity:.88}.ab-close{background:transparent;color:#aaa;border:1px solid #444}.ab-close:hover{background:#333;color:#fff}.doc-ref{color:#fff;font-size:13px;font-weight:700}@media print{#action-bar{display:none}body{background:#fff}#doc-sheet{margin:0;padding:0;box-shadow:none;max-width:none}}</style></head><body><div id="action-bar"><div class="doc-ref">Estado de Cuenta — ${cliente.nombre}</div><div style="display:flex;gap:8px"><button class="ab-btn ab-print" onclick="(function(){var ua=navigator.userAgent;var isChromeIOS=/CriOS/.test(ua);if(isChromeIOS){var msg=document.createElement('div');msg.style.cssText='position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:2px solid #F59E0B;border-radius:14px;padding:20px 24px;z-index:9999;max-width:360px;width:90%;text-align:center;font-family:Arial,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,.5)';msg.innerHTML='<div style="font-size:28px;margin-bottom:10px">📤</div><div style="color:#F59E0B;font-weight:700;font-size:14px;margin-bottom:8px">Para imprimir en Chrome iOS</div><div style="color:#ccc;font-size:13px;line-height:1.6">Toca <strong style="color:#fff">⬆️ Compartir</strong> en la barra del navegador y selecciona <strong style="color:#fff">Imprimir</strong></div><button onclick="this.parentNode.remove()" style="margin-top:14px;background:#F59E0B;color:#000;border:none;padding:10px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">Entendido</button>';document.body.appendChild(msg);setTimeout(function(){if(msg.parentNode)msg.remove();},8000);}else{window.print();}})()">🖨️ Imprimir / PDF</button><button class="ab-btn ab-close" onclick="history.length>1?history.back():window.close()">✕ Cerrar</button></div></div><div id="doc-sheet"><div style="border-bottom:3px solid ${pc1};padding-bottom:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-start"><div>${logoH}<div style="font-size:9px;color:#666;margin-top:4px;line-height:1.7">${empresaActual?empresaActual.direccion+' · '+empresaActual.ein:''}</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:700;color:${pc1}">ESTADO DE CUENTA</div><div style="font-size:9px;color:#888;margin-top:3px">${hoy}</div></div></div><div style="background:#f5f5f5;border-left:4px solid ${pc1};padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:16px"><div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:2px">Cliente</div><div style="font-size:17px;font-weight:700">${cliente.nombre}</div></div><table style="width:100%;border-collapse:collapse;margin-bottom:16px"><thead><tr style="background:#1a1a2e;color:#fff"><th style="padding:8px;text-align:left;font-size:9px">FECHA</th><th style="padding:8px;text-align:left;font-size:9px">TIPO</th><th style="padding:8px;text-align:left;font-size:9px">REF.</th><th style="padding:8px;text-align:left;font-size:9px">DESCRIPCIÓN</th><th style="padding:8px;text-align:right;font-size:9px">MONTO</th><th style="padding:8px;text-align:right;font-size:9px">SALDO</th></tr></thead><tbody>${filasHTML}</tbody></table><div style="display:flex;gap:10px;margin-bottom:16px"><div style="flex:1;border:1px solid #e0e0e8;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">Total Facturado</div><div style="font-size:13px;font-weight:700;color:#1A3CCC">${fmtUSD(totalF)}</div></div><div style="flex:1;border:1px solid #e0e0e8;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">Total Pagado</div><div style="font-size:13px;font-weight:700;color:#16a34a">${fmtUSD(totalP)}</div></div><div style="flex:1;border:1px solid #e0e0e8;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">${sf>0.01?'Saldo a Pagar':sf<-0.01?'Saldo a Favor':'Saldo'}</div><div style="font-size:13px;font-weight:700;color:${sf>0.01?'#dc2626':sf<-0.01?'#16a34a':'#1A3CCC'}">${fmtUSD(Math.abs(sf))}</div></div></div><div style="background:${nBg};border-left:4px solid ${nBorder};padding:12px 16px;border-radius:0 6px 6px 0;margin-bottom:16px;font-size:11px;line-height:1.7">${nTxt}</div><div style="border-top:1px solid #e0e0e8;padding-top:10px;display:flex;justify-content:space-between;align-items:flex-end"><div><div style="width:140px;border-bottom:1px solid #aaa;margin-bottom:3px;height:20px"></div><div style="font-weight:700;font-size:10px">${empresaActual?empresaActual.gerente:''}</div><div style="font-size:8px;color:#888;text-transform:uppercase">${empresaActual?empresaActual.cargoGerente:''}</div></div><div style="text-align:right;font-size:9px;color:#555;line-height:1.9">${hoy}<br>${empresaActual?empresaActual.ein:''}${empresaActual&&empresaActual.banco?'<br>'+empresaActual.banco:''}</div></div></div></body></html>`;
-  abrirEnVentana(html);
+  const logoH=empresaActual&&empresaActual.logo?`<img src="${empresaActual.logo}" style="height:38px;object-fit:contain">`:`<div style="font-size:16px;font-weight:900"><span style="color:${pc1}">${empresaActual?empresaActual.nombre.split(' ')[0]:'DAL'}</span> ${empresaActual?empresaActual.nombre.split(' ').slice(1).join(' '):'MIAMI EXPORT LLC'}</div>`;
+  const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Estado de Cuenta - ${cliente.nombre}</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;color:#1a1a2e;background:#fff;padding:28px}@media print{body{padding:0}}</style></head><body><div style="border-bottom:3px solid ${pc1};padding-bottom:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-start"><div>${logoH}<div style="font-size:9px;color:#666;margin-top:4px;line-height:1.7">${empresaActual?empresaActual.direccion+' · '+empresaActual.ein:''}</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:700;color:${pc1}">ESTADO DE CUENTA</div><div style="font-size:9px;color:#888;margin-top:3px">${hoy}</div></div></div><div style="background:#f5f5f5;border-left:4px solid ${pc1};padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:16px"><div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:2px">Cliente</div><div style="font-size:17px;font-weight:700">${cliente.nombre}</div></div><table style="width:100%;border-collapse:collapse;margin-bottom:16px"><thead><tr style="background:#1a1a2e;color:#fff"><th style="padding:8px;text-align:left;font-size:9px">FECHA</th><th style="padding:8px;text-align:left;font-size:9px">TIPO</th><th style="padding:8px;text-align:left;font-size:9px">REF.</th><th style="padding:8px;text-align:left;font-size:9px">DESCRIPCIÓN</th><th style="padding:8px;text-align:right;font-size:9px">MONTO</th><th style="padding:8px;text-align:right;font-size:9px">SALDO</th></tr></thead><tbody>${filasHTML}</tbody></table><div style="display:flex;gap:10px;margin-bottom:16px"><div style="flex:1;border:1px solid #e0e0e8;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">Total Facturado</div><div style="font-size:13px;font-weight:700;color:#1A3CCC">${fmtUSD(totalF)}</div></div><div style="flex:1;border:1px solid #e0e0e8;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">Total Pagado</div><div style="font-size:13px;font-weight:700;color:#16a34a">${fmtUSD(totalP)}</div></div><div style="flex:1;border:1px solid #e0e0e8;border-radius:6px;padding:10px;text-align:center"><div style="font-size:8px;text-transform:uppercase;color:#888;margin-bottom:3px">${sf>0.01?'Saldo a Pagar':sf<-0.01?'Saldo a Favor':'Saldo'}</div><div style="font-size:13px;font-weight:700;color:${sf>0.01?'#dc2626':sf<-0.01?'#16a34a':'#1A3CCC'}">${fmtUSD(Math.abs(sf))}</div></div></div><div style="background:${nBg};border-left:4px solid ${nBorder};padding:12px 16px;border-radius:0 6px 6px 0;margin-bottom:16px;font-size:11px;line-height:1.7">${nTxt}</div><div style="border-top:1px solid #e0e0e8;padding-top:10px;display:flex;justify-content:space-between;align-items:flex-end"><div><div style="width:140px;border-bottom:1px solid #aaa;margin-bottom:3px;height:20px"></div><div style="font-weight:700;font-size:10px">${empresaActual?empresaActual.gerente:''}</div><div style="font-size:8px;color:#888;text-transform:uppercase">${empresaActual?empresaActual.cargoGerente:''}</div></div><div style="text-align:right;font-size:9px;color:#555;line-height:1.9">${hoy}<br>${empresaActual?empresaActual.ein:''}${empresaActual&&empresaActual.banco?'<br>'+empresaActual.banco:''}</div></div></body></html>`;
+  const blob=new Blob([html],{type:'text/html'}), url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener';
+  document.body.appendChild(a); a.click(); setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},10000);
 }
 
 // ═══ INVOICES ═══
@@ -1903,27 +1933,50 @@ function onChangeEmpresaEmisora() {
   }
 }
 
-// Consecutivo independiente por tipo y empresa
+// Consecutivos FA-xxxx y OF-xxxx con guión
+function getNextNumeroFA() {
+  const p = empresaActual ? empresaActual.dbPrefix : 'sifa_';
+  const last = parseInt(localStorage.getItem(p + 'inv_consec_FA') || '0');
+  return 'FA-' + String(last + 1).padStart(4, '0');
+}
+function getNextNumeroOF() {
+  const p = empresaActual ? empresaActual.dbPrefix : 'sifa_';
+  const last = parseInt(localStorage.getItem(p + 'inv_consec_OF') || '0');
+  return 'OF-' + String(last + 1).padStart(4, '0');
+}
 function getNextNumero(tipoKey) {
-  const prefix = empresaActual ? empresaActual.dbPrefix : 'sifa_';
-  const last = parseInt(localStorage.getItem(prefix + 'inv_consec_' + tipoKey) || '0');
+  // FA y F → FA-xxxx, O y C → OF-xxxx, otros → tipoKey+xxxx
+  if (tipoKey === 'F' || tipoKey === 'FA') return getNextNumeroFA();
+  if (tipoKey === 'O' || tipoKey === 'OF') return getNextNumeroOF();
+  const p = empresaActual ? empresaActual.dbPrefix : 'sifa_';
+  const last = parseInt(localStorage.getItem(p + 'inv_consec_' + tipoKey) || '0');
   return tipoKey + String(last + 1).padStart(4, '0');
 }
 function saveConsecutivo(numero) {
-  const match = numero.match(/^([A-Za-z]+)(\d+)$/);
-  if (!match) return;
-  const [, letra, num] = match;
-  const prefix = empresaActual ? empresaActual.dbPrefix : 'sifa_';
-  localStorage.setItem(prefix + 'inv_consec_' + letra.toUpperCase(), parseInt(num).toString());
+  // Soporta FA-0001, OF-0001, I0001, etc.
+  const p = empresaActual ? empresaActual.dbPrefix : 'sifa_';
+  const mG = numero.match(/^([A-Za-z]+)-(\d+)$/);   // FA-0001
+  const mS = numero.match(/^([A-Za-z]+)(\d+)$/);     // I0001
+  const m  = mG || mS;
+  if (!m) return;
+  const [, letra, num] = m;
+  localStorage.setItem(p + 'inv_consec_' + letra.toUpperCase(), parseInt(num).toString());
 }
 
 function onChangeTipoDoc() {
-  const val = document.getElementById('inv_tipo').value;
+  const val  = document.getElementById('inv_tipo').value;
   const wrap = document.getElementById('inv_tipo_nuevo_wrap');
   wrap.style.display = val === '__nuevo__' ? 'block' : 'none';
   if (val !== '__nuevo__') {
     document.getElementById('inv_titulo').value = getTipoLabel(val).toUpperCase();
-    document.getElementById('inv_numero').value = getNextNumero(val);
+    // FA- / OF- con guión
+    if (val === 'F') {
+      document.getElementById('inv_numero').value = getNextNumeroFA();
+    } else if (val === 'O' || val === 'C') {
+      document.getElementById('inv_numero').value = getNextNumeroOF();
+    } else {
+      document.getElementById('inv_numero').value = getNextNumero(val);
+    }
   }
 }
 
@@ -1978,7 +2031,7 @@ function populateInvoiceModal() {
   // Clientes y productos
   document.getElementById('inv_cliente').innerHTML = '<option value="">— Selecciona o deja vacío —</option>' +
     clientes.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
-  [1,2,3,4,5,6,7,8,9,10].forEach(i => {
+  [1,2,3,4].forEach(i => {
     document.getElementById('inv_prod_' + i).innerHTML = '<option value="">— Producto —</option>' +
       mercancias.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
       '<option value="__nuevo__" style="color:var(--green);font-weight:700">＋ Crear nuevo producto...</option>';
@@ -1994,8 +2047,6 @@ function populateInvoiceModal() {
    'inv_origen','inv_puerto','inv_notas','inv_entregado_por'].forEach(id => {
     document.getElementById(id).value = '';
   });
-  document.getElementById('inv_proveedor').style.display = 'none';
-  document.getElementById('inv_proveedor_sel').value = '';
   document.getElementById('inv_incoterm').value = '';
   document.getElementById('inv_condicion_sel').value = '';
   document.getElementById('inv_condicion').value = '';
@@ -2016,19 +2067,6 @@ function onSelectInvoiceCliente() {
   document.getElementById('inv_cli_cif').textContent = c.cif || '—';
   document.getElementById('inv_cli_dir').textContent = c.direccion || '—';
   info.style.display = 'block';
-}
-
-function onSelectProveedor() {
-  const val = document.getElementById('inv_proveedor_sel').value;
-  const inp = document.getElementById('inv_proveedor');
-  if (val === '__nuevo__') {
-    inp.style.display = 'block';
-    inp.value = '';
-    inp.focus();
-  } else {
-    inp.style.display = 'none';
-    inp.value = val; // guardar el valor del selector en el input oculto
-  }
 }
 
 function onSelectProd(i) {
@@ -2068,7 +2106,7 @@ function calcLinea(i) {
 
 function calcTotales() {
   let sub = 0;
-  [1,2,3,4,5,6,7,8,9,10].forEach(i => {
+  [1,2,3,4].forEach(i => {
     sub += (parseFloat(document.getElementById('inv_qty_'   + i).value) || 0) *
            (parseFloat(document.getElementById('inv_price_' + i).value) || 0);
   });
@@ -2097,7 +2135,7 @@ function getInvoiceData() {
   const emisora    = getTodasEmpresas()[emisoraKey] || empresaActual || null;
 
   const lineas = [];
-  [1,2,3,4,5,6,7,8,9,10].forEach(i => {
+  [1,2,3,4].forEach(i => {
     const pid   = document.getElementById('inv_prod_'  + i).value;
     const qty   = parseFloat(document.getElementById('inv_qty_'   + i).value) || 0;
     const price = parseFloat(document.getElementById('inv_price_' + i).value) || 0;
@@ -2142,66 +2180,126 @@ function getInvoiceData() {
 const TIPOS_FINANCIEROS = ['I', 'F'];
 function esFinanciero(tipoKey) { return TIPOS_FINANCIEROS.includes(tipoKey); }
 
-function abrirNuevoDocComplementario() {
+// ── Nueva Factura FA-xxxx (siempre contabilizada, crea deuda) ──
+function abrirNuevaFacturaDoc() {
   populateInvoiceModal();
-  document.getElementById('modalInvoiceTitle').innerHTML = 'NUEVO <span>DOCUMENTO</span>';
-
-  // Eliminar opciones financieras del selector (Safari no soporta display:none en option)
-  const sel = document.getElementById('inv_tipo');
-  ['I','F'].forEach(val => {
-    const opt = sel.querySelector(`option[value="${val}"]`);
-    if (opt) opt.remove();
-  });
-  // Eliminar el optgroup de financieros
-  const optgroups = sel.querySelectorAll('optgroup');
-  if (optgroups[0]) optgroups[0].remove();
-
-  sel.value = 'O';
-  onChangeTipoDoc();
+  document.getElementById('modalInvoiceTitle').innerHTML = 'NUEVA <span>FACTURA</span>';
+  document.getElementById('inv_tipo').value   = 'F';
+  document.getElementById('inv_titulo').value = 'FACTURA';
+  document.getElementById('inv_numero').value = getNextNumeroFA();
+  document.getElementById('inv_tipo_nuevo_wrap').style.display = 'none';
   document.getElementById('modalInvoice').classList.add('open');
   document.querySelectorAll('#modalInvoice input[type=date]').forEach(i => { if(!i.value) i.value = new Date().toISOString().split('T')[0]; });
 }
 
-function abrirNuevoDocFinanciero() {
+// ── Nueva Oferta OF-xxxx (sin contabilizar, no crea deuda) ──
+function abrirNuevaOferta() {
   populateInvoiceModal();
-  document.getElementById('modalInvoiceTitle').innerHTML = 'NUEVA <span>FACTURA / INVOICE</span>';
-  document.getElementById('inv_tipo').value = 'I';
-  onChangeTipoDoc();
+  document.getElementById('modalInvoiceTitle').innerHTML = 'NUEVA <span>OFERTA</span>';
+  document.getElementById('inv_tipo').value   = 'O';
+  document.getElementById('inv_titulo').value = 'OFERTA';
+  document.getElementById('inv_numero').value = getNextNumeroOF();
+  document.getElementById('inv_tipo_nuevo_wrap').style.display = 'none';
   document.getElementById('modalInvoice').classList.add('open');
   document.querySelectorAll('#modalInvoice input[type=date]').forEach(i => { if(!i.value) i.value = new Date().toISOString().split('T')[0]; });
 }
 
-// ── Abre HTML en nueva pestaña con Blob URL ──
-function abrirEnVentana(html) {
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url  = URL.createObjectURL(blob);
-  const win  = window.open(url, '_blank');
-  if (!win || win.closed) window.location.href = url;
-  setTimeout(() => URL.revokeObjectURL(url), 120000);
-}
+// ── Aliases compatibilidad ──
+function abrirNuevoDocComplementario() { abrirNuevaOferta(); }
+function abrirNuevoDocFinanciero()     { abrirNuevaFacturaDoc(); }
 
-// ── Guardar datos del invoice en memoria y storage ──
-function _guardarDocumento(data, contabilizar) {
-  const facturaOrigenId = document.getElementById('inv_id').dataset.facturaOrigen;
+// ── Convertir Oferta OF-xxxx a Factura FA-xxxx ──
+function convertirOfertaAFactura(invId) {
+  const oferta = invoices.find(x => x.id === invId);
+  if (!oferta) return;
+  if (oferta.convertida) { toast('Esta oferta ya fue convertida a ' + oferta.facturaGenerada, 'error'); return; }
+  if (!confirm('¿Convertir esta oferta a Factura contabilizada?\n\nSe creará FA-xxxx y la oferta quedará marcada como Convertida.')) return;
 
-  // Guardar el invoice
-  const idx = invoices.findIndex(x => x.id === data.id);
-  if (idx >= 0) {
-    invoices[idx] = data;
-  } else {
-    // Evitar duplicado por número+emisora
-    const dupIdx = invoices.findIndex(x => x.numero === data.numero && x.emisoraKey === data.emisoraKey);
-    if (dupIdx >= 0) invoices[dupIdx] = data; else invoices.push(data);
+  const nuevoNumero = getNextNumeroFA();
+
+  // Nueva factura copia de la oferta
+  const nuevaFactura = {
+    ...oferta,
+    id:           uid(),
+    tipoKey:      'F',
+    titulo:       'FACTURA',
+    numero:       nuevoNumero,
+    ofertaOrigen: invId,
+    creado:       new Date().toISOString()
+  };
+  invoices.push(nuevaFactura);
+  saveConsecutivo(nuevoNumero);
+
+  // Marcar oferta como convertida
+  const idx = invoices.findIndex(x => x.id === invId);
+  if (idx >= 0) invoices[idx] = { ...invoices[idx], convertida: true, facturaGenerada: nuevoNumero };
+
+  // Crear deuda en módulo Facturas
+  if (nuevaFactura.clienteId && nuevaFactura.total > 0) {
+    facturas.push({
+      id:          uid(),
+      invoiceId:   nuevaFactura.id,
+      fecha:       nuevaFactura.fecha,
+      numero:      nuevoNumero,
+      clienteId:   nuevaFactura.clienteId,
+      mercanciaId: nuevaFactura.lineas[0]?.prodId || '',
+      deuda:       nuevaFactura.total,
+      arrastre:    0
+    });
+    save();
   }
+
+  saveInvoicesDB();
+  renderInvoices();
+  renderDocumentos();
+  renderFacturas();
+  updateBadges();
+  toast('✅ Factura ' + nuevoNumero + ' creada — oferta convertida');
+}
+
+function guardarInvoice() {
+  const data = getInvoiceData(); if (!data) return;
+  const idx  = invoices.findIndex(x => x.id === data.id);
+  if (idx >= 0) invoices[idx] = data; else invoices.push(data);
   saveConsecutivo(data.numero);
 
-  // Contabilizar — crear/actualizar en facturas
-  if (contabilizar && esFinanciero(data.tipoKey) && data.clienteId && data.total > 0) {
-    const fExistente = facturas.find(f =>
-      f.invoiceId === data.id ||
-      f.id === facturaOrigenId ||
-      (f.numero === data.numero && f.clienteId === data.clienteId)
-    );
+  // Vincular a factura origen si viene de generarInvoiceDesdeFactura
+  const facturaOrigenId = document.getElementById('inv_id').dataset.facturaOrigen;
+
+  if (esFinanciero(data.tipoKey) && data.clienteId && data.total > 0) {
+    // Buscar por invoiceId o por facturaOrigen
+    const fExistente = facturas.find(f => f.invoiceId === data.id || f.id === facturaOrigenId);
+    if (fExistente) {
+      const i = facturas.findIndex(f => f.id === fExistente.id);
+      facturas[i] = { ...facturas[i], invoiceId: data.id, deuda: data.total,
+        clienteId: data.clienteId,
+        mercanciaId: data.lineas[0]?.prodId || facturas[i].mercanciaId,
+        fecha: data.fecha, numero: data.numero };
+    } else {
+      facturas.push({ id: uid(), invoiceId: data.id, fecha: data.fecha,
+        numero: data.numero, clienteId: data.clienteId,
+        mercanciaId: data.lineas[0]?.prodId || '', deuda: data.total, arrastre: 0 });
+    }
+    save();
+    toast('Documento guardado y deuda registrada ✅');
+  } else {
+    toast('Documento guardado ✅');
+  }
+
+  delete document.getElementById('inv_id').dataset.facturaOrigen;
+  saveInvoicesDB(); closeModal('modalInvoice'); renderInvoices(); renderDocumentos(); renderFacturas(); updateBadges();
+}
+
+function generarInvoice() {
+  const data = getInvoiceData(); if (!data) return;
+  const idx  = invoices.findIndex(x => x.id === data.id);
+  if (idx >= 0) invoices[idx] = data; else invoices.push(data);
+  saveConsecutivo(data.numero);
+
+  const facturaOrigenId = document.getElementById('inv_id').dataset.facturaOrigen;
+
+  if (esFinanciero(data.tipoKey) && data.clienteId && data.total > 0) {
+    const fExistente = facturas.find(f => f.invoiceId === data.id || f.id === facturaOrigenId);
     if (fExistente) {
       const i = facturas.findIndex(f => f.id === fExistente.id);
       facturas[i] = { ...facturas[i], invoiceId: data.id, deuda: data.total,
@@ -2217,182 +2315,80 @@ function _guardarDocumento(data, contabilizar) {
   }
 
   delete document.getElementById('inv_id').dataset.facturaOrigen;
-  saveInvoicesDB();
-  renderInvoices(); renderDocumentos(); renderFacturas(); updateBadges();
-  closeModal('modalInvoice');
+  saveInvoicesDB(); renderInvoices(); renderDocumentos(); renderFacturas(); updateBadges();
+  abrirInvoicePDF(data); closeModal('modalInvoice');
 }
 
-// ── Función principal unificada de facturación ──
-// Guard global para evitar doble tap
-let _facturacionEnProceso = false;
-
-function facturacion() {
-  // Evitar doble tap
-  if (_facturacionEnProceso) return;
-  _facturacionEnProceso = true;
-
-  const data = getInvoiceData();
-  if (!data) {
-    _facturacionEnProceso = false;
-    return;
-  }
-
-  // Cerrar modal PRIMERO — evita que el usuario vuelva a tocar
-  closeModal('modalInvoice');
-
-  const esDoc = esFinanciero(data.tipoKey);
-
-  if (!esDoc || !data.clienteId || data.total <= 0) {
-    _guardarDocumento(data, false);
-    toast('✅ Documento guardado');
-    abrirEnVentana(buildInvoiceHTML(data));
-    _facturacionEnProceso = false;
-    return;
-  }
-
-  const yaContabilizado = facturas.some(f => f.invoiceId === data.id);
-
-  if (yaContabilizado) {
-    _guardarDocumento(data, true);
-    toast('✅ Documento actualizado');
-    abrirEnVentana(buildInvoiceHTML(data));
-    _facturacionEnProceso = false;
-    return;
-  }
-
-  // Financiero nuevo — mostrar diálogo
-  _mostrarDialogoContabilizar(data);
-  _facturacionEnProceso = false;
-}
-
-// ── Diálogo: ¿Contabilizar este documento? ──
-function _mostrarDialogoContabilizar(data) {
-  // Quitar diálogo anterior si existe
-  const prev = document.getElementById('modalContabilizar');
-  if (prev) prev.remove();
-
-  const d = document.createElement('div');
-  d.id = 'modalContabilizar';
-  d.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
-
-  const pc = (empresaActual && empresaActual.colorPrimary) || '#6366F1';
-
-  d.innerHTML = `
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;width:100%;max-width:460px;animation:slideUp .2s ease">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;margin-bottom:8px">
-      GUARDAR <span style="color:${pc}">DOCUMENTO</span>
-    </div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6">
-      <strong style="color:var(--text)">${data.titulo} ${data.numero}</strong> — ${fmtUSD(data.total)}<br>
-      ¿Deseas contabilizar este documento para registrar la deuda en el libro de facturas?
-    </div>
-
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
-
-      <button onclick="_confirmarFacturacion(true)" style="display:flex;align-items:flex-start;gap:14px;background:var(--surface2);border:1px solid ${pc};border-radius:14px;padding:16px;cursor:pointer;text-align:left;width:100%;transition:all .15s" onmouseover="this.style.background='${pc}18'" onmouseout="this.style.background='var(--surface2)'">
-        <span style="font-size:24px;flex-shrink:0">📒</span>
-        <div>
-          <div style="font-weight:700;color:var(--text);font-size:14px;margin-bottom:3px">Guardar y Contabilizar</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.5">Se registra como factura pendiente de cobro. Aparece en Facturas, Dashboard y estados de cuenta.</div>
-        </div>
-      </button>
-
-      <button onclick="_confirmarFacturacion(false)" style="display:flex;align-items:flex-start;gap:14px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;text-align:left;width:100%;transition:all .15s" onmouseover="this.style.background='var(--surface3)'" onmouseout="this.style.background='var(--surface2)'">
-        <span style="font-size:24px;flex-shrink:0">📄</span>
-        <div>
-          <div style="font-weight:700;color:var(--text);font-size:14px;margin-bottom:3px">Solo guardar e imprimir</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.5">Se guarda como documento sin impacto contable. No crea deuda ni aparece en facturas.</div>
-        </div>
-      </button>
-
-    </div>
-
-    <div style="text-align:right">
-      <button onclick="document.getElementById('modalContabilizar').remove()" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:10px 20px;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px">Cancelar</button>
-    </div>
-  </div>`;
-
-  // Guardar data temporalmente para usarla en _confirmarFacturacion
-  window._facturacionPendiente = data;
-  document.body.appendChild(d);
-}
-
-function _confirmarFacturacion(contabilizar) {
-  const d = document.getElementById('modalContabilizar');
-  if (d) d.remove();
-  const data = window._facturacionPendiente;
-  window._facturacionPendiente = null;
-  if (!data) return;
-  _guardarDocumento(data, contabilizar);
-  toast(contabilizar ? '✅ Documento guardado y contabilizado' : '✅ Documento guardado');
-  abrirEnVentana(buildInvoiceHTML(data));
-}
-
-// Mantener alias para compatibilidad con generarInvoiceDesdeFactura
-function generarInvoice() { facturacion(); }
-function guardarInvoice() { facturacion(); }
-
-
-
-// ── Render tabla Documentos Primarioss (solo financieros)
+// ── Render tabla FACTURAS (FA-xxxx, contabilizadas) ──
 function renderInvoices() {
   const tbody = document.getElementById('invoicesTable');
   const fin = invoices.filter(x => esFinanciero(x.tipoKey || 'I'));
   if (!fin.length) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Sin facturas ni invoices aún</div><div class="empty-sub">Crea tu primer documento financiero</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">🧾</div><div class="empty-text">Sin facturas aún</div><div class="empty-sub">Crea tu primera Factura FA-xxxx</div></div></td></tr>`;
     return;
   }
-  tbody.innerHTML = [...fin].sort((a,b)=>a.fecha<b.fecha?-1:1).map(inv => {
-    const c   = clientes.find(x => x.id === inv.clienteId);
+  tbody.innerHTML = [...fin].sort((a,b) => b.fecha.localeCompare(a.fecha)).map(inv => {
+    const cli = clientes.find(x => x.id === inv.clienteId);
     const emp = inv.emisora || empresaActual || {};
-    const label = inv.titulo || getTipoLabel(inv.tipoKey || 'I');
-    const fVinc = facturas.find(f => f.invoiceId === inv.id);
-    const saldo = fVinc ? getSaldo(fVinc.id) : null;
-    const saldoHTML = saldo !== null
-      ? `<span style="font-size:11px;color:${saldo<=0.01?'var(--green)':saldo>0?'var(--pink)':'var(--text2)'}">${saldo<=0.01?'✓ Pagado':fmtUSD(saldo)+' pendiente'}</span>`
+    const fVinc  = facturas.find(f => f.invoiceId === inv.id);
+    const saldo  = fVinc ? getSaldo(fVinc.id) : null;
+    const est    = fVinc ? getEstatus(fVinc.id) : null;
+    const estHTML = est
+      ? `<span class="status ${est==='Pagado'?'status-pagado':est==='Pagado parcialmente'?'status-parcial':'status-pendiente'}">${est}</span>`
+      : `<span style="font-size:11px;color:var(--text2)">Sin deuda</span>`;
+    const saldoTxt = (saldo !== null && saldo > 0.01)
+      ? `<br><span style="font-size:11px;color:var(--pink)">${fmtUSD(saldo)} pendiente</span>`
       : '';
-    return `<tr style="cursor:pointer" onclick="editInvoice('${inv.id}')">
+    return `<tr>
       <td>${fmtDate(inv.fecha)}</td>
-      <td class="mono">${inv.numero}</td>
-      <td><span style="font-size:11px;font-weight:700;color:var(--blue)">${label}</span></td>
+      <td class="mono" style="font-weight:700;color:var(--red)">${inv.numero}</td>
       <td style="font-size:12px">${emp.nombre||'—'}</td>
-      <td>${c ? c.nombre : (inv.proveedor||'—')}<br>${saldoHTML}</td>
+      <td>${cli ? cli.nombre : (inv.proveedor||'—')}${saldoTxt}</td>
       <td class="mono amount-pos">${fmtUSD(inv.total)}</td>
-      <td style="white-space:nowrap" onclick="event.stopPropagation()">
+      <td>${estHTML}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-secondary btn-sm" onclick="editInvoice('${inv.id}')">✏️</button>
         <button class="btn btn-primary btn-sm" onclick="abrirInvoicePDF(invoices.find(x=>x.id==='${inv.id}'))">📋 PDF</button>
         <button class="btn btn-danger btn-sm" onclick="deleteInvoice('${inv.id}')">✕</button>
       </td>
     </tr>`;
   }).join('');
 }
-
-// ── Render tabla Documentos Secundarios (O, C y custom)
+// ── Render tabla OFERTAS (OF-xxxx, complementarias) ──
 function renderDocumentos() {
   const tbody = document.getElementById('documentosTable');
   if (!tbody) return;
   const docs = invoices.filter(x => !esFinanciero(x.tipoKey || 'I'));
   if (!docs.length) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">📄</div><div class="empty-text">Sin documentos complementarios</div><div class="empty-sub">Conduces, órdenes de entrega y más</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📝</div><div class="empty-text">Sin ofertas aún</div><div class="empty-sub">Crea tu primera Oferta OF-xxxx</div></div></td></tr>`;
     return;
   }
-  tbody.innerHTML = [...docs].sort((a,b)=>a.fecha<b.fecha?-1:1).map(inv => {
-    const c   = clientes.find(x => x.id === inv.clienteId);
+  tbody.innerHTML = [...docs].sort((a,b) => b.fecha.localeCompare(a.fecha)).map(inv => {
+    const cli = clientes.find(x => x.id === inv.clienteId);
     const emp = inv.emisora || empresaActual || {};
-    const label = inv.titulo || getTipoLabel(inv.tipoKey || 'O');
-    return `<tr style="cursor:pointer" onclick="editInvoice('${inv.id}')">
+    // Estado: Activa o Convertida
+    const estHTML = inv.convertida
+      ? `<span class="status status-pagado">✓ Convertida → ${inv.facturaGenerada||''}</span>`
+      : `<span class="status status-pendiente">Activa</span>`;
+    const btnConvertir = !inv.convertida
+      ? `<button class="btn btn-blue btn-sm" onclick="convertirOfertaAFactura('${inv.id}')" title="Convertir a Factura FA-xxxx">🔄 FA</button>`
+      : '';
+    return `<tr>
       <td>${fmtDate(inv.fecha)}</td>
-      <td class="mono">${inv.numero}</td>
-      <td><span style="font-size:11px;font-weight:700;color:var(--orange)">${label}</span></td>
+      <td class="mono" style="font-weight:700;color:var(--orange)">${inv.numero}</td>
       <td style="font-size:12px">${emp.nombre||'—'}</td>
-      <td>${c ? c.nombre : (inv.proveedor||'—')}</td>
-      <td style="white-space:nowrap" onclick="event.stopPropagation()">
+      <td>${cli ? cli.nombre : (inv.proveedor||'—')}</td>
+      <td class="mono">${fmtUSD(inv.total)}</td>
+      <td>${estHTML}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-secondary btn-sm" onclick="editInvoice('${inv.id}')">✏️</button>
         <button class="btn btn-primary btn-sm" onclick="abrirInvoicePDF(invoices.find(x=>x.id==='${inv.id}'))">📄 PDF</button>
+        ${btnConvertir}
         <button class="btn btn-danger btn-sm" onclick="deleteInvoice('${inv.id}')">✕</button>
       </td>
     </tr>`;
   }).join('');
 }
-
 function editInvoice(id) {
   const inv = invoices.find(x => x.id === id); if (!inv) return;
   populateInvoiceModal();
@@ -2405,29 +2401,6 @@ function editInvoice(id) {
   document.getElementById('inv_moneda').value= inv.moneda  || 'USD';
   document.getElementById('inv_cliente').value = inv.clienteId || '';
   document.getElementById('inv_proveedor').value = inv.proveedor || '';
-  // Restaurar empresa emisora
-  if (inv.emisoraKey) {
-    const selEmisor = document.getElementById('inv_empresa_emisora');
-    if (selEmisor.querySelector(`option[value="${inv.emisoraKey}"]`)) {
-      selEmisor.value = inv.emisoraKey;
-    }
-    onChangeEmpresaEmisora();
-  }
-  // Restaurar selector de proveedor
-  const provSel = document.getElementById('inv_proveedor_sel');
-  const provInp = document.getElementById('inv_proveedor');
-  const provVal = inv.proveedor || '';
-  if (provVal === '1183' || provVal === '1184') {
-    provSel.value = provVal;
-    provInp.style.display = 'none';
-  } else if (provVal) {
-    provSel.value = '__nuevo__';
-    provInp.style.display = 'block';
-    provInp.value = provVal;
-  } else {
-    provSel.value = '';
-    provInp.style.display = 'none';
-  }
   document.getElementById('inv_flete').value = inv.flete   || '0';
   document.getElementById('inv_seguro').value= inv.seguro  || '0';
   document.getElementById('inv_origen').value= inv.origen  || '';
@@ -2436,41 +2409,12 @@ function editInvoice(id) {
   document.getElementById('inv_bultos').value= inv.bultos  || '';
   document.getElementById('inv_notas').value = inv.notas   || '';
   document.getElementById('inv_entregado_por').value = inv.entregadoPor || '';
-  // Restaurar consignatario
-  const consSel = document.getElementById('inv_consignatario_sel');
-  const consInp = document.getElementById('inv_consignatario_custom');
-  if (inv.consignatario) {
-    const opt = consSel.querySelector(`option[value="${inv.consignatario}"]`);
-    if (opt) { consSel.value = inv.consignatario; consInp.style.display = 'none'; }
-    else { consSel.value = '__nuevo__'; consInp.value = inv.consignatario; consInp.style.display = 'block'; }
-  } else { consSel.value = ''; consInp.style.display = 'none'; }
-  // Restaurar condición de pago
-  const cdSel = document.getElementById('inv_condicion_sel');
-  const cdInp = document.getElementById('inv_condicion');
-  if (inv.condicion) {
-    const opt2 = cdSel.querySelector(`option[value="${inv.condicion}"]`);
-    if (opt2) { cdSel.value = inv.condicion; cdInp.style.display = 'none'; }
-    else { cdSel.value = '__nuevo__'; cdInp.value = inv.condicion; cdInp.style.display = 'block'; }
-  } else { cdSel.value = ''; cdInp.style.display = 'none'; }
-  // Incoterm
-  const incEl = document.getElementById('inv_incoterm');
-  if (incEl && inv.incoterm) incEl.value = inv.incoterm;
   if(inv.clienteId) onSelectInvoiceCliente();
-  // Líneas — restaurar con fallback si el producto no está en el catálogo actual
+  // Líneas
   (inv.lineas||[]).forEach((l,i) => {
-    if(i>=10) return;
+    if(i>=4) return;
     const n=i+1;
-    const sel = document.getElementById('inv_prod_'+n);
-    // Intentar seleccionar por ID
-    sel.value = l.prodId || '';
-    // Si no encontró el producto (value quedó vacío pero había prodId), agregar opción temporal
-    if (l.prodId && sel.value !== l.prodId) {
-      const opt = document.createElement('option');
-      opt.value = l.prodId;
-      opt.textContent = l.nombre || l.prodId;
-      sel.insertBefore(opt, sel.firstChild);
-      sel.value = l.prodId;
-    }
+    document.getElementById('inv_prod_'+n).value  = l.prodId||'';
     document.getElementById('inv_cod_'+n).value   = l.codigo||'';
     document.getElementById('inv_um_'+n).value    = l.um||'';
     document.getElementById('inv_qty_'+n).value   = l.qty||'';
@@ -2478,9 +2422,6 @@ function editInvoice(id) {
     calcLinea(n);
   });
   onChangeTipoDoc();
-  // Título del modal en modo edición
-  const tipoLabelEdit = getTipoLabel(inv.tipoKey || 'I').toUpperCase();
-  document.getElementById('modalInvoiceTitle').innerHTML = `EDITAR <span>${tipoLabelEdit}</span>`;
   document.getElementById('modalInvoice').classList.add('open');
 }
 
@@ -2563,44 +2504,35 @@ function numeroALetras(numero, moneda) {
 }
 
 function abrirInvoicePDF(data) {
-  const html = buildInvoiceHTML(data);
-  abrirEnVentana(html);
-}
-
-function buildInvoiceHTML(data) {
-  return abrirInvoicePDFEnVentana(data);
-}
-
-function abrirInvoicePDFEnVentana(data) {
   const c   = data.cliente || clientes.find(x => x.id === data.clienteId);
   const emp = data.emisora || empresaActual || {};
   const pc  = emp.colorPrimary   || '#6366F1';
   const sc  = emp.colorSecondary || '#0EA5E9';
 
   const logoH = emp.logo
-    ? `<img src="${emp.logo}" style="height:36px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));background:transparent">`
-    : `<div style="font-size:13px;font-weight:900"><span style="color:${pc}">${(emp.nombre||'SiFa').split(' ')[0]}</span> ${(emp.nombre||'').split(' ').slice(1).join(' ')}</div>`;
+    ? `<img src="${emp.logo}" style="height:48px;object-fit:contain">`
+    : `<div style="font-size:16px;font-weight:900"><span style="color:${pc}">${(emp.nombre||'SiFa').split(' ')[0]}</span> ${(emp.nombre||'').split(' ').slice(1).join(' ')}</div>`;
 
   const hasCodigo = data.lineas.some(l => l.codigo);
-  const thCodigo  = hasCodigo ? '<th style="padding:5px 7px;text-align:left;border:1px solid #bbb;width:70px;font-size:8px">CÓDIGO</th>' : '';
+  const thCodigo  = hasCodigo ? '<th style="padding:9px 10px;text-align:left;border:1px solid #bbb;width:80px;font-size:10px">CÓDIGO</th>' : '';
 
   const lineasHTML = data.lineas.map(l => {
-    const tdCod = hasCodigo ? `<td style="padding:5px 7px;border:1px solid #ddd;font-family:monospace;font-size:8px">${l.codigo||''}</td>` : '';
+    const tdCod = hasCodigo ? `<td style="padding:9px 10px;border:1px solid #ddd;font-family:monospace;font-size:10px">${l.codigo||''}</td>` : '';
     return `<tr>
-      <td style="padding:5px 7px;font-weight:700;border:1px solid #ddd;font-size:9px">${l.nombre}</td>
+      <td style="padding:9px 10px;font-weight:700;border:1px solid #ddd">${l.nombre}</td>
       ${tdCod}
-      <td style="padding:5px 7px;text-align:center;border:1px solid #ddd">${l.um}</td>
-      <td style="padding:5px 7px;text-align:right;border:1px solid #ddd">${l.qty.toLocaleString('es',{minimumFractionDigits:3,maximumFractionDigits:3})}</td>
-      <td style="padding:5px 7px;text-align:right;border:1px solid #ddd">${l.price.toLocaleString('es',{minimumFractionDigits:2,maximumFractionDigits:2})} ${data.moneda}</td>
-      <td style="padding:5px 7px;text-align:right;border:1px solid #ddd;font-weight:700">${l.importe.toLocaleString('es',{minimumFractionDigits:2,maximumFractionDigits:2})} ${data.moneda}</td>
+      <td style="padding:9px 10px;text-align:center;border:1px solid #ddd">${l.um}</td>
+      <td style="padding:9px 10px;text-align:right;border:1px solid #ddd">${l.qty.toLocaleString('es',{minimumFractionDigits:3,maximumFractionDigits:3})}</td>
+      <td style="padding:9px 10px;text-align:right;border:1px solid #ddd">${l.price.toLocaleString('es',{minimumFractionDigits:2,maximumFractionDigits:2})} ${data.moneda}</td>
+      <td style="padding:9px 10px;text-align:right;border:1px solid #ddd;font-weight:700">${l.importe.toLocaleString('es',{minimumFractionDigits:2,maximumFractionDigits:2})} ${data.moneda}</td>
     </tr>`;
   }).join('');
 
   const cols = hasCodigo ? 5 : 4;
-  let totHTML = `<tr><td colspan="${cols}" style="border:none"></td><td style="padding:5px 7px;border:1px solid #ddd;font-weight:700;background:#f9f9f9;text-align:right">SUBTOTAL</td><td style="padding:5px 7px;border:1px solid #ddd;text-align:right;font-weight:700">${data.subtotal.toLocaleString('es',{minimumFractionDigits:2})} ${data.moneda}</td></tr>`;
-  if (data.flete  > 0) totHTML += `<tr><td colspan="${cols}" style="border:none"></td><td style="padding:5px 7px;border:1px solid #ddd;font-weight:700;background:#f9f9f9;text-align:right">FLETE</td><td style="padding:5px 7px;border:1px solid #ddd;text-align:right">${data.flete.toLocaleString('es',{minimumFractionDigits:2})} ${data.moneda}</td></tr>`;
-  if (data.seguro > 0) totHTML += `<tr><td colspan="${cols}" style="border:none"></td><td style="padding:5px 7px;border:1px solid #ddd;font-weight:700;background:#f9f9f9;text-align:right">SEGURO</td><td style="padding:5px 7px;border:1px solid #ddd;text-align:right">${data.seguro.toLocaleString('es',{minimumFractionDigits:2})} ${data.moneda}</td></tr>`;
-  totHTML += `<tr><td colspan="${cols}" style="border:none"></td><td style="padding:6px 7px;border:1px solid #ddd;font-weight:900;background:#d0d0d0;text-align:right">TOTAL</td><td style="padding:6px 7px;border:1px solid #ddd;text-align:right;font-weight:900;font-size:11px">${data.total.toLocaleString('es',{minimumFractionDigits:2})} ${data.moneda}</td></tr>`;
+  let totHTML = `<tr><td colspan="${cols}" style="border:none"></td><td style="padding:8px 10px;border:1px solid #ddd;font-weight:700;background:#f9f9f9;text-align:right">SUBTOTAL</td><td style="padding:8px 10px;border:1px solid #ddd;text-align:right;font-weight:700">${data.subtotal.toLocaleString('es',{minimumFractionDigits:2})} ${data.moneda}</td></tr>`;
+  if (data.flete  > 0) totHTML += `<tr><td colspan="${cols}" style="border:none"></td><td style="padding:8px 10px;border:1px solid #ddd;font-weight:700;background:#f9f9f9;text-align:right">FLETE</td><td style="padding:8px 10px;border:1px solid #ddd;text-align:right">${data.flete.toLocaleString('es',{minimumFractionDigits:2})} ${data.moneda}</td></tr>`;
+  if (data.seguro > 0) totHTML += `<tr><td colspan="${cols}" style="border:none"></td><td style="padding:8px 10px;border:1px solid #ddd;font-weight:700;background:#f9f9f9;text-align:right">SEGURO</td><td style="padding:8px 10px;border:1px solid #ddd;text-align:right">${data.seguro.toLocaleString('es',{minimumFractionDigits:2})} ${data.moneda}</td></tr>`;
+  totHTML += `<tr><td colspan="${cols}" style="border:none"></td><td style="padding:10px;border:1px solid #ddd;font-weight:900;background:#d0d0d0;text-align:right">TOTAL</td><td style="padding:10px;border:1px solid #ddd;text-align:right;font-weight:900;font-size:14px">${data.total.toLocaleString('es',{minimumFractionDigits:2})} ${data.moneda}</td></tr>`;
 
   // Partes (cliente, proveedor, consignatario) — solo los que tienen valor
   const partes = [];
@@ -2623,67 +2555,21 @@ function abrirInvoicePDFEnVentana(data) {
 
   const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
 <title>${data.titulo} ${data.numero}</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,sans-serif;color:#1a1a1a;background:#f0f0f0;font-size:10px}
-#doc-sheet{background:#fff;max-width:800px;margin:70px auto 40px;padding:20px;box-shadow:0 2px 16px rgba(0,0,0,.15)}
-table{font-size:10px}
-#action-bar{
-  position:fixed;top:0;left:0;right:0;height:56px;
-  background:#1a1a2e;border-bottom:3px solid ${pc};
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;z-index:999;gap:12px;
-  box-shadow:0 2px 12px rgba(0,0,0,.4);
-}
-#action-bar .doc-ref{color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#action-bar .doc-ref span{color:${pc}}
-.ab-btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:9px 18px;border-radius:8px;font-size:13px;
-  font-weight:700;cursor:pointer;border:none;
-  font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;
-}
-.ab-print{background:${pc};color:#fff}
-.ab-print:hover{opacity:.88}
-.ab-close{background:transparent;color:#aaa;border:1px solid #444}
-.ab-close:hover{background:#333;color:#fff}
-@media print{
-  #action-bar{display:none}
-  body{background:#fff}
-  #doc-sheet{margin:0;padding:6px;box-shadow:none;max-width:none}
-  @page{margin:0.7cm;size:A4;marks:none}
-  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-}
-</style>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;color:#1a1a1a;background:#fff;padding:24px;font-size:12px}@media print{body{padding:10px}@page{margin:1cm;size:A4}}</style>
 </head><body>
 
-<!-- BARRA DE ACCIONES (se oculta al imprimir) -->
-<div id="action-bar">
-  <div class="doc-ref">SiFa &nbsp;·&nbsp; <span>${data.titulo}</span> ${data.numero}</div>
-  <div style="display:flex;gap:8px">
-    <button class="ab-btn ab-print" onclick="(function(){ var ua=navigator.userAgent; var isChromeIOS=/CriOS/.test(ua); var isSafariIOS=(/iPad|iPhone|iPod/.test(ua)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)&&!isChromeIOS; if(isChromeIOS){ /* Chrome iOS: mostrar instrucción para usar el botón de compartir del navegador */ var msg=document.createElement('div'); msg.style.cssText='position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:2px solid #F59E0B;border-radius:14px;padding:20px 24px;z-index:9999;max-width:360px;width:90%;text-align:center;font-family:Arial,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,.5)'; msg.innerHTML='<div style="font-size:28px;margin-bottom:10px">📤</div><div style="color:#F59E0B;font-weight:700;font-size:14px;margin-bottom:8px">Para imprimir en Chrome iOS</div><div style="color:#ccc;font-size:13px;line-height:1.6">Toca el botón <strong style="color:#fff">⬆️ Compartir</strong> en la barra del navegador y selecciona <strong style="color:#fff">Imprimir</strong></div><button onclick="this.parentNode.remove()" style="margin-top:14px;background:#F59E0B;color:#000;border:none;padding:10px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">Entendido</button>'; document.body.appendChild(msg); setTimeout(function(){if(msg.parentNode)msg.remove();},8000); } else { window.print(); } })()">🖨️ Imprimir / PDF</button>
-    <button class="ab-btn ab-close" onclick="history.length>1?history.back():window.close()">✕ Cerrar</button>
-  </div>
-</div>
-
-
-
-
-
-<div id="doc-sheet">
-
 <!-- HEADER -->
-<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:8px;border-bottom:3px solid ${pc}">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid ${pc}">
   <div>
     ${logoH}
-    <div style="font-size:8px;color:#666;margin-top:3px;line-height:1.6">${emp.direccion||''} ${emp.ein?'· '+emp.ein:''} ${emp.email?'<br>'+emp.email:''} ${emp.tel?'· '+emp.tel:''}</div>
+    <div style="font-size:9px;color:#666;margin-top:4px;line-height:1.8">${emp.direccion||''} ${emp.ein?'· '+emp.ein:''} ${emp.email?'<br>'+emp.email:''} ${emp.tel?'· '+emp.tel:''}</div>
   </div>
   <div style="text-align:right">
-    <div style="font-size:26px;font-weight:900;color:${pc};letter-spacing:2px;line-height:1">${data.titulo}</div>
-    <table style="border-collapse:collapse;margin-top:6px;min-width:150px;margin-left:auto">
-      <tr><td style="padding:3px 8px;background:#f5f5f5;font-weight:700;font-size:8px;border:1px solid #ddd">N°</td><td style="padding:3px 8px;border:1px solid #ddd;font-family:monospace;font-weight:700;font-size:9px">${data.numero}</td></tr>
-      <tr><td style="padding:3px 8px;background:#f5f5f5;font-weight:700;font-size:8px;border:1px solid #ddd">FECHA</td><td style="padding:3px 8px;border:1px solid #ddd;font-size:9px">${fmtInvDate(data.fecha)}</td></tr>
-      <tr><td style="padding:3px 8px;background:#f5f5f5;font-weight:700;font-size:8px;border:1px solid #ddd">MONEDA</td><td style="padding:3px 8px;border:1px solid #ddd;font-size:9px">${data.moneda}</td></tr>
+    <div style="font-size:36px;font-weight:900;color:${pc};letter-spacing:2px;line-height:1">${data.titulo}</div>
+    <table style="border-collapse:collapse;margin-top:8px;min-width:170px;margin-left:auto">
+      <tr><td style="padding:4px 10px;background:#f5f5f5;font-weight:700;font-size:9px;border:1px solid #ddd">N°</td><td style="padding:4px 10px;border:1px solid #ddd;font-family:monospace;font-weight:700">${data.numero}</td></tr>
+      <tr><td style="padding:4px 10px;background:#f5f5f5;font-weight:700;font-size:9px;border:1px solid #ddd">FECHA</td><td style="padding:4px 10px;border:1px solid #ddd">${fmtInvDate(data.fecha)}</td></tr>
+      <tr><td style="padding:4px 10px;background:#f5f5f5;font-weight:700;font-size:9px;border:1px solid #ddd">MONEDA</td><td style="padding:4px 10px;border:1px solid #ddd">${data.moneda}</td></tr>
     </table>
   </div>
 </div>
@@ -2708,29 +2594,29 @@ ${totalLetrasBlock}
 ${notasBlock}
 
 <!-- PIE DE FIRMA TRIPLE -->
-<div style="display:flex;margin-top:16px;border-top:2px solid ${pc}">
+<div style="display:flex;margin-top:28px;border-top:2px solid ${pc}">
 
   <!-- ENTREGA -->
-  <div style="flex:1;padding:10px 10px;border-right:1px solid #ddd">
-    <div style="font-size:7px;font-weight:900;letter-spacing:3px;color:${pc};text-transform:uppercase;margin-bottom:12px">Entrega</div>
-    <div style="height:28px"></div>
-    <div style="border-top:1px solid #aaa;margin-bottom:3px"></div>
-    <div style="font-size:9px;font-weight:700">${data.entregadoPor || '___________________________'}</div>
-    <div style="font-size:8px;color:#999;margin-top:1px">Nombre y firma</div>
+  <div style="flex:1;padding:14px 12px;border-right:1px solid #ddd">
+    <div style="font-size:8px;font-weight:900;letter-spacing:3px;color:${pc};text-transform:uppercase;margin-bottom:16px">Entrega</div>
+    <div style="height:36px"></div>
+    <div style="border-top:1px solid #aaa;margin-bottom:4px"></div>
+    <div style="font-size:10px;font-weight:700">${data.entregadoPor || '___________________________'}</div>
+    <div style="font-size:9px;color:#999;margin-top:2px">Nombre y firma</div>
   </div>
 
   <!-- RECIBE -->
-  <div style="flex:1;padding:10px 10px;border-right:1px solid #ddd">
-    <div style="font-size:7px;font-weight:900;letter-spacing:3px;color:${pc};text-transform:uppercase;margin-bottom:12px">Recibe</div>
-    <div style="height:28px"></div>
-    <div style="border-top:1px solid #aaa;margin-bottom:3px"></div>
-    <div style="font-size:9px;font-weight:700">___________________________</div>
-    <div style="font-size:8px;color:#999;margin-top:1px">Nombre y firma</div>
+  <div style="flex:1;padding:14px 12px;border-right:1px solid #ddd">
+    <div style="font-size:8px;font-weight:900;letter-spacing:3px;color:${pc};text-transform:uppercase;margin-bottom:16px">Recibe</div>
+    <div style="height:36px"></div>
+    <div style="border-top:1px solid #aaa;margin-bottom:4px"></div>
+    <div style="font-size:10px;font-weight:700">___________________________</div>
+    <div style="font-size:9px;color:#999;margin-top:2px">Nombre y firma</div>
   </div>
 
   <!-- AUTORIZA -->
-  <div style="flex:1.3;padding:10px 10px;text-align:center;position:relative">
-    <div style="font-size:7px;font-weight:900;letter-spacing:3px;color:${pc};text-transform:uppercase;margin-bottom:4px">Autoriza</div>
+  <div style="flex:1.3;padding:14px 12px;text-align:center;position:relative">
+    <div style="font-size:8px;font-weight:900;letter-spacing:3px;color:${pc};text-transform:uppercase;margin-bottom:4px">Autoriza</div>
 
     <!-- Cuño fondo (marca de agua) -->
     ${emp.cunoSVG ? `<div style="position:absolute;top:8px;right:8px;opacity:0.12;pointer-events:none">${emp.cunoSVG.replace(/width="152"/, 'width="86"').replace(/height="152"/, 'height="86"')}</div>` : ''}
@@ -2764,11 +2650,14 @@ ${notasBlock}
 
 </div>
 
-</div><!-- /doc-sheet -->
-
 </body></html>`;
 
-  return html;
+  const blob = new Blob([html], {type:'text/html'});
+  const url  = URL.createObjectURL(blob);
+  const win  = window.open(url, '_blank');
+  if (!win) toast('Permite ventanas emergentes', 'error');
+  else setTimeout(() => { try { win.print(); } catch(e) {} }, 1200);
+  setTimeout(() => URL.revokeObjectURL(url), 20000);
 }
 
 function onSelectConsignatario() {
@@ -2950,7 +2839,7 @@ function previewLogo() {
   reader.onload = (e) => {
     _logoBase64 = e.target.result;
     document.getElementById('emp_logo_preview').innerHTML =
-      `<img src="${_logoBase64}" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))">`;
+      `<img src="${_logoBase64}" style="width:100%;height:100%;object-fit:contain">`;
     document.getElementById('emp_palette_label').textContent = 'Analizando colores…';
     const img = new Image();
     img.onload = () => {
@@ -3043,11 +2932,7 @@ function generarCunoSVG(empNombre, logoBase64, colorPrimary) {
   }).join('');
 
   const logoContent = logoBase64
-    ? `<defs><clipPath id="logoClip"><circle cx="${cx}" cy="${cy}" r="${r-16}"/></clipPath></defs>
-       <image href="${logoBase64}" x="${cx-30}" y="${cy-30}" width="60" height="60"
-         preserveAspectRatio="xMidYMid meet"
-         clip-path="url(#logoClip)"
-         style="mix-blend-mode:screen"/>`
+    ? `<image href="${logoBase64}" x="${cx-28}" y="${cy-28}" width="56" height="56" preserveAspectRatio="xMidYMid meet"/>`
     : `<text x="${cx}" y="${cy+8}" font-family="'Bebas Neue',Arial Black,sans-serif" font-size="22"
         fill="${pc}" text-anchor="middle" font-weight="900">${nombre.slice(0,3)}</text>`;
 
@@ -3134,7 +3019,7 @@ function prepareModalEmpresa(key) {
     const emp = getEmpresa(key); if (!emp) return;
     _logoBase64 = emp.logo || null;
     if (emp.logo) document.getElementById('emp_logo_preview').innerHTML =
-      `<img src="${emp.logo}" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))">`;
+      `<img src="${emp.logo}" style="width:100%;height:100%;object-fit:contain">`;
 
     const fields = {
       emp_nombre:'nombre', emp_sub:'sub', emp_ein:'ein', emp_prefix:'dbPrefix',
@@ -3242,8 +3127,8 @@ function saveEmpresa() {
     empresaActual = data; applyEmpresaTheme(data);
   }
   closeModal('modalEmpresa');
-  renderEmpresas();
-  rebuildEmpresaSelector();
+  // renderEmpresas — eliminado en DAL Book
+  
   updateBadges();
   toast(editKey ? 'Empresa actualizada ✅' : 'Empresa creada ✅');
 }
@@ -3304,7 +3189,7 @@ function deleteEmpresa(key) {
 
   delete todas[key];
   saveTodasEmpresas(todas);
-  renderEmpresas(); rebuildEmpresaSelector(); updateBadges();
+  // renderEmpresas — eliminado en DAL Book  updateBadges();
   toast('Empresa eliminada');
 }
 
@@ -3322,16 +3207,16 @@ function renderEmpresas() {
     const sc = emp.colorSecondary || '#0EA5E9';
     const ac = emp.colorAccent    || '#22C55E';
     const logoHTML = emp.logo
-      ? `<img src="${emp.logo}" style="width:110px;height:72px;object-fit:contain;margin-bottom:16px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));mix-blend-mode:screen;background:transparent">`
+      ? `<div style="width:120px;height:76px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border-radius:12px;overflow:hidden;background:#0A0A0F"><img src="${emp.logo}" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;filter:brightness(1.1) contrast(1.05)"></div>`
       : `<div style="width:80px;height:56px;background:linear-gradient(135deg,${pc},${sc});border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:white;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;margin-bottom:16px;box-shadow:0 6px 20px ${pc}44">${emp.nombre.split(' ').map(w=>w[0]).slice(0,3).join('')}</div>`;
     const dots = `<div style="display:flex;gap:5px;justify-content:center;margin-top:10px"><span style="width:8px;height:8px;border-radius:50%;background:${pc};display:inline-block"></span><span style="width:8px;height:8px;border-radius:50%;background:${sc};display:inline-block"></span><span style="width:8px;height:8px;border-radius:50%;background:${ac};display:inline-block"></span></div>`;
     const nota = isActiva
       ? `<div style="margin-top:12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:${pc};font-weight:700">✓ Activa</div>`
       : `<div style="margin-top:12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#444455">Toca para activar</div>`;
     return `<div onclick="seleccionarEmpresaDirecta('${key}')"
-      style="background:${isActiva?pc+'10':'var(--surface)'};border:2px solid ${isActiva?pc:'#1E1E28'};border-radius:20px;padding:28px 24px;text-align:center;min-width:200px;max-width:240px;width:220px;cursor:pointer;transition:all .25s;position:relative"
-      onmouseover="this.style.borderColor='${pc}';this.style.background='${pc}18';this.style.transform='translateY(-3px)'"
-      onmouseout="this.style.borderColor='${isActiva?pc:'#1E1E28'}';this.style.background='${isActiva?pc+'10':'var(--surface)'}';this.style.transform='translateY(0)'">
+      style="background:${isActiva?`radial-gradient(ellipse 80% 60% at 50% 0%,${pc}18 0%,#12121A 100%)`:'#12121A'};border:1.5px solid ${isActiva?pc:'#1E1E28'};border-radius:22px;padding:28px 24px;text-align:center;min-width:200px;max-width:240px;width:220px;cursor:pointer;transition:all .3s;position:relative;box-shadow:${isActiva?`0 0 0 1px ${pc}44, 0 12px 40px ${pc}22`:'0 4px 20px rgba(0,0,0,.4)'}"
+      onmouseover="this.style.borderColor='${pc}';this.style.background='radial-gradient(ellipse 80% 60% at 50% 0%,${pc}20 0%,#12121A 100%)';this.style.transform='translateY(-4px)';this.style.boxShadow='0 0 0 1px ${pc}55,0 16px 48px ${pc}33'"
+      onmouseout="this.style.borderColor='${isActiva?pc:'#1E1E28'}';this.style.background='${isActiva?`radial-gradient(ellipse 80% 60% at 50% 0%,${pc}18 0%,#12121A 100%)`:'#12121A'}';this.style.transform='translateY(0)';this.style.boxShadow='${isActiva?`0 0 0 1px ${pc}44,0 12px 40px ${pc}22`:'0 4px 20px rgba(0,0,0,.4)'}'">
       <button class="emp-edit-btn" onclick="event.stopPropagation();editEmpresaModal('${key}')" title="Editar">✏️</button>
       ${logoHTML}
       <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:#EEEEF2;margin-bottom:3px;line-height:1.2">${emp.nombre}</div>
@@ -3350,7 +3235,7 @@ function rebuildEmpresaSelector() {
     const isActiva=key===actKey;
     const pc=emp.colorPrimary||'#6366F1', sc=emp.colorSecondary||'#0EA5E9', ac=emp.colorAccent||'#22C55E';
     const logoHTML=emp.logo
-      ?`<img src="${emp.logo}" style="width:100px;height:66px;object-fit:contain;margin-bottom:12px;mix-blend-mode:screen;filter:drop-shadow(0 3px 8px rgba(0,0,0,.3));background:transparent">`
+      ?`<div style="width:110px;height:70px;display:flex;align-items:center;justify-content:center;border-radius:10px;overflow:hidden;background:#0A0A0F;margin-bottom:12px"><img src="${emp.logo}" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;filter:brightness(1.1) contrast(1.05)"></div>`
       :`<div style="width:72px;height:50px;background:linear-gradient(135deg,${pc},${sc});border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:white;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;margin-bottom:12px">${emp.nombre.split(' ').map(w=>w[0]).slice(0,3).join('')}</div>`;
     const dots=`<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${pc};margin-right:4px"></span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${sc};margin-right:4px"></span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${ac}"></span>`;
     return `<div class="empresa-card" onclick="seleccionarEmpresaDirecta('${key}')"
@@ -3391,8 +3276,8 @@ function applyEmpresaTheme(emp) {
   if (empSub)    empSub.textContent    = emp.ein || emp.sub || '';
   if (empLogo) {
     if (emp.logo) {
-      empLogo.innerHTML = `<img src="${emp.logo}" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 1px 4px rgba(0,0,0,.3))">`;
-      empLogo.style.background = 'transparent';
+      empLogo.innerHTML = `<img src="${emp.logo}" style="width:100%;height:100%;object-fit:contain;border-radius:5px;mix-blend-mode:screen;filter:brightness(1.1)">`;
+      empLogo.style.background = '#0A0A0F';
     } else {
       empLogo.innerHTML = emp.nombre.split(' ').map(w=>w[0]).slice(0,2).join('');
       empLogo.style.background = `linear-gradient(135deg,${pc},${sc})`;
@@ -3406,6 +3291,609 @@ function applyEmpresaTheme(emp) {
 
 
 
+// ═══════════════════════════════════════════════
+// MÓDULO GASTOS
+// ═══════════════════════════════════════════════
+
+const GASTO_CAT_ICONS = {
+  'Operacional':'⚙️','Nómina':'👥','Logística':'🚚','Alquiler':'🏠',
+  'Servicios':'💡','Impuestos':'🏛️','Bancario':'🏦','Otro':'📋'
+};
+
+function saveGasto() {
+  const fecha     = document.getElementById('gasto_fecha').value;
+  const concepto  = document.getElementById('gasto_concepto').value.trim();
+  const monto     = parseFloat(document.getElementById('gasto_monto').value);
+  const categoria = document.getElementById('gasto_categoria').value;
+  const metodo    = document.getElementById('gasto_metodo').value;
+  const proveedor = document.getElementById('gasto_proveedor').value.trim();
+  const referencia= document.getElementById('gasto_referencia').value.trim();
+  const notas     = document.getElementById('gasto_notas').value.trim();
+  const editId    = document.getElementById('gasto_id').value;
+
+  if (!fecha || !concepto || !monto || monto <= 0) {
+    toast('Fecha, concepto y monto son obligatorios', 'error'); return;
+  }
+  const data = { fecha, concepto, monto, categoria, metodo, proveedor, referencia, notas };
+  if (editId) {
+    const i = gastos.findIndex(g => g.id === editId);
+    if (i !== -1) gastos[i] = { ...gastos[i], ...data };
+    toast('Gasto actualizado');
+  } else {
+    gastos.push({ id: uid(), ...data, creado: new Date().toISOString() });
+    toast('Gasto registrado');
+  }
+  saveGastosDB(); closeModal('modalGasto'); renderGastos(); updateBadges(); renderDashboard();
+}
+
+function editGasto(id) {
+  const g = gastos.find(x => x.id === id); if (!g) return;
+  document.getElementById('gasto_id').value         = g.id;
+  document.getElementById('gasto_fecha').value      = g.fecha;
+  document.getElementById('gasto_concepto').value   = g.concepto;
+  document.getElementById('gasto_monto').value      = g.monto;
+  document.getElementById('gasto_categoria').value  = g.categoria;
+  document.getElementById('gasto_metodo').value     = g.metodo || 'Transferencia';
+  document.getElementById('gasto_proveedor').value  = g.proveedor || '';
+  document.getElementById('gasto_referencia').value = g.referencia || '';
+  document.getElementById('gasto_notas').value      = g.notas || '';
+  document.getElementById('modalGastoTitle').innerHTML       = 'EDITAR <span>GASTO</span>';
+  document.getElementById('btnGuardarGasto').textContent = 'Actualizar Gasto';
+  document.getElementById('modalGasto').classList.add('open');
+}
+
+function deleteGasto(id) {
+  if (!confirm('¿Eliminar este gasto?')) return;
+  gastos = gastos.filter(g => g.id !== id);
+  saveGastosDB(); renderGastos(); updateBadges(); renderDashboard();
+  toast('Gasto eliminado');
+}
+
+function renderGastos() {
+  if (!document.getElementById('gastosTable')) return;
+  const tbody    = document.getElementById('gastosTable');
+  const statsRow = document.getElementById('gastosStatsRow');
+  const filtMes  = document.getElementById('filtroMesGasto').value;
+  const filtCat  = document.getElementById('filtroCatGasto').value;
+
+  let rows = [...gastos].sort((a, b) => b.fecha.localeCompare(a.fecha));
+  if (filtMes) rows = rows.filter(g => g.fecha && g.fecha.slice(5, 7) === filtMes);
+  if (filtCat) rows = rows.filter(g => g.categoria === filtCat);
+
+  // Stat cards
+  const totalGastos   = rows.reduce((s, g) => s + (parseFloat(g.monto) || 0), 0);
+  const totalGastosTodos = gastos.reduce((s, g) => s + (parseFloat(g.monto) || 0), 0);
+  const byCategoria   = {};
+  rows.forEach(g => { byCategoria[g.categoria] = (byCategoria[g.categoria] || 0) + (parseFloat(g.monto) || 0); });
+  const topCat        = Object.entries(byCategoria).sort((a,b) => b[1]-a[1])[0];
+  const totalIngresos = pagos.reduce((s, p) => s + (parseFloat(p.monto) || 0), 0);
+  const margen        = totalIngresos - totalGastosTodos;
+
+  if (statsRow) statsRow.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Total Gastos${filtMes||filtCat?' (filtrado)':''}</div>
+      <div class="stat-value" style="color:var(--pink)">${fmtUSD(totalGastos)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Registros</div>
+      <div class="stat-value orange">${rows.length}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Mayor Categoría</div>
+      <div class="stat-value" style="font-size:18px;line-height:1.3">${topCat ? (GASTO_CAT_ICONS[topCat[0]]||'📋')+' '+topCat[0] : '—'}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Margen Cobros − Gastos</div>
+      <div class="stat-value ${margen >= 0 ? 'green' : 'red'}">${fmtUSD(margen)}</div>
+    </div>`;
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty"><div class="empty-icon">📤</div><div class="empty-text">Sin gastos registrados</div><div class="empty-sub">Registra el primer gasto operacional</div></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(g => {
+    const ico = GASTO_CAT_ICONS[g.categoria] || '📋';
+    const montoColor = 'amount-neg';
+    return `<tr>
+      <td class="mono">${fmtDate(g.fecha)}</td>
+      <td><span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(255,107,107,.1);color:var(--pink)">${ico} ${g.categoria}</span></td>
+      <td style="font-weight:500">${g.concepto}</td>
+      <td style="font-size:12px;color:var(--text2)">${g.proveedor || '—'}</td>
+      <td class="mono ${montoColor}">${fmtUSD(g.monto)}</td>
+      <td style="font-size:12px;color:var(--text2)">${g.metodo || '—'}</td>
+      <td style="font-size:12px;color:var(--text2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.referencia ? g.referencia+' ' : ''}${g.notas || ''}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-secondary btn-sm" onclick="editGasto('${g.id}')">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteGasto('${g.id}')">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// Seed inicial de gastos DAL Miami desde estados de cuenta Chase
+// Febrero y Marzo 2026
+function seedGastosDalMiami() {
+  if (!empresaActual || empresaActual.dbPrefix !== 'dalmiami_') return;
+  // Solo omitir si ya tiene datos de Enero 2026 (seed completo)
+  const tieneEnero = gastos.some(g => g.fecha && g.fecha.startsWith('2026-01'));
+  if (tieneEnero) return;
+
+  const seed = [
+    // ══ ENERO 2026 ══
+    {id:uid(),fecha:'2026-01-05',concepto:'CTLP Miami Vending',categoria:'Operacional',monto:2.10,metodo:'Tarjeta',proveedor:'CTLP Miami Vending Hialeah',referencia:'Card 4410',notas:''},
+    {id:uid(),fecha:'2026-01-05',concepto:'Experian Credit Report',categoria:'Servicios',monto:9.99,metodo:'Tarjeta',proveedor:'Experian',referencia:'479-3436237 CA',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-01-06',concepto:'Domestic Incoming Wire Fee ×2',categoria:'Bancario',monto:30.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'2 fees @ $15 — Truist + BNY Mellon'},
+    {id:uid(),fecha:'2026-01-08',concepto:'Wire — Seaboard Marine (flete marítimo)',categoria:'Logística',monto:10960.00,metodo:'Transferencia',proveedor:'Seaboard Marine, New York NY',referencia:'Trn: 3404426008Es',notas:'Imad: 0108Mmqfmp2N022898 — flete embarque'},
+    {id:uid(),fecha:'2026-01-08',concepto:'Online Domestic Wire Fee',categoria:'Bancario',monto:25.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire Seaboard Marine'},
+    {id:uid(),fecha:'2026-01-09',concepto:'FedEx — Envío documentos',categoria:'Logística',monto:18.45,metodo:'Tarjeta',proveedor:'FedEx',referencia:'Card 4410 Collierville TN',notas:''},
+    {id:uid(),fecha:'2026-01-09',concepto:'Ring Standard Plan — Alarma',categoria:'Servicios',monto:10.69,metodo:'Tarjeta',proveedor:'Ring.com',referencia:'CA Card 4410',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-01-12',concepto:'Wire Internacional — HCDAISLA SL (Consultancy)',categoria:'Otro',monto:1470.00,metodo:'Transferencia',proveedor:'HCDAISLA SL — España',referencia:'Trn: 5027400012Re EUR 1,226.72',notas:'⚠️ Consultoría — confirmar con CPA si deducible o distribución'},
+    {id:uid(),fecha:'2026-01-12',concepto:'Online FX International Wire Fee',categoria:'Bancario',monto:5.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire internacional EUR'},
+    {id:uid(),fecha:'2026-01-13',concepto:'Domestic Incoming Wire Fee',categoria:'Bancario',monto:15.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire entrante Truist'},
+    {id:uid(),fecha:'2026-01-20',concepto:'Ring Multi Plan — Alarma',categoria:'Servicios',monto:10.69,metodo:'Tarjeta',proveedor:'Ring.com',referencia:'CA Card 4410',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-01-20',concepto:'Domestic Incoming Wire Fee',categoria:'Bancario',monto:15.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire entrante Truist'},
+    {id:uid(),fecha:'2026-01-21',concepto:'Amazon Marketplace — Suministros',categoria:'Operacional',monto:109.58,metodo:'Tarjeta',proveedor:'Amazon Mktpl',referencia:'Card 4410',notas:'⚠️ Verificar naturaleza del gasto con CPA'},
+    {id:uid(),fecha:'2026-01-22',concepto:'Wire — AJC International Inc (compra mercancía)',categoria:'Logística',monto:30000.00,metodo:'Transferencia',proveedor:'AJC International Inc, Chicago IL',referencia:'Trn: 3534566022Es',notas:'Imad: 0122Mmqfmp2M032941'},
+    {id:uid(),fecha:'2026-01-22',concepto:'Online Domestic Wire Fee',categoria:'Bancario',monto:25.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire AJC'},
+    {id:uid(),fecha:'2026-01-26',concepto:'Auto Insurance UAIC',categoria:'Servicios',monto:273.28,metodo:'Tarjeta',proveedor:'UAIC 305-940-5022',referencia:'FL Card 4410',notas:'⚠️ Seguro auto — confirmar % uso negocio con CPA'},
+    {id:uid(),fecha:'2026-01-28',concepto:'Wire — AJC International Inc (compra mercancía)',categoria:'Logística',monto:50000.00,metodo:'Transferencia',proveedor:'AJC International Inc, Chicago IL',referencia:'Trn: 3373476028Es N.Orden 3244837',notas:'Imad: 0128Mmqfmp2K023619'},
+    {id:uid(),fecha:'2026-01-28',concepto:'Online Domestic Wire Fee',categoria:'Bancario',monto:25.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire AJC'},
+    {id:uid(),fecha:'2026-01-28',concepto:'Domestic Incoming Wire Fee',categoria:'Bancario',monto:15.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire entrante Truist'},
+    {id:uid(),fecha:'2026-01-29',concepto:'Wire — AJC International Inc (balance orden 3244837)',categoria:'Logística',monto:5872.50,metodo:'Transferencia',proveedor:'AJC International Inc, Chicago IL',referencia:'Trn: 3547306029Es N.3244837',notas:'Imad: 0129Mmqfmp2M031009 — complemento orden'},
+    {id:uid(),fecha:'2026-01-29',concepto:'Online Domestic Wire Fee',categoria:'Bancario',monto:25.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire AJC balance'},
+    {id:uid(),fecha:'2026-01-29',concepto:'Southeast Toyota Finance — Cuota vehículo',categoria:'Operacional',monto:526.13,metodo:'Online Payment',proveedor:'Southeast Toyota Finance',referencia:'27509446695',notas:'Cuota mensual auto'},
+    {id:uid(),fecha:'2026-01-29',concepto:'Domestic Incoming Wire Fee',categoria:'Bancario',monto:15.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire entrante BNY Mellon'},
+    {id:uid(),fecha:'2026-01-30',concepto:'Ring Multi Plan — Alarma',categoria:'Servicios',monto:10.69,metodo:'Tarjeta',proveedor:'Ring.com',referencia:'CA Card 4410',notas:'Suscripción mensual'},
+
+    // ══ FEBRERO 2026 ══
+    {id:uid(),fecha:'2026-02-03',concepto:'Experian Credit Report',categoria:'Servicios',monto:9.99,metodo:'Tarjeta',proveedor:'Experian',referencia:'479-3436237 CA',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-02-03',concepto:'Wire Transfer — Pedro Hernandez Marquez',categoria:'Nómina',monto:2000.00,metodo:'Transferencia',proveedor:'Pedro Hernandez Marquez',referencia:'Trn: 3230906034Es',notas:'Pago mensual socio 1%'},
+    {id:uid(),fecha:'2026-02-03',concepto:'Online Domestic Wire Fee',categoria:'Bancario',monto:25.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire saliente feb'},
+    {id:uid(),fecha:'2026-02-06',concepto:'Domestic Incoming Wire Fee',categoria:'Bancario',monto:15.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire entrante — Mag GC Construction'},
+    {id:uid(),fecha:'2026-02-17',concepto:'Ring Multi Plan — Alarma',categoria:'Servicios',monto:10.69,metodo:'Tarjeta',proveedor:'Ring.com',referencia:'CA Card 4410',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-02-25',concepto:'Auto Insurance UAIC',categoria:'Servicios',monto:273.28,metodo:'Tarjeta',proveedor:'UAIC 305-940-5022',referencia:'FL Card 4410',notas:'⚠️ Seguro auto — confirmar % uso negocio con CPA'},
+    {id:uid(),fecha:'2026-02-26',concepto:'Southeast Toyota Finance — Cuota vehículo',categoria:'Operacional',monto:526.13,metodo:'Online Payment',proveedor:'Southeast Toyota Finance',referencia:'27860074254',notas:'Cuota mensual auto'},
+
+    // ══ MARZO 2026 ══
+    {id:uid(),fecha:'2026-03-02',concepto:'Klarna — Giorgio Armani',categoria:'Otro',monto:51.89,metodo:'Tarjeta',proveedor:'Giorgio Armani / Klarna',referencia:'Columbus OH Card 4410',notas:'⚠️ Gasto personal — excluir del P&L con CPA'},
+    {id:uid(),fecha:'2026-03-02',concepto:'Ring Multi Plan — Alarma',categoria:'Servicios',monto:10.69,metodo:'Tarjeta',proveedor:'Ring.com',referencia:'CA Card 4410',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-03-03',concepto:'Experian Credit Report',categoria:'Servicios',monto:9.99,metodo:'Tarjeta',proveedor:'Experian',referencia:'479-3436237 CA',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-03-04',concepto:'Wire Transfer — Pedro Hernandez Marquez',categoria:'Nómina',monto:2000.00,metodo:'Transferencia',proveedor:'Pedro Hernandez Marquez',referencia:'Trn: 3714906063Es',notas:'Pago mensual socio 1%'},
+    {id:uid(),fecha:'2026-03-04',concepto:'Online Domestic Wire Fee',categoria:'Bancario',monto:25.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire saliente mar'},
+    {id:uid(),fecha:'2026-03-04',concepto:'International Incoming Wire Fee ×3',categoria:'Bancario',monto:45.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'3 fees @ $15 — Revolut/Caribbean Online Services'},
+    {id:uid(),fecha:'2026-03-11',concepto:'Wire — AJC International Inc (compra mercancía)',categoria:'Logística',monto:33944.80,metodo:'Transferencia',proveedor:'AJC International Inc, Chicago IL',referencia:'Trn: 3113636070Es',notas:'Imad: 0311Mmqfmp2N001978'},
+    {id:uid(),fecha:'2026-03-11',concepto:'Online Domestic Wire Fee',categoria:'Bancario',monto:25.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire AJC'},
+    {id:uid(),fecha:'2026-03-16',concepto:'NIC-DOS Division — Florida License/Registration',categoria:'Impuestos',monto:138.75,metodo:'Tarjeta',proveedor:'NIC*-DOS Division of Florida',referencia:'FL Card 4410',notas:'Licencia/registro estatal FL'},
+    {id:uid(),fecha:'2026-03-17',concepto:'Ring Multi Plan — Alarma',categoria:'Servicios',monto:10.69,metodo:'Tarjeta',proveedor:'Ring.com',referencia:'CA Card 4410',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-03-17',concepto:'Domestic Incoming Wire Fee',categoria:'Bancario',monto:15.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire entrante BNY Mellon — Caribbean Online'},
+    {id:uid(),fecha:'2026-03-18',concepto:'FedEx MIA — Envío',categoria:'Logística',monto:13.69,metodo:'Tarjeta',proveedor:'FedEx Miami',referencia:'FL Card 4410',notas:''},
+    {id:uid(),fecha:'2026-03-24',concepto:'Wire — AJC International Inc (compra mercancía)',categoria:'Logística',monto:36977.80,metodo:'Transferencia',proveedor:'AJC International Inc, Chicago IL',referencia:'Trn: 3027536083Es',notas:'Imad: 0324Mmqfmp2N001553'},
+    {id:uid(),fecha:'2026-03-24',concepto:'Online Domestic Wire Fee',categoria:'Bancario',monto:25.00,metodo:'Bancario',proveedor:'JPMorgan Chase',referencia:'',notas:'Fee wire AJC'},
+    {id:uid(),fecha:'2026-03-25',concepto:'Auto Insurance UAIC',categoria:'Servicios',monto:273.28,metodo:'Tarjeta',proveedor:'UAIC 305-940-5022',referencia:'FL Card 4410',notas:'⚠️ Seguro auto — confirmar % uso negocio con CPA'},
+    {id:uid(),fecha:'2026-03-30',concepto:'Ring Multi Plan — Alarma',categoria:'Servicios',monto:10.69,metodo:'Tarjeta',proveedor:'Ring.com',referencia:'CA Card 4410',notas:'Suscripción mensual'},
+    {id:uid(),fecha:'2026-03-31',concepto:'Southeast Toyota Finance — Cuota vehículo',categoria:'Operacional',monto:526.13,metodo:'Online Payment',proveedor:'Southeast Toyota Finance',referencia:'28208283073',notas:'Cuota mensual auto'},
+  ].map(g => ({ ...g, creado: new Date().toISOString() }));
+
+  // Reemplazar completamente — seed oficial con los 3 meses
+  gastos = seed;
+  saveGastosDB();
+}
+
+// ═══════════════════════════════════════════════
+// MÓDULO P&L — FORM 1065 PARTNERSHIP (DAL Miami)
+// Estructura basada en taxes 2025 presentados por Dailin Pages / RO Miami
+// ═══════════════════════════════════════════════
+
+// Mapeo categorías SiFa → líneas reales Form 1065
+const F1065_MAP = {
+  'Logística':   { linea:'Cost of Goods Sold',          ref:'L2 / Part II',  orden:1, esCOGS:true  },
+  'Nómina':      { linea:'Wages & Salaries',             ref:'L9',            orden:2, esCOGS:false },
+  'Alquiler':    { linea:'Rent',                         ref:'L13',           orden:3, esCOGS:false },
+  'Servicios':   { linea:'Utilities & Subscriptions',    ref:'L20',           orden:4, esCOGS:false },
+  'Impuestos':   { linea:'Taxes & Licenses',             ref:'L14',           orden:5, esCOGS:false },
+  'Bancario':    { linea:'Bank Charges & Fees',          ref:'L20 Other',     orden:6, esCOGS:false },
+  'Operacional': { linea:'Other Deductions',             ref:'L20',           orden:7, esCOGS:false },
+  'Otro':        { linea:'Other Deductions (review)',    ref:'L20 ⚠️',        orden:8, esCOGS:false },
+};
+
+const MESES_LABEL = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                     'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function renderPnl() {
+  if (!document.getElementById('pnlKpis')) return;
+
+  const anio = document.getElementById('pnlAnio') ? document.getElementById('pnlAnio').value : '2026';
+  const mes  = document.getElementById('pnlMes')  ? document.getElementById('pnlMes').value  : '';
+
+  // ── Filtrar por período ──
+  function filtra(arr, campo) {
+    return arr.filter(x => {
+      if (!x[campo]) return false;
+      if (!x[campo].startsWith(anio)) return false;
+      if (mes && x[campo].slice(5,7) !== mes) return false;
+      return true;
+    });
+  }
+
+  const cobrosFilt  = filtra(pagos,   'fecha');
+  const gastosFilt  = filtra(gastos,  'fecha');
+
+  // ── Ingresos brutos: cobros del período ──
+  const grossRevenue = cobrosFilt.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
+
+  // ── COGS: solo categoría Logística ──
+  const cogs = gastosFilt
+    .filter(g => g.categoria === 'Logística')
+    .reduce((s,g) => s + (parseFloat(g.monto)||0), 0);
+
+  // ── Gross Profit ──
+  const grossProfit = grossRevenue - cogs;
+
+  // ── Deductions (todo lo demás) por categoría ──
+  const deducciones = {};
+  gastosFilt.filter(g => g.categoria !== 'Logística').forEach(g => {
+    const cat = g.categoria || 'Otro';
+    if (!deducciones[cat]) deducciones[cat] = 0;
+    deducciones[cat] += parseFloat(g.monto) || 0;
+  });
+  const totalDeducciones = Object.values(deducciones).reduce((s,v) => s+v, 0);
+  const totalEgresos     = cogs + totalDeducciones;
+
+  // ── Net Income (Ordinary Business Income/Loss) ──
+  const netIncome = grossRevenue - totalEgresos;
+  const margenPct = grossRevenue > 0 ? ((netIncome/grossRevenue)*100).toFixed(1) : 0;
+
+  // ── Subtitle ──
+  const periodo = mes ? `${MESES_LABEL[parseInt(mes)]} ${anio}` : `Año ${anio}`;
+  const sub = document.getElementById('pnlSubtitle');
+  if (sub) sub.textContent = `Form 1065 Partnership · ${periodo} · DAL Miami Export LLC · EIN 93-1412443`;
+
+  // ── KPIs ──
+  document.getElementById('pnlKpis').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Gross Revenue · L1</div>
+      <div class="stat-value green">${fmtUSD(grossRevenue)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Cost of Goods Sold · L2</div>
+      <div class="stat-value" style="color:var(--orange)">${fmtUSD(cogs)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Gross Profit · L3</div>
+      <div class="stat-value ${grossProfit>=0?'green':'red'}">${fmtUSD(grossProfit)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Deductions · L9-20</div>
+      <div class="stat-value" style="color:var(--pink)">${fmtUSD(totalDeducciones)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Ordinary Income · L22</div>
+      <div class="stat-value ${netIncome>=0?'green':'red'}">${fmtUSD(netIncome)}</div>
+    </div>`;
+
+  // ── Panel INGRESOS ──
+  const ingDiv = document.getElementById('pnlIngresos');
+  if (ingDiv) {
+    if (!cobrosFilt.length) {
+      ingDiv.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text2);font-size:12px">Sin cobros registrados en este período.<br>Registra cobros en la sección <strong>Cobros</strong>.</div>`;
+    } else {
+      // Agrupar por fuente (notas o descripción corta)
+      const resumen = {};
+      cobrosFilt.forEach(p => {
+        const f = facturas.find(x => x.id === p.facturaId);
+        const c = f ? clientes.find(x => x.id === f.clienteId) : null;
+        const key = c ? c.nombre : 'Cliente directo';
+        resumen[key] = (resumen[key]||0) + (parseFloat(p.monto)||0);
+      });
+      ingDiv.innerHTML = Object.entries(resumen).map(([nombre, monto]) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 20px;border-bottom:1px solid var(--border);font-size:13px">
+          <span style="color:var(--text2)">↳ ${nombre}</span>
+          <span class="mono" style="color:var(--green)">${fmtUSD(monto)}</span>
+        </div>`).join('') +
+        `<div style="display:flex;justify-content:space-between;padding:10px 20px;font-size:12px;color:var(--text2)">
+          <span>${cobrosFilt.length} cobro(s) registrado(s)</span>
+          <span>L1 · Gross receipts</span>
+        </div>`;
+    }
+  }
+  const tiDiv = document.getElementById('pnlTotalIngresosVal');
+  if (tiDiv) tiDiv.textContent = fmtUSD(grossRevenue);
+
+  // ── Panel EGRESOS — estructura Form 1065 ──
+  const egDiv = document.getElementById('pnlEgresos');
+  if (egDiv) {
+    let html = '';
+
+    // L2 — COGS primero
+    if (cogs > 0) {
+      const detCogs = gastosFilt.filter(g=>g.categoria==='Logística');
+      html += `
+        <div style="background:rgba(245,158,11,.06);border-bottom:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;cursor:pointer" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
+            <div>
+              <span style="font-size:12px;font-weight:700;color:var(--orange)">L2 · Cost of Goods Sold</span>
+              <span style="font-size:10px;color:var(--text2);margin-left:8px">${detCogs.length} transacciones · clic para expandir</span>
+            </div>
+            <span class="mono" style="color:var(--orange);font-weight:700">${fmtUSD(cogs)}</span>
+          </div>
+          <div style="display:none;padding:0 20px 12px">
+            ${detCogs.map(g=>`<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);padding:4px 0;border-bottom:1px solid #1A1A24">
+              <span>${fmtDate(g.fecha)} · ${g.concepto}</span>
+              <span class="mono">${fmtUSD(g.monto)}</span>
+            </div>`).join('')}
+          </div>
+        </div>`;
+    }
+
+    // Deducciones agrupadas por categoría → línea Form 1065
+    const ordenCats = ['Nómina','Alquiler','Servicios','Impuestos','Bancario','Operacional','Otro'];
+    ordenCats.forEach(cat => {
+      if (!deducciones[cat]) return;
+      const info = F1065_MAP[cat] || {linea:cat, ref:'L20', esCOGS:false};
+      const detCat = gastosFilt.filter(g=>g.categoria===cat);
+      const esAlerta = cat === 'Otro';
+      html += `
+        <div style="border-bottom:1px solid var(--border)${esAlerta?';background:rgba(255,107,107,.04)':''}">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;cursor:pointer" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
+            <div>
+              <span style="font-size:12px;font-weight:700;color:${esAlerta?'var(--pink)':'var(--text)'}">${info.ref} · ${info.linea}</span>
+              <span style="font-size:10px;color:var(--text2);margin-left:8px">${detCat.length} items</span>
+            </div>
+            <span class="mono" style="color:${esAlerta?'var(--pink)':'var(--pink)'};font-weight:700">${fmtUSD(deducciones[cat])}</span>
+          </div>
+          <div style="display:none;padding:0 20px 12px">
+            ${detCat.map(g=>`<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);padding:4px 0;border-bottom:1px solid #1A1A24">
+              <span>${fmtDate(g.fecha)} · ${g.concepto}${g.notas&&g.notas.includes('⚠️')?` <span style="color:var(--orange)">⚠️</span>`:''}${g.proveedor?' · '+g.proveedor:''}</span>
+              <span class="mono">${fmtUSD(g.monto)}</span>
+            </div>`).join('')}
+          </div>
+        </div>`;
+    });
+
+    if (!html) html = `<div style="padding:24px;text-align:center;color:var(--text2);font-size:12px">Sin egresos en este período.</div>`;
+    egDiv.innerHTML = html;
+  }
+  const teDiv = document.getElementById('pnlTotalEgresosVal');
+  if (teDiv) teDiv.textContent = fmtUSD(totalEgresos);
+
+  // ── Resultado Neto ──
+  const netoDiv = document.getElementById('pnlResultadoNeto');
+  const netoVal = document.getElementById('pnlNetoVal');
+  const netoLbl = document.getElementById('pnlNetoLabel');
+  const netoMgn = document.getElementById('pnlNetoMargen');
+  if (netoDiv) {
+    const col = netIncome >= 0 ? 'var(--green)' : 'var(--pink)';
+    const bg  = netIncome >= 0 ? 'rgba(34,197,94,.06)' : 'rgba(255,107,107,.06)';
+    const brd = netIncome >= 0 ? 'rgba(34,197,94,.25)' : 'rgba(255,107,107,.25)';
+    netoDiv.style.background   = bg;
+    netoDiv.style.borderColor  = brd;
+    if (netoLbl) { netoLbl.textContent = netIncome >= 0 ? 'ORDINARY INCOME' : 'ORDINARY LOSS'; netoLbl.style.color = col; }
+    if (netoVal) { netoVal.textContent = fmtUSD(Math.abs(netIncome)); netoVal.style.color = col; }
+    if (netoMgn) netoMgn.textContent = `L22 Form 1065 · Margen bruto: ${grossRevenue>0?((grossProfit/grossRevenue)*100).toFixed(1):0}% · Margen neto: ${margenPct}%`;
+  }
+
+  // ── Desglose mensual (siempre año completo) ──
+  const tbody = document.getElementById('pnlMensualTable');
+  if (tbody) {
+    const mesesConDatos = new Set([
+      ...pagos.filter(p=>p.fecha&&p.fecha.startsWith(anio)).map(p=>p.fecha.slice(5,7)),
+      ...gastos.filter(g=>g.fecha&&g.fecha.startsWith(anio)).map(g=>g.fecha.slice(5,7))
+    ]);
+    if (!mesesConDatos.size) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--text2);padding:24px">Sin datos para ${anio}</td></tr>`;
+    } else {
+      let totalIngAnual=0, totalCOGSAnual=0, totalOpAnual=0, totalNetAnual=0;
+      const filas = [...mesesConDatos].sort().map(m => {
+        const ingM  = pagos.filter(p=>p.fecha&&p.fecha.startsWith(anio)&&p.fecha.slice(5,7)===m).reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
+        const cogsM = gastos.filter(g=>g.fecha&&g.fecha.startsWith(anio)&&g.fecha.slice(5,7)===m&&g.categoria==='Logística').reduce((s,g)=>s+(parseFloat(g.monto)||0),0);
+        const opM   = gastos.filter(g=>g.fecha&&g.fecha.startsWith(anio)&&g.fecha.slice(5,7)===m&&g.categoria!=='Logística').reduce((s,g)=>s+(parseFloat(g.monto)||0),0);
+        const totEgM = cogsM + opM;
+        const netM   = ingM - totEgM;
+        totalIngAnual+=ingM; totalCOGSAnual+=cogsM; totalOpAnual+=opM; totalNetAnual+=netM;
+        const nc = netM>=0?'amount-pos':'amount-neg';
+        return `<tr>
+          <td style="font-weight:600">${MESES_LABEL[parseInt(m)]}</td>
+          <td style="text-align:right" class="mono amount-pos">${fmtUSD(ingM)}</td>
+          <td style="text-align:right" class="mono" style="color:var(--orange)">${fmtUSD(cogsM)}</td>
+          <td style="text-align:right" class="mono amount-neg">${fmtUSD(opM)}</td>
+          <td style="text-align:right" class="mono amount-neg">${fmtUSD(totEgM)}</td>
+          <td style="text-align:right" class="mono ${nc}">${netM<0?'('+fmtUSD(Math.abs(netM))+')':fmtUSD(netM)}</td>
+          <td style="text-align:center;font-size:12px">${ingM>0?((netM/ingM)*100).toFixed(1)+'%':'—'}</td>
+        </tr>`;
+      });
+      const totNetC = totalNetAnual>=0?'amount-pos':'amount-neg';
+      tbody.innerHTML = filas.join('') + `
+        <tr style="background:var(--surface2);font-weight:700;border-top:2px solid var(--border)">
+          <td>TOTAL ${anio}</td>
+          <td style="text-align:right" class="mono amount-pos">${fmtUSD(totalIngAnual)}</td>
+          <td style="text-align:right" class="mono" style="color:var(--orange)">${fmtUSD(totalCOGSAnual)}</td>
+          <td style="text-align:right" class="mono amount-neg">${fmtUSD(totalOpAnual)}</td>
+          <td style="text-align:right" class="mono amount-neg">${fmtUSD(totalCOGSAnual+totalOpAnual)}</td>
+          <td style="text-align:right" class="mono ${totNetC}">${totalNetAnual<0?'('+fmtUSD(Math.abs(totalNetAnual))+')':fmtUSD(totalNetAnual)}</td>
+          <td style="text-align:center;font-size:12px">${totalIngAnual>0?((totalNetAnual/totalIngAnual)*100).toFixed(1)+'%':'—'}</td>
+        </tr>`;
+    }
+  }
+}
+
+function exportarPnlPDF() {
+  if (!empresaActual) { toast('Selecciona una empresa primero','error'); return; }
+  const anio = document.getElementById('pnlAnio').value;
+  const mes  = document.getElementById('pnlMes').value;
+  const periodo = mes ? `${MESES_LABEL[parseInt(mes)]} ${anio}` : `Año ${anio}`;
+  const pc = empresaActual.colorPrimary || '#E8202A';
+  const hoy = new Date().toLocaleDateString('es',{year:'numeric',month:'long',day:'numeric'});
+
+  function filtra(arr,campo){return arr.filter(x=>x[campo]&&x[campo].startsWith(anio)&&(!mes||x[campo].slice(5,7)===mes));}
+  const cobrosFilt = filtra(pagos,'fecha');
+  const gastosFilt = filtra(gastos,'fecha');
+  const grossRevenue = cobrosFilt.reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
+  const cogs = gastosFilt.filter(g=>g.categoria==='Logística').reduce((s,g)=>s+(parseFloat(g.monto)||0),0);
+  const grossProfit = grossRevenue - cogs;
+  const ded = {};
+  gastosFilt.filter(g=>g.categoria!=='Logística').forEach(g=>{ded[g.categoria]=(ded[g.categoria]||0)+(parseFloat(g.monto)||0);});
+  const totalDed = Object.values(ded).reduce((s,v)=>s+v,0);
+  const netIncome = grossRevenue - cogs - totalDed;
+
+  const logoH = empresaActual.logo
+    ? `<img src="${empresaActual.logo}" style="height:40px;object-fit:contain">`
+    : `<div style="font-size:18px;font-weight:900;color:${pc}">${empresaActual.nombre}</div>`;
+
+  const ordenCats = ['Nómina','Alquiler','Servicios','Impuestos','Bancario','Operacional','Otro'];
+  const filasDeduccion = ordenCats.filter(c=>ded[c]).map(c=>{
+    const info = F1065_MAP[c]||{linea:c,ref:'L20'};
+    return `<tr><td style="padding:7px 10px;font-size:11px">${info.ref}</td><td style="padding:7px 10px;font-size:11px">${info.linea}</td><td style="padding:7px 10px;text-align:right;font-size:11px;font-family:monospace">${fmtUSD(ded[c])}</td></tr>`;
+  }).join('');
+
+  const nc = netIncome>=0?'#16a34a':'#dc2626';
+  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+  <title>P&L ${empresaActual.nombre} ${periodo}</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111;background:#fff;padding:32px}@media print{body{padding:0}}table{width:100%;border-collapse:collapse}.section-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#888;margin:18px 0 6px;font-weight:700}</style>
+  </head><body>
+  <div style="border-bottom:3px solid ${pc};padding-bottom:14px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>${logoH}<div style="font-size:9px;color:#888;margin-top:4px">${empresaActual.direccion||''} · ${empresaActual.ein||''}</div></div>
+    <div style="text-align:right"><div style="font-size:13px;font-weight:900;color:${pc}">PROFIT & LOSS STATEMENT</div><div style="font-size:9px;color:#888;margin-top:2px">Form 1065 · Partnership · ${periodo}</div><div style="font-size:9px;color:#888">Preparado: ${hoy}</div></div>
+  </div>
+  <div class="section-title">L1 · Gross Revenue</div>
+  <table><tr style="background:#f5f5f5"><td style="padding:8px 10px;font-size:12px;font-weight:700">Total Ingresos / Gross Receipts</td><td style="padding:8px 10px;text-align:right;font-size:12px;font-weight:700;font-family:monospace;color:#16a34a">${fmtUSD(grossRevenue)}</td></tr></table>
+  <div class="section-title">L2 · Cost of Goods Sold (COGS)</div>
+  <table><tr><td style="padding:7px 10px;font-size:11px">Compras de mercancía / Logística (AJC, Seaboard, FedEx)</td><td style="padding:7px 10px;text-align:right;font-size:11px;font-family:monospace">(${fmtUSD(cogs)})</td></tr>
+  <tr style="background:#f5f5f5"><td style="padding:8px 10px;font-size:12px;font-weight:700">L3 · Gross Profit</td><td style="padding:8px 10px;text-align:right;font-size:12px;font-weight:700;font-family:monospace;color:${grossProfit>=0?'#16a34a':'#dc2626'}">${fmtUSD(grossProfit)}</td></tr></table>
+  <div class="section-title">L9–L20 · Deductions</div>
+  <table style="border:1px solid #eee"><thead><tr style="background:#1a1a2e;color:#fff"><th style="padding:7px 10px;text-align:left;font-size:9px">REF.</th><th style="padding:7px 10px;text-align:left;font-size:9px">CONCEPTO</th><th style="padding:7px 10px;text-align:right;font-size:9px">MONTO</th></tr></thead>
+  <tbody>${filasDeduccion}<tr style="background:#f5f5f5"><td colspan="2" style="padding:8px 10px;font-size:11px;font-weight:700">Total Deductions</td><td style="padding:8px 10px;text-align:right;font-size:11px;font-weight:700;font-family:monospace">(${fmtUSD(totalDed)})</td></tr></tbody></table>
+  <div style="margin-top:20px;padding:16px 20px;border:2px solid ${nc};border-radius:8px;display:flex;justify-content:space-between;align-items:center;background:${netIncome>=0?'#f0fdf4':'#fff1f2'}">
+    <div><div style="font-size:14px;font-weight:900;color:${nc}">L22 · ${netIncome>=0?'ORDINARY BUSINESS INCOME':'ORDINARY BUSINESS LOSS'}</div><div style="font-size:9px;color:#888;margin-top:3px">Form 1065 · Partnership · ${empresaActual.ein||''}</div></div>
+    <div style="font-size:24px;font-weight:900;color:${nc};font-family:monospace">${netIncome<0?'('+fmtUSD(Math.abs(netIncome))+')':fmtUSD(netIncome)}</div>
+  </div>
+  <div style="margin-top:20px;padding:12px 16px;background:#fffbeb;border-left:4px solid #f59e0b;font-size:10px;color:#92600a;line-height:1.8">
+    <strong>⚠️ Aviso:</strong> Este reporte es generado por SiFa con base en los estados de cuenta Chase. Los gastos marcados con ⚠️ requieren revisión con el CPA antes de presentar. 
+    Gastos personales (Giorgio Armani, Amazon personal, seguro auto — % personal) deben excluirse. Documento preparado para uso interno — no reemplaza el criterio de Dailin Pages / RO Miami.
+  </div>
+  <div style="margin-top:16px;display:flex;justify-content:space-between;font-size:9px;color:#aaa;border-top:1px solid #eee;padding-top:10px">
+    <span>DAL Miami Export LLC · EIN: 93-1412443 · Partnership (Form 1065)</span><span>${hoy} · SiFa v2</span>
+  </div>
+  </body></html>`;
+
+  const blob = new Blob([html],{type:'text/html'});
+  const url  = URL.createObjectURL(blob);
+  const win  = window.open(url,'_blank');
+  if (!win) toast('Permite ventanas emergentes para exportar PDF','error');
+  else setTimeout(()=>{try{win.print();}catch(e){}},1000);
+  setTimeout(()=>URL.revokeObjectURL(url),20000);
+}
+
+// ═══════════════════════════════════════════════
+// PROTOCOLO CLAUDE — Actualización mensual DAL Miami
+// ═══════════════════════════════════════════════
+
+function abrirProtocoloClaude() {
+  if (!empresaActual || empresaActual.dbPrefix !== 'dalmiami_') return;
+
+  // Detectar meses ya cargados
+  const mesesCargados = new Set(
+    gastos.filter(g => g.fecha).map(g => {
+      const [y, m] = g.fecha.split('-');
+      return `${y}-${m}`;
+    })
+  );
+
+  const MESES_NOMBRE = {
+    '01':'Enero','02':'Febrero','03':'Marzo','04':'Abril',
+    '05':'Mayo','06':'Junio','07':'Julio','08':'Agosto',
+    '09':'Septiembre','10':'Octubre','11':'Noviembre','12':'Diciembre'
+  };
+
+  // Render badges de meses cargados
+  const badgesDiv = document.getElementById('claudeMesesCargados');
+  if (badgesDiv) {
+    if (!mesesCargados.size) {
+      badgesDiv.innerHTML = `<span style="color:var(--text2);font-size:12px">Ninguno aún</span>`;
+    } else {
+      badgesDiv.innerHTML = [...mesesCargados].sort().map(ym => {
+        const [y, m] = ym.split('-');
+        return `<span style="background:rgba(34,197,94,.15);color:var(--green);padding:4px 10px;border-radius:20px;font-weight:700">✅ ${MESES_NOMBRE[m]} ${y}</span>`;
+      }).join('');
+    }
+  }
+
+  // Auto-seleccionar el mes siguiente al último cargado
+  const sel = document.getElementById('claudeMesTarget');
+  if (sel && mesesCargados.size) {
+    const ultimo = [...mesesCargados].sort().pop(); // '2026-03'
+    const [y, m] = ultimo.split('-');
+    const sigMes = parseInt(m) + 1;
+    if (sigMes <= 12) {
+      const sigLabel = `${MESES_NOMBRE[String(sigMes).padStart(2,'0')]} ${y}`;
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === sigLabel) { sel.selectedIndex = i; break; }
+      }
+    }
+  }
+
+  actualizarMensajeClaude();
+  document.getElementById('modalClaude').classList.add('open');
+}
+
+function actualizarMensajeClaude() {
+  const mes = document.getElementById('claudeMesTarget') ? document.getElementById('claudeMesTarget').value : '';
+  const mesesCargados = new Set(
+    gastos.filter(g => g.fecha).map(g => { const [y,m]=g.fecha.split('-'); return `${y}-${m}`; })
+  );
+  const MESES_NOMBRE = {'01':'Enero','02':'Febrero','03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio','08':'Agosto','09':'Septiembre','10':'Octubre','11':'Noviembre','12':'Diciembre'};
+  const listaMeses = [...mesesCargados].sort().map(ym=>{const[y,m]=ym.split('-');return `${MESES_NOMBRE[m]} ${y}`;}).join(', ') || 'Ninguno';
+
+  const mensaje =
+`Actualización SiFa — Estado de cuenta ${mes}
+
+Empresa: DAL Miami Export LLC
+EIN: 93-1412443
+Cuenta Chase: ****9521 (Business Complete Checking)
+Contador: Dailin Pages / RO Miami
+Estructura fiscal: Partnership · Form 1065
+Socios: Alejandro De Lara (99%) / Pedro Hernández Márquez (1%)
+
+Meses ya cargados en SiFa: ${listaMeses}
+
+Por favor:
+1. Extrae todos los EGRESOS del estado de cuenta adjunto
+2. Clasifícalos con las categorías de SiFa (Logística, Nómina, Bancario, Servicios, Impuestos, Operacional, Otro)
+3. Marca con ⚠️ los gastos que necesiten revisión del CPA
+4. Añádelos al seed de Enero-Marzo ya existente SIN duplicar
+5. Entrega el index.html actualizado
+
+Adjunto: Estado de cuenta Chase ${mes} (PDF)
+Adjunto: index.html actual de SiFa`;
+
+  const msgDiv = document.getElementById('claudeMensaje');
+  if (msgDiv) msgDiv.textContent = mensaje;
+}
+
+function copiarMensajeClaude() {
+  const msgDiv = document.getElementById('claudeMensaje');
+  if (!msgDiv) return;
+  navigator.clipboard.writeText(msgDiv.textContent).then(() => {
+    const btn = document.getElementById('btnCopiarClaude');
+    if (btn) { btn.textContent = '✅ Copiado'; setTimeout(()=>{ btn.textContent='📋 Copiar mensaje'; },2500); }
+    toast('Mensaje copiado — pégalo en el chat de Claude');
+  }).catch(() => {
+    // Fallback selección manual
+    const range = document.createRange();
+    range.selectNodeContents(msgDiv);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    toast('Selecciona el texto y copia manualmente');
+  });
+}
+
+// Mostrar/ocultar botón Claude según empresa activa
+function actualizarBtnClaude() {
+  const btn = document.getElementById('btnActualizarClaude');
+  if (!btn) return;
+  btn.style.display = (empresaActual && empresaActual.dbPrefix === 'dalmiami_') ? 'inline-flex' : 'none';
+}
+
 // ═══ BADGES ═══
 function updateBadges() {
   document.getElementById('badge-clientes').textContent=clientes.length;
@@ -3414,10 +3902,10 @@ function updateBadges() {
   document.getElementById('badge-pagos').textContent=pagos.length;
   // Separar invoices financieros vs documentos complementarios
   const finTypes=['I','F'];
-  document.getElementById('badge-invoices').textContent=invoices.filter(x=>esFinanciero(x.tipoKey||'I')).length;
-  document.getElementById('badge-documentos').textContent=invoices.filter(x=>!esFinanciero(x.tipoKey||'I')).length;
+  document.getElementById('badge-invoices').textContent=invoices.filter(x=>finTypes.includes(x.tipoKey)).length;
+  document.getElementById('badge-documentos').textContent=invoices.filter(x=>!finTypes.includes(x.tipoKey)).length;
   document.getElementById('badge-calc').textContent=calculos.length;
-  document.getElementById('badge-empresas').textContent=Object.keys(getTodasEmpresas()).length;
+  document.getElementById('badge-gastos').textContent=gastos.length;
 }
 
 // ═══ DATE ═══
@@ -3436,11 +3924,11 @@ function abrirRecuperacion() {
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
     // Buscar claves con datos relevantes
-    if (k.match(/(clientes|mercancias|facturas|pagos|invoices|calculos|anticipos)$/)) {
+    if (k.match(/(clientes|mercancias|facturas|pagos|invoices|calculos|anticipos|gastos)$/)) {
       try {
         const val = JSON.parse(localStorage.getItem(k));
         if (Array.isArray(val) && val.length > 0) {
-          claves.push({ clave: k, cantidad: val.length, tipo: k.split(/clientes|mercancias|facturas|pagos|invoices|calculos|anticipos/).pop() || k });
+          claves.push({ clave: k, cantidad: val.length, tipo: k.split(/clientes|mercancias|facturas|pagos|invoices|calculos|anticipos|gastos/).pop() || k });
         }
       } catch(e) {}
     }
@@ -3454,7 +3942,7 @@ function abrirRecuperacion() {
   // Agrupar por prefijo
   const prefijos = {};
   claves.forEach(c => {
-    const match = c.clave.match(/^(.+?)(clientes|mercancias|facturas|pagos|invoices|calculos|anticipos)$/);
+    const match = c.clave.match(/^(.+?)(clientes|mercancias|facturas|pagos|invoices|calculos|anticipos|gastos)$/);
     if (match) {
       const pre = match[1], tipo = match[2];
       if (!prefijos[pre]) prefijos[pre] = {};
@@ -3492,7 +3980,7 @@ function recuperarPrefijo(prefijo) {
   const dest = empresaActual.dbPrefix;
   if (prefijo === dest) { toast('El prefijo origen y destino son iguales', 'error'); return; }
 
-  const tipos = ['clientes','mercancias','facturas','pagos','invoices','calculos','anticipos'];
+  const tipos = ['clientes','mercancias','facturas','pagos','invoices','calculos','anticipos','gastos'];
   let recuperados = 0;
   tipos.forEach(t => {
     const val = localStorage.getItem(prefijo + t);
@@ -3529,7 +4017,7 @@ function exportarBackup() {
     const k = localStorage.key(i);
     // Incluir todo excepto claves del sistema de Chrome
     if (k && (k.startsWith('sys_') || k.startsWith('dal_') || k.startsWith('sifa_') ||
-        k.match(/(clientes|mercancias|facturas|pagos|invoices|calculos|anticipos|inv_consec_)$/))) {
+        k.match(/(clientes|mercancias|facturas|pagos|invoices|calculos|anticipos|gastos|inv_consec_)$/))) {
       try { backup.sistema[k] = JSON.parse(localStorage.getItem(k)); }
       catch(e) { backup.sistema[k] = localStorage.getItem(k); }
     }
@@ -3539,7 +4027,7 @@ function exportarBackup() {
   const todas = getTodasEmpresas();
   Object.values(todas).forEach(emp => {
     const p = emp.dbPrefix;
-    ['clientes','mercancias','facturas','pagos','invoices','calculos','anticipos'].forEach(t => {
+    ['clientes','mercancias','facturas','pagos','invoices','calculos','anticipos','gastos'].forEach(t => {
       const val = localStorage.getItem(p + t);
       if (val) {
         try { backup.sistema[p + t] = JSON.parse(val); }
@@ -3574,46 +4062,86 @@ function importarBackup(input) {
       if (!backup.sistema) { toast('Archivo de backup no válido', 'error'); return; }
 
       const fechaStr = backup.fecha ? new Date(backup.fecha).toLocaleDateString('es') : 'fecha desconocida';
-      if (!confirm(`¿Restaurar backup del ${fechaStr}?\n\n⚠️ ATENCIÓN: Esto REEMPLAZARÁ completamente los datos actuales con los del backup.\n\n¿Confirmas?`)) return;
+      const nEmpresas = backup.sistema.sys_empresas_v2 ? Object.keys(backup.sistema.sys_empresas_v2).length : '?';
+      const nClaves = Object.keys(backup.sistema).length;
 
-      // Borrar primero TODOS los datos actuales de todas las empresas conocidas
-      const todas = getTodasEmpresas();
-      Object.values(todas).forEach(emp => {
-        const p = emp.dbPrefix;
-        ['clientes','mercancias','facturas','pagos','invoices','calculos','anticipos'].forEach(t => {
-          localStorage.removeItem(p + t);
-        });
-      });
+      // Modal de confirmación propio — no depende de confirm() del navegador
+      const div = document.createElement('div');
+      div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)';
+      div.innerHTML = `
+        <div style="background:#12121A;border:1px solid #2A2A38;border-radius:20px;padding:32px;max-width:440px;width:100%">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:8px;color:#EEEEF2">RESTAURAR <span style="color:#6366F1">BACKUP</span></div>
+          <div style="font-size:13px;color:#8888A0;margin-bottom:20px;line-height:1.7">
+            Backup del <strong style="color:#EEEEF2">${fechaStr}</strong><br>
+            ${nEmpresas} empresa(s) · ${nClaves} colecciones de datos
+          </div>
+          <div style="background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#FF6B6B;line-height:1.7">
+            ⚠️ Esto <strong>reemplazará</strong> todos los datos actuales con los del backup. Esta acción no se puede deshacer.
+          </div>
+          <div style="display:flex;gap:10px;justify-content:flex-end">
+            <button id="btnCancelRestore" style="background:#1A1A24;border:1px solid #2A2A38;color:#8888A0;padding:12px 22px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Cancelar</button>
+            <button id="btnConfirmRestore" style="background:#6366F1;border:none;color:white;padding:12px 22px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">✅ Restaurar ahora</button>
+          </div>
+        </div>`;
+      document.body.appendChild(div);
 
-      // También borrar del backup cualquier prefijo que aparezca
-      Object.keys(backup.sistema).forEach(k => {
-        const match = k.match(/^(.+?)(clientes|mercancias|facturas|pagos|invoices|calculos|anticipos)$/);
-        if (match) localStorage.removeItem(k);
-      });
+      document.getElementById('btnCancelRestore').onclick = () => {
+        document.body.removeChild(div);
+        input.value = '';
+      };
 
-      // Restaurar todo del backup directamente
-      let restaurados = 0;
-      Object.entries(backup.sistema).forEach(([k, v]) => {
-        localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v));
-        restaurados++;
-      });
+      document.getElementById('btnConfirmRestore').onclick = () => {
+        document.body.removeChild(div);
 
-      // Recargar datos
-      initEmpresas();
-      const savedKey = localStorage.getItem('dal_empresa_actual');
-      if (savedKey && getEmpresa(savedKey)) {
-        cargarDatosEmpresa(getEmpresa(savedKey));
-        applyEmpresaTheme(getEmpresa(savedKey));
-      }
-      updateBadges();
-      renderDashboard();
+        try {
+          // Borrar datos actuales
+          const todas = getTodasEmpresas();
+          Object.values(todas).forEach(emp => {
+            const p = emp.dbPrefix;
+            ['clientes','mercancias','facturas','pagos','invoices','calculos','anticipos','gastos'].forEach(t => {
+              localStorage.removeItem(p + t);
+            });
+          });
 
-      input.value = '';
-      toast(`✅ Restauración completa — datos reemplazados correctamente`);
+          // Borrar claves del backup que puedan existir
+          Object.keys(backup.sistema).forEach(k => {
+            const match = k.match(/^(.+?)(clientes|mercancias|facturas|pagos|invoices|calculos|anticipos|gastos)$/);
+            if (match) localStorage.removeItem(k);
+          });
+
+          // Restaurar todo
+          let restaurados = 0;
+          Object.entries(backup.sistema).forEach(([k, v]) => {
+            try {
+              localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v));
+              restaurados++;
+            } catch(e) { console.warn('No se pudo restaurar clave:', k, e); }
+          });
+
+          // Recargar
+          initEmpresas();
+          const savedKey = localStorage.getItem('dal_empresa_actual');
+          if (savedKey && getEmpresa(savedKey)) {
+            cargarDatosEmpresa(getEmpresa(savedKey));
+            applyEmpresaTheme(getEmpresa(savedKey));
+            actualizarBtnClaude();
+          }
+          updateBadges();
+          renderDashboard();
+          // renderEmpresas — eliminado en DAL Book
+          input.value = '';
+          toast(`✅ ${restaurados} colecciones restauradas correctamente`);
+
+        } catch(err) {
+          console.error(err);
+          toast('Error durante la restauración: ' + err.message, 'error');
+        }
+      };
 
     } catch(err) {
       console.error(err);
       toast('Error al leer el archivo de backup', 'error');
+      input.value = '';
     }
   };
   reader.readAsText(file);
@@ -3661,35 +4189,37 @@ function mostrarRecordatorioBackup(mensaje) {
 updateDate();
 setInterval(updateDate, 60000);
 
-// ── Limpiar empresa duplicada key 'dalmiami' del seed v1 defectuoso ──
+// ═══ DAL Book — Carga inicial ═══
 (function() {
-  const todas = getTodasEmpresas();
-  let dirty = false;
-  // Borrar key 'dalmiami' si existe (duplicado del 'dal' correcto)
-  if (todas['dalmiami']) { delete todas['dalmiami']; dirty = true; }
-  // Asegurar que 'dal' existe con el prefijo correcto
-  if (todas['dal'] && todas['dal'].dbPrefix !== 'dalmiami_') {
-    todas['dal'].dbPrefix = 'dalmiami_'; dirty = true;
-  }
-  if (dirty) saveTodasEmpresas(todas);
+  try {
+    if (localStorage.getItem('sifa_auto_restored_v2')) return;
+    const data = {"sys_empresas_v2": {"dal": {"key": "dal", "nombre": "DAL MIAMI EXPORT LLC", "sub": "Export LLC — Libro de Asiento", "ein": "EIN: 93-1412443", "dbPrefix": "dalmiami_", "direccion": "3901 SW 78th CT Miami FL-33155", "email": "dalmiami9@gmail.com", "tel": "+1 786-839-1403", "colorPrimary": "#e02020", "colorSecondary": "#2060c0", "colorAccent": "#202020", "banco": "JPMORGAN CHASE BANK, N.A", "swift": "267084131", "cuenta": "960559521 USD", "gerente": "Diego Hernández", "cargoGerente": "Gerente Financiero", "presidente": "Alejandro De Lara", "firmaSVG": null, "cunoSVG": null, "logo": null}}, "dalmiami_clientes": [{"id": "mo9sye788uw1azyvi3u", "nombre": "La Catedral SURL", "cif": "50004348171", "pais": "Cuba", "direccion": "Calle 8 entre Calazada y 5ta, Plaza, La Habana", "telefono": "+5352832090", "email": "catedralrestaurantecuba@gmail.com", "notas": "", "creado": "2026-04-22T07:19:33.814Z"}, {"id": "mo9sye78q8octpmjl99", "nombre": "CEDA SURL", "cif": "50004244884", "pais": "Cuba", "direccion": "Santo Tomas y Subirana, Centro Habana", "telefono": "+53 5 2581003", "email": "cedasubirana@gmail.com", "notas": "", "creado": "2026-04-22T07:21:35.973Z"}, {"id": "mo9sye780o9eau46z3zj", "nombre": "Santa Barbara SURL", "cif": "", "pais": "Cuba", "direccion": "Calle M entre linea y 17, Plaza, La Habana", "telefono": "+53 5 2645177", "email": "", "notas": "", "creado": "2026-04-22T07:25:57.846Z"}, {"id": "mo9sye78m9jg6xyhc38", "nombre": "MERCY SURL", "pais": "Cuba"}], "dalmiami_mercancias": [{"id": "mo9satc69urowiwdae5", "nombre": "Frozen 4x10 Lb Poly- Bagged", "codigo": "", "unidad": "KG", "precio": 0, "categoria": "Pollo", "descripcion": ""}, {"id": "mo9sye78pb74h8bsdu", "nombre": "Frozen 4x10 Lb PolyBagged", "unidad": "Caja", "categoria": "Alimentos", "descripcion": "Pollo congelado 4x10 Lb en bolsa"}, {"id": "mo9sye7806ql2i6vv6fy", "nombre": "Frozen Pork Boneless Loin", "unidad": "KG", "categoria": "Alimentos", "descripcion": "Lomo de cerdo deshuesado congelado"}, {"id": "mo9sye78jbdr29ol7o", "nombre": "Sanderson Farms Frozen Half Bird", "unidad": "Caja", "categoria": "Alimentos", "descripcion": "Pollo entero Sanderson Farms congelado, medio"}, {"id": "moa14lrxze7mllcptu", "nombre": "Frozen 4x10 Lb Poly-Bagged", "unidad": "Caja", "categoria": "Pollo", "descripcion": "Pollo congelado 4x10 Lb en bolsa"}], "dalmiami_facturas": [{"id": "mo9sye78dlrqb2utm2e", "fecha": "2026-01-12", "numero": "2601", "clienteId": "mo9sye788uw1azyvi3u", "mercanciaId": "moa14lrxze7mllcptu", "deuda": 18627.9, "arrastre": 0, "estatus": "Pagado"}, {"id": "mo9sye78u0ataqo6keh", "fecha": "2026-01-12", "numero": "2602", "clienteId": "mo9sye78q8octpmjl99", "mercanciaId": "moa14lrxze7mllcptu", "deuda": 18627.9, "arrastre": 0, "estatus": "Pagado"}, {"id": "mo9sye78g7zukokv2hi", "fecha": "2026-01-12", "numero": "2603", "clienteId": "mo9sye78m9jg6xyhc38", "mercanciaId": "moa14lrxze7mllcptu", "deuda": 18627.9, "arrastre": 0, "estatus": "Pagado"}, {"id": "mo9sye78ip94gsj1qgc", "fecha": "2026-01-12", "numero": "2604", "clienteId": "mo9sye780o9eau46z3zj", "mercanciaId": "moa14lrxze7mllcptu", "deuda": 18627.9, "arrastre": 0, "estatus": "Pagado"}, {"id": "mo9sye788dfjrvow64", "fecha": "2026-02-15", "numero": "2605", "clienteId": "mo9sye788uw1azyvi3u", "mercanciaId": "mo9sye7806ql2i6vv6fy", "deuda": 33176, "arrastre": 0, "estatus": "Pagado parcialmente"}, {"id": "mo9sye78fg71fb6op6t", "fecha": "2026-02-15", "numero": "2606", "clienteId": "mo9sye78q8octpmjl99", "mercanciaId": "mo9sye7806ql2i6vv6fy", "deuda": 33168, "arrastre": 0, "estatus": "Pagado parcialmente"}, {"id": "mo9sye78gsoz1fsq2qm", "fecha": "2026-02-15", "numero": "2607", "clienteId": "mo9sye78m9jg6xyhc38", "mercanciaId": "mo9sye7806ql2i6vv6fy", "deuda": 33172, "arrastre": 0, "estatus": "Pagado parcialmente"}, {"id": "mo9sye7805el11envunk", "fecha": "2026-04-08", "numero": "2608", "clienteId": "mo9sye788uw1azyvi3u", "mercanciaId": "mo9sye78jbdr29ol7o", "deuda": 12372.75, "arrastre": 0, "estatus": "Pendiente"}, {"id": "mo9sye78uch4xlkbqg", "fecha": "2026-04-08", "numero": "2609", "clienteId": "mo9sye78q8octpmjl99", "mercanciaId": "mo9sye78jbdr29ol7o", "deuda": 12372.75, "arrastre": 0, "estatus": "Pendiente"}, {"id": "mo9sye78p72z8iuvcnj", "fecha": "2026-04-08", "numero": "2610", "clienteId": "mo9sye78m9jg6xyhc38", "mercanciaId": "mo9sye78jbdr29ol7o", "deuda": 12351.6, "arrastre": 0, "estatus": "Pendiente"}], "dalmiami_pagos": [{"id": "p001", "fecha": "2026-01-15", "facturaId": "mo9sye78dlrqb2utm2e", "monto": 19467.3, "notas": "CHASE BANK"}, {"id": "p002", "fecha": "2026-01-15", "facturaId": "mo9sye78u0ataqo6keh", "monto": 18627.9, "notas": "Chase bank"}, {"id": "p003", "fecha": "2026-01-15", "facturaId": "mo9sye78ip94gsj1qgc", "monto": 18627.9, "notas": "Pago recibido"}, {"id": "p004", "fecha": "2026-03-02", "facturaId": "mo9sye78fg71fb6op6t", "monto": 20000, "notas": "Pago recibido"}, {"id": "p005", "fecha": "2026-03-02", "facturaId": "mo9sye78gsoz1fsq2qm", "monto": 10000, "notas": "Pago recibido"}, {"id": "p006", "fecha": "2026-03-16", "facturaId": "mo9sye788dfjrvow64", "monto": 28275.16, "notas": "Pago recibido"}, {"id": "p007", "fecha": "2026-04-02", "facturaId": "mo9sye78g7zukokv2hi", "monto": 20000, "notas": "Chase bank"}, {"id": "p008", "fecha": "2026-04-05", "facturaId": "mo9sye78gsoz1fsq2qm", "monto": 14974.5, "notas": "THE BANK OF NEW YORK MELLON — Caribbean Online Services"}, {"id": "p009", "fecha": "2026-04-22", "facturaId": "mo9sye788dfjrvow64", "monto": 4900.84, "notas": "Wire Caribbean Online Services 22/04"}, {"id": "p010", "fecha": "2026-04-22", "facturaId": "mo9sye7805el11envunk", "monto": 12372.75, "notas": "Wire Caribbean Online Services 22/04"}, {"id": "p011", "fecha": "2026-04-22", "facturaId": "mo9sye78fg71fb6op6t", "monto": 5540.75, "notas": "Wire Caribbean Online Services 22/04"}, {"id": "p012", "fecha": "2026-04-22", "facturaId": "mo9sye78gsoz1fsq2qm", "monto": 6825.4, "notas": "Wire Caribbean Online Services 22/04"}], "dal_empresa_actual": "dal"};
+    Object.entries(data).forEach(([k,v]) => {
+      localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v));
+    });
+    localStorage.setItem('sifa_auto_restored_v2','1');
+  } catch(e) { console.error(e); }
 })();
 
-// Siempre arranca en empresas — mostrando la portada
 initEmpresas();
+['sifa_seed_dalmiami_v1','sifa_seed_dalmiami_v2'].forEach(k=>localStorage.removeItem(k));
+localStorage.setItem('dal_empresa_actual','dal');
+
+// Cargar DAL Miami directamente — sin depender de getEmpresa
+const _dalData = {"key":"dal","nombre":"DAL MIAMI EXPORT LLC","sub":"Export LLC — Libro de Asiento","ein":"EIN: 93-1412443","dbPrefix":"dalmiami_","direccion":"3901 SW 78th CT Miami FL-33155","email":"dalmiami9@gmail.com","tel":"+1 786-839-1403","colorPrimary":"#e02020","colorSecondary":"#2060c0","colorAccent":"#202020","banco":"JPMORGAN CHASE BANK, N.A","swift":"267084131","cuenta":"960559521 USD","gerente":"Diego Hernández","cargoGerente":"Gerente Financiero","presidente":"Alejandro De Lara","firmaSVG":null,"cunoSVG":null,"logo":null};
+
+// Asegurar empresa en sys_empresas_v2
+const _todasEmp = getTodasEmpresas();
+if (!_todasEmp['dal']) { _todasEmp['dal'] = _dalData; saveTodasEmpresas(_todasEmp); }
+
+cargarDatosEmpresa(_dalData);
+applyEmpresaTheme(_dalData);
+if (typeof seedGastosDalMiami === 'function') seedGastosDalMiami();
+if (typeof actualizarBtnClaude === 'function') actualizarBtnClaude();
 updateBadges();
-showSection('empresas');
-
-// Si había empresa activa, cargar sus datos en segundo plano
-const _savedKey = localStorage.getItem('dal_empresa_actual');
-if (_savedKey && getEmpresa(_savedKey)) {
-  cargarDatosEmpresa(getEmpresa(_savedKey));
-  applyEmpresaTheme(getEmpresa(_savedKey));
-  updateBadges();
-  renderEmpresas(); // re-render con la activa marcada
-}
-
-// Recordatorio de backup
+showSection('dashboard');
 setTimeout(checkRecordatorioBackup, 3000);
+
 
 </script>
 </body>
