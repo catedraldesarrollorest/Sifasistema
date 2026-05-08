@@ -1337,7 +1337,7 @@ function openModal(id) {
 }
 function closeModal(id) {
   document.getElementById(id).classList.remove('open');
-  document.querySelectorAll('#'+id+' input:not([type=color]):not([type=file]):not([type=hidden]), #'+id+' select, #'+id+' textarea').forEach(el=>{ el.value=''; });
+  document.querySelectorAll('#'+id+' input:not([type=color]):not([type=file]), #'+id+' select, #'+id+' textarea').forEach(el=>{ el.value=''; });
   if(id==='modalCliente')   document.getElementById('modalClienteTitle').innerHTML='NUEVO <span>CLIENTE</span>';
   if(id==='modalMercancia') document.getElementById('modalMercanciaTitle').innerHTML='NUEVO <span>PRODUCTO</span>';
   if(id==='modalFactura')   { document.getElementById('modalFacturaTitle').innerHTML='NUEVA <span>FACTURA</span>'; document.getElementById('btnGuardarFactura').textContent='Guardar Factura'; }
@@ -1349,19 +1349,19 @@ document.querySelectorAll('.modal-overlay').forEach(m=>{ m.addEventListener('cli
 // ═══ SALDO ═══
 function getSaldo(fid) {
   const f=facturas.find(x=>x.id===fid); if(!f) return 0;
-  const pagado=pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+p.monto,0);
+  const pagado=pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
   return parseFloat(f.deuda)-(parseFloat(f.arrastre)||0)-pagado;
 }
 function getEstatus(fid) {
   const f=facturas.find(x=>x.id===fid); if(!f) return 'Pendiente';
-  const pagado=pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+p.monto,0);
+  const pagado=pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
   const arrastre=parseFloat(f.arrastre)||0;
   if(pagado===0&&arrastre===0) return 'Pendiente';
   if(getSaldo(fid)<=0.01) return 'Pagado';
   return 'Pagado parcialmente';
 }
 function getTotalIngreso(fid) {
-  return pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+p.monto,0);
+  return pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
 }
 function calcArrastre(clienteId,excludeId=null) {
   let arr=0; facturas.filter(f=>f.clienteId===clienteId&&f.id!==excludeId).forEach(f=>{const s=getSaldo(f.id);if(s<0)arr+=Math.abs(s);});
@@ -1632,7 +1632,7 @@ function savePago() {
   const fecha=document.getElementById('pg_fecha').value, monto=parseFloat(document.getElementById('pg_monto').value);
   const facturaId=document.getElementById('pg_factura').value, notas=document.getElementById('pg_notas').value.trim();
   const editId=document.getElementById('pg_id').value;
-  if(!fecha||!monto||!facturaId){toast('Completa los campos obligatorios','error');return;}
+  if(!fecha||isNaN(monto)||monto<=0||!facturaId){toast('Completa los campos obligatorios','error');return;}
   if(editId){const i=pagos.findIndex(p=>p.id===editId);if(i!==-1)pagos[i]={...pagos[i],fecha,monto,facturaId,notas};toast('Pago actualizado');save();closeModal('modalPago');renderPagos();renderFacturas();renderClientes();updateBadges();return;}
   const pagoData={fecha,monto,facturaId,notas};
   if(!checkExcedente(monto,facturaId,pagoData)){pagos.push({id:uid(),...pagoData});toast('Pago registrado');save();closeModal('modalPago');renderPagos();renderFacturas();renderClientes();updateBadges();}
@@ -1673,7 +1673,7 @@ function renderDashboard() {
   if (sub) sub.textContent = empresaActual ? empresaActual.nombre : 'Selecciona una empresa para comenzar';
   
   const totalDeuda=facturas.reduce((s,f)=>s+parseFloat(f.deuda),0);
-  const totalIngresado=pagos.reduce((s,p)=>s+p.monto,0);
+  const totalIngresado=pagos.reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
   const totalSaldo=facturas.reduce((s,f)=>{const sal=getSaldo(f.id);return s+(sal>0?sal:0);},0);
   const pendientes=facturas.filter(f=>getEstatus(f.id)!=='Pagado').length;
   document.getElementById('statsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Total Facturado</div><div class="stat-value blue">$${(totalDeuda/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Total Ingresado</div><div class="stat-value green">$${(totalIngresado/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Saldo por Cobrar</div><div class="stat-value ${totalSaldo>0?'red':'green'}">$${(Math.abs(totalSaldo)/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Pendientes</div><div class="stat-value orange">${pendientes}</div></div>`;
@@ -1694,7 +1694,7 @@ function compartirDashboard() {
   try {
     const hoy=new Date().toLocaleDateString('es',{year:'numeric',month:'long',day:'numeric'});
     const totalDeuda=facturas.reduce((s,f)=>s+parseFloat(f.deuda),0);
-    const totalIngresado=pagos.reduce((s,p)=>s+p.monto,0);
+    const totalIngresado=pagos.reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
     const totalSaldo=facturas.reduce((s,f)=>{const sal=getSaldo(f.id);return s+(sal>0?sal:0);},0);
     const tasaCobro=totalDeuda>0?((totalIngresado/totalDeuda)*100).toFixed(1):'0.0';
     const rows=[...facturas].sort((a,b)=>a.fecha<b.fecha?-1:1).map((f,i)=>{
@@ -1730,7 +1730,7 @@ function _abrirVentanaConciliacion(clienteId,desde,hasta) {
   let sc=0; const filas=movs.map(mv=>{sc+=mv.monto;return{...mv,sc};});
   const totalF=fc.reduce((s,f)=>s+parseFloat(f.deuda),0);
   const fIds2=fc.map(f=>f.id);
-  const totalP=pc.filter(p=>fIds2.includes(p.facturaId)).reduce((s,p)=>s+p.monto,0);
+  const totalP=pc.filter(p=>fIds2.includes(p.facturaId)).reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
   const sf=fc.reduce((s,f)=>{const sal=getSaldo(f.id);return s+(sal>0?sal:0);},0);
   const filasHTML=filas.map((mv,i)=>{
     const tipo=mv.tipo==='factura'?'<span style="background:#fff3cd;color:#92600a;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:700">FACTURA</span>':'<span style="background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:700">PAGO</span>';
@@ -2625,7 +2625,7 @@ function excConfirmar() {
   pagos.push({...p,id:uid(),monto:excedentePendiente.montoAplicado});
   lineas.forEach(l=>{pagos.push({id:uid(),fecha:p.fecha,monto:l.monto,facturaId:l.facturaId,notas:'Excedente de '+(p.notas||'pago')});});
   const resto=Math.round((exc-total)*100)/100;
-  if(resto>0.001) anticipios.push({id:uid(),fecha:p.fecha,clienteId:f?f.clienteId:'',monto:resto,origen:'Excedente pago '+(p.notas||''),aplicado:false});
+  if(resto>0.01) anticipios.push({id:uid(),fecha:p.fecha,clienteId:f?f.clienteId:'',monto:resto,origen:'Excedente pago '+(p.notas||''),aplicado:false});
   save();saveAnticipos();
   document.getElementById('modalExcedente').classList.remove('open'); excedentePendiente=null;
   renderPagos();renderFacturas();renderClientes();updateBadges(); toast('Excedente distribuido correctamente ✅');
@@ -3684,8 +3684,12 @@ const SifaSync = {
       }
     }
 
-    this._saveQueue(remaining);
-    this.pendingCount = remaining.length;
+    // Merge remaining with items added to the queue during async processing
+    const currentQueue = this._getQueue();
+    const processedKeys = new Set(queue.map(i => `${i.tabla}:${i.registroId}:${i.ts}`));
+    const newItems = currentQueue.filter(i => !processedKeys.has(`${i.tabla}:${i.registroId}:${i.ts}`));
+    this._saveQueue([...remaining, ...newItems]);
+    this.pendingCount = remaining.length + newItems.length;
     this.syncing = false;
     this.updateIndicator();
   },

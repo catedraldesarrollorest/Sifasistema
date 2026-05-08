@@ -1195,12 +1195,28 @@ function save() {
   localStorage.setItem(p+'mercancias', JSON.stringify(mercancias));
   localStorage.setItem(p+'facturas',   JSON.stringify(facturas));
   localStorage.setItem(p+'pagos',      JSON.stringify(pagos));
+  if (typeof _sifaSyncAll !== 'undefined') {
+    _sifaSyncAll('upsert', 'clientes',   clientes);
+    _sifaSyncAll('upsert', 'mercancias', mercancias);
+    _sifaSyncAll('upsert', 'facturas',   facturas);
+    _sifaSyncAll('upsert', 'pagos',      pagos);
+  }
 }
 function saveInvoicesDB() {
-  if (empresaActual) localStorage.setItem(empresaActual.dbPrefix + 'invoices', JSON.stringify(invoices));
+  if (!empresaActual) return;
+  localStorage.setItem(empresaActual.dbPrefix + 'invoices', JSON.stringify(invoices));
+  if (typeof _sifaSyncAll !== 'undefined') _sifaSyncAll('upsert', 'invoices', invoices);
 }
-function saveCalcDB()     { if(empresaActual) localStorage.setItem(empresaActual.dbPrefix+'calculos',JSON.stringify(calculos)); }
-function saveAnticipos()  { if(empresaActual) localStorage.setItem(empresaActual.dbPrefix+'anticipos',JSON.stringify(anticipios)); }
+function saveCalcDB() {
+  if (!empresaActual) return;
+  localStorage.setItem(empresaActual.dbPrefix+'calculos', JSON.stringify(calculos));
+  if (typeof _sifaSyncAll !== 'undefined') _sifaSyncAll('upsert', 'calculos', calculos);
+}
+function saveAnticipos() {
+  if (!empresaActual) return;
+  localStorage.setItem(empresaActual.dbPrefix+'anticipos', JSON.stringify(anticipios));
+  if (typeof _sifaSyncAll !== 'undefined') _sifaSyncAll('upsert', 'anticipos', anticipios);
+}
 
 // ═══ UTILS ═══
 function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2); }
@@ -1307,13 +1323,13 @@ document.querySelectorAll('.modal-overlay').forEach(m=>{ m.addEventListener('cli
 // ═══ SALDO ═══
 function getSaldo(fid) {
   const f=facturas.find(x=>x.id===fid); if(!f) return 0;
-  return parseFloat(f.deuda)-(parseFloat(f.arrastre)||0)-pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+p.monto,0);
+  return parseFloat(f.deuda)-(parseFloat(f.arrastre)||0)-pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
 }
 function getEstatus(fid) {
-  const saldo=getSaldo(fid), tp=pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+p.monto,0);
+  const saldo=getSaldo(fid), tp=pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
   if(tp===0) return 'Pendiente'; if(saldo<=0.01) return 'Pagado'; return 'Pagado parcialmente';
 }
-function getTotalIngreso(fid) { return pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+p.monto,0); }
+function getTotalIngreso(fid) { return pagos.filter(p=>p.facturaId===fid).reduce((s,p)=>s+(parseFloat(p.monto)||0),0); }
 function calcArrastre(clienteId,excludeId=null) {
   let arr=0; facturas.filter(f=>f.clienteId===clienteId&&f.id!==excludeId).forEach(f=>{const s=getSaldo(f.id);if(s<0)arr+=Math.abs(s);});
   return arr;
@@ -1340,8 +1356,13 @@ function editCliente(id) {
 }
 function deleteCliente(id) {
   if(!confirm('¿Eliminar cliente?')) return;
-  facturas.filter(f=>f.clienteId===id).forEach(f=>{pagos=pagos.filter(p=>p.facturaId!==f.id);});
+  facturas.filter(f=>f.clienteId===id).forEach(f=>{
+    pagos.filter(p=>p.facturaId===f.id).forEach(p=>{ if(typeof _sifaSyncDelete!=='undefined') _sifaSyncDelete('pagos',p.id); });
+    pagos=pagos.filter(p=>p.facturaId!==f.id);
+    if(typeof _sifaSyncDelete!=='undefined') _sifaSyncDelete('facturas',f.id);
+  });
   facturas=facturas.filter(f=>f.clienteId!==id); clientes=clientes.filter(c=>c.id!==id);
+  if(typeof _sifaSyncDelete!=='undefined') _sifaSyncDelete('clientes',id);
   save();renderClientes();updateBadges();toast('Cliente eliminado');
 }
 function renderClientes() {
@@ -1394,7 +1415,9 @@ function editMercancia(id) {
 }
 function deleteMercancia(id) {
   if(!confirm('¿Eliminar producto?')) return;
-  mercancias=mercancias.filter(m=>m.id!==id); save();renderMercancias();updateBadges();toast('Producto eliminado');
+  mercancias=mercancias.filter(m=>m.id!==id);
+  if(typeof _sifaSyncDelete!=='undefined') _sifaSyncDelete('mercancias',id);
+  save();renderMercancias();updateBadges();toast('Producto eliminado');
 }
 function renderMercancias() {
   const grid = document.getElementById('mercanciasGrid');
@@ -1450,7 +1473,10 @@ function editFactura(id) {
 }
 function deleteFactura(id) {
   if(!confirm('¿Eliminar factura y sus pagos?')) return;
-  pagos=pagos.filter(p=>p.facturaId!==id); facturas=facturas.filter(f=>f.id!==id);
+  pagos.filter(p=>p.facturaId===id).forEach(p=>{ if(typeof _sifaSyncDelete!=='undefined') _sifaSyncDelete('pagos',p.id); });
+  pagos=pagos.filter(p=>p.facturaId!==id);
+  facturas=facturas.filter(f=>f.id!==id);
+  if(typeof _sifaSyncDelete!=='undefined') _sifaSyncDelete('facturas',id);
   save();renderFacturas();updateBadges();toast('Factura eliminada');
 }
 function renderFacturas() {
@@ -1493,7 +1519,7 @@ function savePago() {
   const fecha=document.getElementById('pg_fecha').value, monto=parseFloat(document.getElementById('pg_monto').value);
   const facturaId=document.getElementById('pg_factura').value, notas=document.getElementById('pg_notas').value.trim();
   const editId=document.getElementById('pg_id').value;
-  if(!fecha||!monto||!facturaId){toast('Completa los campos obligatorios','error');return;}
+  if(!fecha||isNaN(monto)||monto<=0||!facturaId){toast('Completa los campos obligatorios','error');return;}
   if(editId){const i=pagos.findIndex(p=>p.id===editId);if(i!==-1)pagos[i]={...pagos[i],fecha,monto,facturaId,notas};toast('Pago actualizado');save();closeModal('modalPago');renderPagos();renderFacturas();renderClientes();updateBadges();return;}
   const pagoData={fecha,monto,facturaId,notas};
   if(!checkExcedente(monto,facturaId,pagoData)){pagos.push({id:uid(),...pagoData});toast('Pago registrado');save();closeModal('modalPago');renderPagos();renderFacturas();renderClientes();updateBadges();}
@@ -1509,7 +1535,7 @@ function editPago(id) {
   document.getElementById('btnGuardarPago').textContent='Actualizar Pago';
   document.getElementById('modalPago').classList.add('open');
 }
-function deletePago(id){if(!confirm('¿Eliminar este pago?'))return;pagos=pagos.filter(p=>p.id!==id);save();renderPagos();renderFacturas();toast('Pago eliminado');}
+function deletePago(id){if(!confirm('¿Eliminar este pago?'))return;pagos=pagos.filter(p=>p.id!==id);if(typeof _sifaSyncDelete!=='undefined')_sifaSyncDelete('pagos',id);save();renderPagos();renderFacturas();toast('Pago eliminado');}
 function renderPagos() {
   const tbody=document.getElementById('pagosTable'), filtC=document.getElementById('filtroClientePago').value;
   const sel=document.getElementById('filtroClientePago'), cur=sel.value;
@@ -1539,7 +1565,7 @@ function renderDashboard() {
   if (btnEdit) btnEdit.style.display = empresaActual ? 'inline-flex' : 'none';
 
   const totalDeuda=facturas.reduce((s,f)=>s+parseFloat(f.deuda),0);
-  const totalIngresado=pagos.reduce((s,p)=>s+p.monto,0);
+  const totalIngresado=pagos.reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
   const totalSaldo=facturas.reduce((s,f)=>{const sal=getSaldo(f.id);return s+(sal>0?sal:0);},0);
   const pendientes=facturas.filter(f=>getEstatus(f.id)!=='Pagado').length;
   document.getElementById('statsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Total Facturado</div><div class="stat-value blue">$${(totalDeuda/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Total Ingresado</div><div class="stat-value green">$${(totalIngresado/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Saldo por Cobrar</div><div class="stat-value ${totalSaldo>0?'red':'green'}">$${(Math.abs(totalSaldo)/1000).toFixed(1)}K</div></div><div class="stat-card"><div class="stat-label">Pendientes</div><div class="stat-value orange">${pendientes}</div></div>`;
@@ -1560,7 +1586,7 @@ function compartirDashboard() {
   try {
     const hoy=new Date().toLocaleDateString('es',{year:'numeric',month:'long',day:'numeric'});
     const totalDeuda=facturas.reduce((s,f)=>s+parseFloat(f.deuda),0);
-    const totalIngresado=pagos.reduce((s,p)=>s+p.monto,0);
+    const totalIngresado=pagos.reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
     const totalSaldo=facturas.reduce((s,f)=>{const sal=getSaldo(f.id);return s+(sal>0?sal:0);},0);
     const tasaCobro=totalDeuda>0?((totalIngresado/totalDeuda)*100).toFixed(1):'0.0';
     const rows=[...facturas].sort((a,b)=>a.fecha<b.fecha?-1:1).map((f,i)=>{
@@ -1594,7 +1620,7 @@ function _abrirVentanaConciliacion(clienteId,desde,hasta) {
   pc.forEach(p=>{const f=facturas.find(x=>x.id===p.facturaId);movs.push({fecha:p.fecha,tipo:'pago',monto:-p.monto,num:f?f.numero:'—',desc:p.notas||'Pago recibido'});});
   movs.sort((a,b)=>a.fecha<b.fecha?-1:1);
   let sc=0; const filas=movs.map(mv=>{sc+=mv.monto;return{...mv,sc};});
-  const totalF=fc.reduce((s,f)=>s+parseFloat(f.deuda),0), totalP=pc.reduce((s,p)=>s+p.monto,0);
+  const totalF=fc.reduce((s,f)=>s+parseFloat(f.deuda),0), totalP=pc.reduce((s,p)=>s+(parseFloat(p.monto)||0),0);
   const sf=fc.reduce((s,f)=>{const sal=getSaldo(f.id);return s+(sal>0?sal:0);},0);
   const filasHTML=filas.map((mv,i)=>{
     const tipo=mv.tipo==='factura'?'<span style="background:#fff3cd;color:#92600a;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:700">FACTURA</span>':'<span style="background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:700">PAGO</span>';
@@ -2168,7 +2194,7 @@ function excConfirmar() {
   pagos.push({...p,id:uid(),monto:excedentePendiente.montoAplicado});
   lineas.forEach(l=>{pagos.push({id:uid(),fecha:p.fecha,monto:l.monto,facturaId:l.facturaId,notas:'Excedente de '+(p.notas||'pago')});});
   const resto=Math.round((exc-total)*100)/100;
-  if(resto>0.001) anticipios.push({id:uid(),fecha:p.fecha,clienteId:f?f.clienteId:'',monto:resto,origen:'Excedente pago '+(p.notas||''),aplicado:false});
+  if(resto>0.01) anticipios.push({id:uid(),fecha:p.fecha,clienteId:f?f.clienteId:'',monto:resto,origen:'Excedente pago '+(p.notas||''),aplicado:false});
   save();saveAnticipos();
   document.getElementById('modalExcedente').classList.remove('open'); excedentePendiente=null;
   renderPagos();renderFacturas();renderClientes();updateBadges(); toast('Excedente distribuido correctamente ✅');
@@ -3046,6 +3072,185 @@ if (_savedKey && getEmpresa(_savedKey)) {
 
 // Recordatorio de backup
 setTimeout(checkRecordatorioBackup, 3000);
+
+// ============================================================
+// SIFA — Capa de Sync Offline-First con Supabase
+// Estrategia: localStorage primero → sync en background
+// ============================================================
+
+const SIFA_SUPABASE_URL = 'https://peyrrerrfgcfpwwezhcv.supabase.co';
+const SIFA_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBleXJyZXJyZmdjZnB3d2V6aGN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODA4MzAsImV4cCI6MjA5MzY1NjgzMH0.AjqUeILkjzUDeYDFccE3cahdBMMETxcAM7PKCd-Aeyk';
+
+const SIFA_HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SIFA_SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SIFA_SUPABASE_KEY,
+  'Prefer': 'resolution=merge-duplicates'
+};
+
+async function sifaPullDesdeSupabase() {
+  if (!empresaActual) { toast('Selecciona una empresa primero', 'error'); return; }
+  const empId = Object.keys(getTodasEmpresas()).find(k => getTodasEmpresas()[k].dbPrefix === empresaActual.dbPrefix);
+  if (!empId) { toast('Empresa no identificada', 'error'); return; }
+  toast('⟳ Descargando desde Supabase...', 'success');
+  const ok = await SifaSync.pullEmpresa(empId);
+  if (ok) {
+    cargarDatosEmpresa(empresaActual);
+    updateBadges();
+    renderDashboard();
+    toast('✅ Datos actualizados desde Supabase');
+  } else {
+    toast('Error al descargar desde Supabase', 'error');
+  }
+}
+
+const SifaSync = {
+  online: navigator.onLine,
+  syncing: false,
+  pendingCount: 0,
+
+  init() {
+    window.addEventListener('online',  () => { this.online = true;  this.updateIndicator(); this.flushQueue(); });
+    window.addEventListener('offline', () => { this.online = false; this.updateIndicator(); });
+    this.updateIndicator();
+    setTimeout(() => this.flushQueue(), 2000);
+    setInterval(() => this.flushQueue(), 60000);
+  },
+
+  TABLA_MAP: {
+    'clientes':   'clientes',
+    'mercancias': 'mercancias',
+    'facturas':   'facturas',
+    'pagos':      'pagos',
+    'invoices':   'invoices',
+    'calculos':   'calculos',
+    'anticipos':  'anticipos',
+  },
+
+  enqueue(empresaId, tabla, operacion, registroId, payload) {
+    const queue = this._getQueue();
+    queue.push({ empresaId, tabla, operacion, registroId, payload, ts: Date.now() });
+    this._saveQueue(queue);
+    this.pendingCount = queue.length;
+    this.updateIndicator();
+    if (this.online) this.flushQueue();
+  },
+
+  _transform(tabla, payload, empresaId) {
+    if (!payload) return null;
+    const base = { ...payload, empresa_id: empresaId };
+    switch (tabla) {
+      case 'clientes':   return { id: base.id, empresa_id: empresaId, nombre: base.nombre, cif: base.cif || null, pais: base.pais || null, direccion: base.direccion || null, telefono: base.telefono || null, email: base.email || null, notas: base.notas || null };
+      case 'mercancias': return { id: base.id, empresa_id: empresaId, nombre: base.nombre, codigo: base.codigo || null, unidad: base.unidad || 'KG', precio: base.precio || 0, categoria: base.categoria || null, descripcion: base.descripcion || null };
+      case 'facturas':   return { id: base.id, empresa_id: empresaId, invoice_id: base.invoiceId || null, fecha: base.fecha, numero: base.numero, cliente_id: base.clienteId || null, mercancia_id: base.mercanciaId || null, deuda: base.deuda || 0, arrastre: base.arrastre || 0, estatus: base.estatus || null };
+      case 'pagos':      return { id: base.id, empresa_id: empresaId, factura_id: base.facturaId || null, fecha: base.fecha, monto: base.monto || 0, notas: base.notas || null };
+      case 'invoices':   return { id: base.id, empresa_id: empresaId, tipo_key: base.tipoKey || 'O', titulo: base.titulo || null, fecha: base.fecha, numero: base.numero, cliente_id: base.clienteId || null, moneda: base.moneda || 'USD', emisora_key: (base.emisoraKey || base.emisora?.key) || null, proveedor: base.proveedor || null, lineas: base.lineas || [], subtotal: base.subtotal || 0, flete: base.flete || 0, seguro: base.seguro || 0, total: base.total || 0, consignatario: base.consignatario || null, condicion: base.condicion || null, incoterm: base.incoterm || null, origen: base.origen || null, puerto: base.puerto || null, peso: base.peso || null, bultos: base.bultos || null, notas: base.notas || null, entregado_por: base.entregadoPor || null, convertida: base.convertida || false, factura_generada: base.facturaGenerada || null };
+      case 'calculos':   return { id: base.id, empresa_id: empresaId, fecha: base.fecha || null, ref: base.ref || null, prod_id: base.prodId || null, prod_nombre: base.prodNombre || null, costo: base.costo || null, margen: base.margen || null, flete: base.flete || null, kg: base.kg || null, costo_total: base.costoTotal || null, subtotal: base.subtotal || null, precio_contenedor: base.precioContenedor || null, precio_kilo: base.precioKilo || null, precio_venta: base.precioVenta || null, utilidad_kg: base.utilidadKg || null, utilidad: base.utilidad || null };
+      case 'anticipos':  return { id: base.id, empresa_id: empresaId, fecha: base.fecha || null, cliente_id: base.clienteId || null, monto: base.monto || null, origen: base.origen || null, aplicado: base.aplicado || false };
+      default: return base;
+    }
+  },
+
+  async flushQueue() {
+    if (!this.online || this.syncing) return;
+    const queue = this._getQueue();
+    if (!queue.length) return;
+    this.syncing = true;
+    this.updateIndicator();
+    const remaining = [];
+    for (const item of queue) {
+      try {
+        if (item.operacion === 'upsert') {
+          const row = this._transform(item.tabla, item.payload, item.empresaId);
+          if (!row) continue;
+          const res = await fetch(`${SIFA_SUPABASE_URL}/rest/v1/${item.tabla}`, { method: 'POST', headers: { ...SIFA_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' }, body: JSON.stringify(row) });
+          if (!res.ok) { const err = await res.text(); console.warn(`Sync error ${item.tabla}/${item.registroId}:`, err); remaining.push(item); }
+        } else if (item.operacion === 'delete') {
+          const res = await fetch(`${SIFA_SUPABASE_URL}/rest/v1/${item.tabla}?id=eq.${item.registroId}&empresa_id=eq.${item.empresaId}`, { method: 'DELETE', headers: SIFA_HEADERS });
+          if (!res.ok) remaining.push(item);
+        }
+      } catch (e) { remaining.push(item); }
+    }
+    const currentQueue = this._getQueue();
+    const processedKeys = new Set(queue.map(i => `${i.tabla}:${i.registroId}:${i.ts}`));
+    const newItems = currentQueue.filter(i => !processedKeys.has(`${i.tabla}:${i.registroId}:${i.ts}`));
+    this._saveQueue([...remaining, ...newItems]);
+    this.pendingCount = remaining.length + newItems.length;
+    this.syncing = false;
+    this.updateIndicator();
+  },
+
+  async pullEmpresa(empresaId) {
+    if (!this.online) { toast('Sin conexión — cargando desde caché', 'error'); return false; }
+    try {
+      const tablas = Object.keys(this.TABLA_MAP);
+      const empresa = getEmpresa(empresaId);
+      if (!empresa) return false;
+      const prefix = empresa.dbPrefix;
+      for (const tabla of tablas) {
+        const res = await fetch(`${SIFA_SUPABASE_URL}/rest/v1/${tabla}?empresa_id=eq.${empresaId}&order=creado_en.asc`, { headers: { 'apikey': SIFA_SUPABASE_KEY, 'Authorization': 'Bearer ' + SIFA_SUPABASE_KEY } });
+        if (!res.ok) continue;
+        const rows = await res.json();
+        localStorage.setItem(prefix + tabla, JSON.stringify(rows.map(r => this._fromSupabase(tabla, r))));
+      }
+      return true;
+    } catch(e) { console.error('Pull error:', e); return false; }
+  },
+
+  _fromSupabase(tabla, row) {
+    switch(tabla) {
+      case 'clientes':   return { id: row.id, nombre: row.nombre, cif: row.cif, pais: row.pais, direccion: row.direccion, telefono: row.telefono, email: row.email, notas: row.notas };
+      case 'mercancias': return { id: row.id, nombre: row.nombre, codigo: row.codigo, unidad: row.unidad, precio: row.precio, categoria: row.categoria, descripcion: row.descripcion };
+      case 'facturas':   return { id: row.id, invoiceId: row.invoice_id, fecha: row.fecha, numero: row.numero, clienteId: row.cliente_id, mercanciaId: row.mercancia_id, deuda: row.deuda, arrastre: row.arrastre, estatus: row.estatus };
+      case 'pagos':      return { id: row.id, facturaId: row.factura_id, fecha: row.fecha, monto: row.monto, notas: row.notas };
+      case 'invoices':   return { id: row.id, tipoKey: row.tipo_key, titulo: row.titulo, fecha: row.fecha, numero: row.numero, clienteId: row.cliente_id, moneda: row.moneda, emisoraKey: row.emisora_key, proveedor: row.proveedor, lineas: row.lineas, subtotal: row.subtotal, flete: row.flete, seguro: row.seguro, total: row.total, consignatario: row.consignatario, condicion: row.condicion, incoterm: row.incoterm, origen: row.origen, puerto: row.puerto, peso: row.peso, bultos: row.bultos, notas: row.notas, entregadoPor: row.entregado_por, convertida: row.convertida, facturaGenerada: row.factura_generada };
+      case 'calculos':   return { id: row.id, fecha: row.fecha, ref: row.ref, prodId: row.prod_id, prodNombre: row.prod_nombre, costo: row.costo, margen: row.margen, flete: row.flete, kg: row.kg, costoTotal: row.costo_total, subtotal: row.subtotal, precioContenedor: row.precio_contenedor, precioKilo: row.precio_kilo, precioVenta: row.precio_venta, utilidadKg: row.utilidad_kg, utilidad: row.utilidad };
+      case 'anticipos':  return { id: row.id, fecha: row.fecha, clienteId: row.cliente_id, monto: row.monto, origen: row.origen, aplicado: row.aplicado };
+      default: return row;
+    }
+  },
+
+  updateIndicator() {
+    let el = document.getElementById('sifa-sync-indicator');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'sifa-sync-indicator';
+      el.style.cssText = 'position:fixed;bottom:80px;right:20px;z-index:9000;font-size:11px;font-family:"DM Mono",monospace;padding:5px 10px;border-radius:20px;cursor:pointer;transition:all .3s;pointer-events:auto';
+      el.onclick = () => this.flushQueue();
+      document.body.appendChild(el);
+    }
+    if (this.syncing) {
+      el.style.background='rgba(99,102,241,.2)'; el.style.color='#6366F1'; el.style.border='1px solid #6366F1'; el.textContent='⟳ Sincronizando...';
+    } else if (!this.online) {
+      el.style.background='rgba(255,107,107,.15)'; el.style.color='#FF6B6B'; el.style.border='1px solid #FF6B6B'; el.textContent='✕ Sin conexión'+(this.pendingCount?` · ${this.pendingCount} pendientes`:'');
+    } else if (this.pendingCount > 0) {
+      el.style.background='rgba(245,158,11,.15)'; el.style.color='#F59E0B'; el.style.border='1px solid #F59E0B'; el.textContent=`↑ ${this.pendingCount} por subir`;
+    } else {
+      el.style.background='rgba(34,197,94,.1)'; el.style.color='#22C55E'; el.style.border='1px solid #22C55E'; el.textContent='✓ Sincronizado';
+    }
+  },
+
+  _getQueue() { try { return JSON.parse(localStorage.getItem('sifa_sync_queue') || '[]'); } catch(e) { return []; } },
+  _saveQueue(q) { localStorage.setItem('sifa_sync_queue', JSON.stringify(q)); }
+};
+
+function _sifaSyncAll(operacion, tabla, items) {
+  if (!empresaActual) return;
+  const empId = empresaActual.key || empresaActual.id ||
+    Object.keys(getTodasEmpresas()).find(k => getTodasEmpresas()[k].dbPrefix === empresaActual.dbPrefix);
+  if (!empId) return;
+  items.forEach(item => SifaSync.enqueue(empId, tabla, operacion, item.id, item));
+}
+
+function _sifaSyncDelete(tabla, id) {
+  if (!empresaActual) return;
+  const empId = empresaActual.key || empresaActual.id ||
+    Object.keys(getTodasEmpresas()).find(k => getTodasEmpresas()[k].dbPrefix === empresaActual.dbPrefix);
+  if (!empId) return;
+  SifaSync.enqueue(empId, tabla, 'delete', id, null);
+}
+
+SifaSync.init();
 
 </script>
 </body>
