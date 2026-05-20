@@ -1490,7 +1490,6 @@ function editMercancia(id) {
   document.getElementById('modalMercancia').classList.add('open');
 }
 function deleteMercancia(id) {
-  if(!confirm('¿Eliminar producto?')) return;
   mercancias=mercancias.filter(m=>m.id!==id); save();
   if(typeof _sifaSyncDelete!=='undefined') _sifaSyncDelete('mercancias', id);
   renderMercancias();updateBadges();toast('Producto eliminado');
