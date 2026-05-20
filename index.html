@@ -2171,6 +2171,7 @@ function guardarInvoice() {
 
   delete document.getElementById('inv_id').dataset.facturaOrigen;
   saveInvoicesDB(); closeModal('modalInvoice'); renderInvoices(); renderDocumentos(); renderFacturas(); updateBadges();
+  showSection('invoices');
 }
 
 function generarInvoice() {
@@ -2535,12 +2536,15 @@ ${notasBlock}
 
 </body></html>`;
 
-  const blob = new Blob([html], {type:'text/html'});
-  const url  = URL.createObjectURL(blob);
-  const win  = window.open(url, '_blank');
-  if (!win) toast('Permite ventanas emergentes', 'error');
-  else setTimeout(() => { try { win.print(); } catch(e) {} }, 1200);
-  setTimeout(() => URL.revokeObjectURL(url), 20000);
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:fixed;width:0;height:0;border:0;opacity:0;top:0;left:0';
+  document.body.appendChild(iframe);
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open(); doc.write(html); doc.close();
+  setTimeout(() => {
+    try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch(e) { toast('Error al generar PDF', 'error'); }
+    setTimeout(() => { try { document.body.removeChild(iframe); } catch(e) {} }, 8000);
+  }, 600);
 }
 
 function onSelectConsignatario() {
