@@ -2309,6 +2309,9 @@ function editInvoice(id) {
     calcLinea(n);
   });
   onChangeTipoDoc();
+  // Restaurar número y título originales (onChangeTipoDoc los sobreescribe)
+  document.getElementById('inv_numero').value = inv.numero || '';
+  document.getElementById('inv_titulo').value = inv.titulo || '';
   document.getElementById('modalInvoice').classList.add('open');
 }
 
