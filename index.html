@@ -2544,11 +2544,15 @@ ${notasBlock}
   document.body.appendChild(iframe);
   const doc = iframe.contentDocument || iframe.contentWindow.document;
   doc.open(); doc.write(html); doc.close();
-  // Forzar título para que iOS nombre el PDF correctamente
-  try { doc.title = data.titulo + ' ' + data.numero; } catch(e) {}
+  const pdfName = data.titulo + ' ' + data.numero;
   setTimeout(() => {
+    const prevTitle = document.title;
+    document.title = pdfName; // iOS usa el título de la página principal para nombrar el PDF
     try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch(e) { toast('Error al generar PDF', 'error'); }
-    setTimeout(() => { try { document.body.removeChild(iframe); } catch(e) {} }, 8000);
+    setTimeout(() => {
+      document.title = prevTitle;
+      try { document.body.removeChild(iframe); } catch(e) {}
+    }, 5000);
   }, 600);
 }
 
