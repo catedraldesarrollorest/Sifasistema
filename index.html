@@ -685,7 +685,7 @@ if ('serviceWorker' in navigator) {
     <div class="form-group"><label>Descripción</label><textarea id="mc_descripcion" rows="2"></textarea></div>
     <div class="form-actions">
       <button class="btn btn-secondary" onclick="closeModal('modalMercancia')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveMercancia()">Guardar Producto</button>
+      <button class="btn btn-primary" id="btnGuardarMercancia" onclick="saveMercancia()">Guardar Producto</button>
     </div>
   </div>
 </div>
@@ -1339,7 +1339,7 @@ function closeModal(id) {
   document.getElementById(id).classList.remove('open');
   document.querySelectorAll('#'+id+' input:not([type=color]):not([type=file]), #'+id+' select, #'+id+' textarea').forEach(el=>{ el.value=''; });
   if(id==='modalCliente')   document.getElementById('modalClienteTitle').innerHTML='NUEVO <span>CLIENTE</span>';
-  if(id==='modalMercancia') document.getElementById('modalMercanciaTitle').innerHTML='NUEVO <span>PRODUCTO</span>';
+  if(id==='modalMercancia') { document.getElementById('modalMercanciaTitle').innerHTML='NUEVO <span>PRODUCTO</span>'; const b=document.getElementById('btnGuardarMercancia'); if(b){b.disabled=false;b.textContent='Guardar Producto';} }
   if(id==='modalFactura')   { document.getElementById('modalFacturaTitle').innerHTML='NUEVA <span>FACTURA</span>'; document.getElementById('btnGuardarFactura').textContent='Guardar Factura'; }
   if(id==='modalPago')      { document.getElementById('modalPagoTitle').innerHTML='REGISTRAR <span>PAGO</span>'; document.getElementById('btnGuardarPago').textContent='Registrar Pago'; document.getElementById('pg_info').style.display='none'; }
   if(id==='modalEmpresa')  { document.getElementById('modalEmpresaTitle').innerHTML='NUEVA <span>EMPRESA</span>'; }
@@ -1426,13 +1426,28 @@ function renderClientes() {
 
 // ═══ MERCANCÍAS ═══
 function saveMercancia() {
+  const btn = document.getElementById('btnGuardarMercancia');
+  if (btn && btn.disabled) return;
   const nombre=document.getElementById('mc_nombre').value.trim();
   if(!nombre){toast('El nombre es obligatorio','error');return;}
   const editId=document.getElementById('mc_id').value;
-  const data={nombre,codigo:document.getElementById('mc_codigo').value.trim(),unidad:document.getElementById('mc_unidad').value,precio:parseFloat(document.getElementById('mc_precio').value)||0,categoria:document.getElementById('mc_categoria').value,descripcion:document.getElementById('mc_descripcion').value.trim()};
+  const codigo=document.getElementById('mc_codigo').value.trim();
+  // Validar duplicado por nombre o código (ignorando el propio registro al editar)
+  const nombreNorm = nombre.toLowerCase();
+  const dup = mercancias.find(m => m.id !== editId && (
+    m.nombre.toLowerCase() === nombreNorm ||
+    (codigo && m.codigo && m.codigo.toLowerCase() === codigo.toLowerCase())
+  ));
+  if (dup) {
+    toast('Ya existe un producto con ese nombre o código: "' + dup.nombre + '"', 'error');
+    return;
+  }
+  if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
+  const data={nombre,codigo,unidad:document.getElementById('mc_unidad').value,precio:parseFloat(document.getElementById('mc_precio').value)||0,categoria:document.getElementById('mc_categoria').value,descripcion:document.getElementById('mc_descripcion').value.trim()};
   if(editId){const i=mercancias.findIndex(m=>m.id===editId);if(i!==-1)mercancias[i]={...mercancias[i],...data};toast('Producto actualizado');}
   else{data.id=uid();mercancias.push(data);toast('Producto guardado');}
   save();closeModal('modalMercancia');renderMercancias();updateBadges();
+  if (btn) { btn.disabled = false; btn.textContent = 'Guardar Producto'; }
 
   // Si venía desde el invoice, seleccionar el producto creado en la línea pendiente
   if (window._invLineaPendiente && !editId) {
@@ -1484,7 +1499,7 @@ function renderMercancias() {
     return;
   }
   const iconCat = c => c==='Pollo'?'🐔':c==='Cerdo'?'🐷':c==='Res'?'🐄':c==='Servicio'?'🔧':c==='Alimentos'?'🥩':'📦';
-  grid.innerHTML = mercancias.map(m => `<div class="list-row">
+  grid.innerHTML = mercancias.map(m => `<div class="list-row" onclick="editMercancia('${m.id}')" style="cursor:pointer">
     <div class="list-row-icon">${iconCat(m.categoria)}</div>
     <div class="list-row-main">
       <div class="list-row-name">${m.nombre}</div>
@@ -1494,8 +1509,7 @@ function renderMercancias() {
       <span class="list-row-badge amount-pos">${fmtUSD(m.precio)}</span>
     </div>
     <div class="list-row-actions">
-      <button class="btn btn-secondary btn-sm" onclick="editMercancia('${m.id}')">✏️</button>
-      <button class="btn btn-danger btn-sm" onclick="deleteMercancia('${m.id}')">✕</button>
+      <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteMercancia('${m.id}')">✕</button>
     </div>
   </div>`).join('');
 }
