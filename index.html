@@ -1443,38 +1443,38 @@ function saveMercancia() {
     return;
   }
   if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
-  const data={nombre,codigo,unidad:document.getElementById('mc_unidad').value,precio:parseFloat(document.getElementById('mc_precio').value)||0,categoria:document.getElementById('mc_categoria').value,descripcion:document.getElementById('mc_descripcion').value.trim()};
-  if(editId){const i=mercancias.findIndex(m=>m.id===editId);if(i!==-1)mercancias[i]={...mercancias[i],...data};toast('Producto actualizado');}
-  else{data.id=uid();mercancias.push(data);toast('Producto guardado');}
-  save();closeModal('modalMercancia');renderMercancias();updateBadges();
-  if (btn) { btn.disabled = false; btn.textContent = 'Guardar Producto'; }
-
-  // Si venía desde el invoice, seleccionar el producto creado en la línea pendiente
-  if (window._invLineaPendiente && !editId) {
-    const linea = window._invLineaPendiente;
-    window._invLineaPendiente = null;
-    // Actualizar selectores del invoice
-    [1,2,3,4,5,6,7,8,9,10].forEach(n => {
-      const sel = document.getElementById('inv_prod_' + n);
-      if (!sel) return;
-      const cur = sel.value;
-      sel.innerHTML = '<option value="">— Producto —</option>' +
-        mercancias.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
-        '<option value="__nuevo__" style="font-weight:700">＋ Crear nuevo producto...</option>';
-      sel.value = cur;
-    });
-    // Seleccionar el nuevo en la línea correcta
-    const sel = document.getElementById('inv_prod_' + linea);
-    if (sel) {
-      sel.value = data.id;
-      document.getElementById('inv_um_'  + linea).value = data.unidad || 'KG';
-      document.getElementById('inv_cod_' + linea).value = data.codigo || '';
-      if (data.precio) {
-        document.getElementById('inv_price_' + linea).value = data.precio;
-        calcLinea(linea);
+  try {
+    const data={nombre,codigo,unidad:document.getElementById('mc_unidad').value,precio:parseFloat(document.getElementById('mc_precio').value)||0,categoria:document.getElementById('mc_categoria').value,descripcion:document.getElementById('mc_descripcion').value.trim()};
+    if(editId){const i=mercancias.findIndex(m=>m.id===editId);if(i!==-1)mercancias[i]={...mercancias[i],...data};toast('Producto actualizado');}
+    else{data.id=uid();mercancias.push(data);toast('Producto guardado');}
+    try { save(); } catch(e) { console.warn('save error', e); }
+    closeModal('modalMercancia');
+    renderMercancias();
+    updateBadges();
+    // Si venía desde el invoice, seleccionar el producto creado en la línea pendiente
+    if (window._invLineaPendiente && !editId) {
+      const linea = window._invLineaPendiente;
+      window._invLineaPendiente = null;
+      [1,2,3,4,5,6,7,8,9,10].forEach(n => {
+        const sel = document.getElementById('inv_prod_' + n);
+        if (!sel) return;
+        const cur = sel.value;
+        sel.innerHTML = '<option value="">— Producto —</option>' +
+          mercancias.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
+          '<option value="__nuevo__" style="font-weight:700">＋ Crear nuevo producto...</option>';
+        sel.value = cur;
+      });
+      const sel = document.getElementById('inv_prod_' + linea);
+      if (sel) {
+        sel.value = data.id;
+        document.getElementById('inv_um_'  + linea).value = data.unidad || 'KG';
+        document.getElementById('inv_cod_' + linea).value = data.codigo || '';
+        if (data.precio) { document.getElementById('inv_price_' + linea).value = data.precio; calcLinea(linea); }
       }
+      toast('Producto "' + nombre + '" creado y seleccionado ✅');
     }
-    toast('Producto "' + nombre + '" creado y seleccionado ✅');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Guardar Producto'; }
   }
 }
 function editMercancia(id) {
