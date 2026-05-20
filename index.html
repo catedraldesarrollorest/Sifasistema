@@ -2552,7 +2552,7 @@ ${notasBlock}
 
   const printCSS = document.createElement('style');
   printCSS.id = '__sifa_print_css__';
-  printCSS.textContent = `@media print{body>*:not(#__sifa_print__){display:none!important}#__sifa_print__{display:block!important;font-family:Arial,sans-serif;color:#1a1a1a;font-size:10px}@page{margin:0.6cm;size:A4}}`;
+  printCSS.textContent = `@media print{body{background:#fff!important;color:#000!important;margin:0!important;padding:0!important}body>*:not(#__sifa_print__){display:none!important;height:0!important;overflow:hidden!important}#__sifa_print__{display:block!important;font-family:Arial,sans-serif;color:#1a1a1a;font-size:10px;background:#fff}@page{margin:0.6cm;size:A4}}`;
   document.head.appendChild(printCSS);
 
   const prevTitle = document.title;
