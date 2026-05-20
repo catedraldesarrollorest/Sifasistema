@@ -2544,6 +2544,8 @@ ${notasBlock}
   document.body.appendChild(iframe);
   const doc = iframe.contentDocument || iframe.contentWindow.document;
   doc.open(); doc.write(html); doc.close();
+  // Forzar título para que iOS nombre el PDF correctamente
+  try { doc.title = data.titulo + ' ' + data.numero; } catch(e) {}
   setTimeout(() => {
     try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch(e) { toast('Error al generar PDF', 'error'); }
     setTimeout(() => { try { document.body.removeChild(iframe); } catch(e) {} }, 8000);
