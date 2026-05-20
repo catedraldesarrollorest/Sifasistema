@@ -1444,13 +1444,18 @@ function saveMercancia() {
     const data={nombre,codigo,unidad:document.getElementById('mc_unidad').value,precio:parseFloat(document.getElementById('mc_precio').value)||0,categoria:document.getElementById('mc_categoria').value,descripcion:document.getElementById('mc_descripcion').value.trim()};
     if(editId){const i=mercancias.findIndex(m=>m.id===editId);if(i!==-1)mercancias[i]={...mercancias[i],...data};toast('Producto actualizado');}
     else{data.id=uid();mercancias.push(data);toast('Producto guardado');}
+    // Capturar línea pendiente ANTES de cualquier cierre de modal
+    const pendingLine = window._invLineaPendiente;
+    window._invLineaPendiente = null;
     try { save(); } catch(e) { console.warn('save error', e); }
     closeModal('modalMercancia');
     renderMercancias();
     updateBadges();
-    // Si el modal de invoice está abierto, actualizar sus selects de producto
+    // Si vino desde el invoice (pendingLine) o el modal sigue abierto, actualizar selects
     const invoiceModal = document.getElementById('modalInvoice');
-    if (invoiceModal && invoiceModal.classList.contains('open')) {
+    if (!editId && (pendingLine != null || (invoiceModal && invoiceModal.classList.contains('open')))) {
+      // Asegurar que el invoice esté visible
+      if (invoiceModal && !invoiceModal.classList.contains('open')) invoiceModal.classList.add('open');
       const _sorted = getMercanciasSorted();
       [1,2,3,4,5,6,7,8,9,10].forEach(n => {
         const s = document.getElementById('inv_prod_' + n);
@@ -1461,20 +1466,16 @@ function saveMercancia() {
           '<option value="__nuevo__" style="color:var(--green);font-weight:700">＋ Crear nuevo producto...</option>';
         s.value = prev;
       });
-      if (window._invLineaPendiente != null && !editId) {
-        const linea = window._invLineaPendiente;
-        window._invLineaPendiente = null;
-        const s = document.getElementById('inv_prod_' + linea);
+      if (pendingLine != null) {
+        const s = document.getElementById('inv_prod_' + pendingLine);
         if (s) {
           s.value = data.id;
-          document.getElementById('inv_um_'    + linea).value = data.unidad || 'KG';
-          document.getElementById('inv_cod_'   + linea).value = data.codigo || '';
-          if (data.precio) { document.getElementById('inv_price_' + linea).value = data.precio; calcLinea(linea); }
+          document.getElementById('inv_um_'    + pendingLine).value = data.unidad || 'KG';
+          document.getElementById('inv_cod_'   + pendingLine).value = data.codigo || '';
+          if (data.precio) { document.getElementById('inv_price_' + pendingLine).value = data.precio; calcLinea(pendingLine); }
         }
         toast('Producto "' + nombre + '" creado y seleccionado ✅');
       }
-    } else {
-      window._invLineaPendiente = null;
     }
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = 'Guardar Producto'; }
