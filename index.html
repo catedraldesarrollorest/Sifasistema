@@ -768,7 +768,7 @@ if ('serviceWorker' in navigator) {
       </div>
       <div class="form-group" style="flex:1;margin-bottom:0">
         <label>Título del documento</label>
-        <input type="text" id="inv_titulo" placeholder="INVOICE / OFERTA / FACTURA COMERCIAL...">
+        <input type="text" id="inv_titulo" placeholder="INVOICE / OFERTA / FACTURA COMERCIAL..." oninput="onChangeTituloDoc()">
       </div>
       <div class="form-group" style="flex:0 0 auto;margin-bottom:0">
         <label>N° Documento</label>
@@ -1819,23 +1819,25 @@ function onChangeEmpresaEmisora() {
 }
 
 // Consecutivos FA-xxxx y OF-xxxx con guión
-function getNextNumeroFA() {
+function getNextNumeroByLetra(letra) {
+  const key = letra.toUpperCase();
   const p = empresaActual ? empresaActual.dbPrefix : 'sifa_';
-  const last = parseInt(localStorage.getItem(p + 'inv_consec_FA') || '0');
-  return 'FA-' + String(last + 1).padStart(4, '0');
+  const last = parseInt(localStorage.getItem(p + 'inv_consec_' + key) || '0');
+  return key + '-' + String(last + 1).padStart(4, '0');
 }
-function getNextNumeroOF() {
-  const p = empresaActual ? empresaActual.dbPrefix : 'sifa_';
-  const last = parseInt(localStorage.getItem(p + 'inv_consec_OF') || '0');
-  return 'OF-' + String(last + 1).padStart(4, '0');
-}
+function getNextNumeroFA() { return getNextNumeroByLetra('F'); }
+function getNextNumeroOF() { return getNextNumeroByLetra('O'); }
 function getNextNumero(tipoKey) {
-  // FA y F → FA-xxxx, O y C → OF-xxxx, otros → tipoKey+xxxx
-  if (tipoKey === 'F' || tipoKey === 'FA') return getNextNumeroFA();
-  if (tipoKey === 'O' || tipoKey === 'OF') return getNextNumeroOF();
-  const p = empresaActual ? empresaActual.dbPrefix : 'sifa_';
-  const last = parseInt(localStorage.getItem(p + 'inv_consec_' + tipoKey) || '0');
-  return tipoKey + String(last + 1).padStart(4, '0');
+  if (tipoKey === 'F' || tipoKey === 'FA') return getNextNumeroByLetra('F');
+  if (tipoKey === 'O' || tipoKey === 'C' || tipoKey === 'OF') return getNextNumeroByLetra('O');
+  return getNextNumeroByLetra(tipoKey[0] || 'I');
+}
+function onChangeTituloDoc() {
+  if (document.getElementById('inv_id').value) return; // no tocar al editar
+  const titulo = document.getElementById('inv_titulo').value.trim();
+  if (!titulo) return;
+  const letra = titulo[0].toUpperCase();
+  if (/[A-Z]/.test(letra)) document.getElementById('inv_numero').value = getNextNumeroByLetra(letra);
 }
 function saveConsecutivo(numero) {
   // Soporta FA-0001, OF-0001, I0001, etc.
@@ -1853,15 +1855,10 @@ function onChangeTipoDoc() {
   const wrap = document.getElementById('inv_tipo_nuevo_wrap');
   wrap.style.display = val === '__nuevo__' ? 'block' : 'none';
   if (val !== '__nuevo__') {
-    document.getElementById('inv_titulo').value = getTipoLabel(val).toUpperCase();
-    // FA- / OF- con guión
-    if (val === 'F') {
-      document.getElementById('inv_numero').value = getNextNumeroFA();
-    } else if (val === 'O' || val === 'C') {
-      document.getElementById('inv_numero').value = getNextNumeroOF();
-    } else {
-      document.getElementById('inv_numero').value = getNextNumero(val);
-    }
+    const tituloAuto = getTipoLabel(val).toUpperCase();
+    document.getElementById('inv_titulo').value = tituloAuto;
+    const primeraLetra = tituloAuto[0] || val[0];
+    document.getElementById('inv_numero').value = getNextNumeroByLetra(primeraLetra);
   }
 }
 
