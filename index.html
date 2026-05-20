@@ -1454,12 +1454,13 @@ function saveMercancia() {
     // Si el modal de invoice está abierto, actualizar sus selects de producto
     const invoiceModal = document.getElementById('modalInvoice');
     if (invoiceModal && invoiceModal.classList.contains('open')) {
+      const _sorted = getMercanciasSorted();
       [1,2,3,4,5,6,7,8,9,10].forEach(n => {
         const s = document.getElementById('inv_prod_' + n);
         if (!s) return;
         const prev = s.value;
         s.innerHTML = '<option value="">— Producto —</option>' +
-          mercancias.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
+          _sorted.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
           '<option value="__nuevo__" style="color:var(--green);font-weight:700">＋ Crear nuevo producto...</option>';
         s.value = prev;
       });
@@ -1497,6 +1498,13 @@ function deleteMercancia(id) {
   if(typeof _sifaSyncDelete!=='undefined') _sifaSyncDelete('mercancias', id);
   renderMercancias();updateBadges();toast('Producto eliminado');
 }
+function getMercanciasSorted() {
+  const freq = {};
+  (invoices || []).forEach(inv => (inv.lineas || []).forEach(l => {
+    if (l.prodId) freq[l.prodId] = (freq[l.prodId] || 0) + 1;
+  }));
+  return [...mercancias].sort((a, b) => (freq[b.id] || 0) - (freq[a.id] || 0) || a.nombre.localeCompare(b.nombre));
+}
 function renderMercancias() {
   const grid = document.getElementById('mercanciasGrid');
   if (!mercancias.length) {
@@ -1504,7 +1512,11 @@ function renderMercancias() {
     return;
   }
   const iconCat = c => c==='Pollo'?'🐔':c==='Cerdo'?'🐷':c==='Res'?'🐄':c==='Servicio'?'🔧':c==='Alimentos'?'🥩':'📦';
-  grid.innerHTML = mercancias.map(m => `<div class="list-row" onclick="editMercancia('${m.id}')" style="cursor:pointer">
+  const freq = {};
+  (invoices || []).forEach(inv => (inv.lineas || []).forEach(l => {
+    if (l.prodId) freq[l.prodId] = (freq[l.prodId] || 0) + 1;
+  }));
+  grid.innerHTML = getMercanciasSorted().map(m => `<div class="list-row" onclick="editMercancia('${m.id}')" style="cursor:pointer">
     <div class="list-row-icon">${iconCat(m.categoria)}</div>
     <div class="list-row-main">
       <div class="list-row-name">${m.nombre}</div>
@@ -1512,6 +1524,7 @@ function renderMercancias() {
     </div>
     <div class="list-row-meta">
       <span class="list-row-badge amount-pos">${fmtUSD(m.precio)}</span>
+      ${freq[m.id] ? `<span style="font-size:10px;color:var(--text2);margin-left:6px">#${freq[m.id]}×</span>` : ''}
     </div>
     <div class="list-row-actions">
       <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteMercancia('${m.id}')">✕</button>
@@ -1903,9 +1916,10 @@ function populateInvoiceModal() {
   // Clientes y productos
   document.getElementById('inv_cliente').innerHTML = '<option value="">— Selecciona o deja vacío —</option>' +
     clientes.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+  const _sortedProds = getMercanciasSorted();
   [1,2,3,4,5,6,7,8,9,10].forEach(i => {
     document.getElementById('inv_prod_' + i).innerHTML = '<option value="">— Producto —</option>' +
-      mercancias.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
+      _sortedProds.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
       '<option value="__nuevo__" style="color:var(--green);font-weight:700">＋ Crear nuevo producto...</option>';
     document.getElementById('inv_qty_'   + i).value = '';
     document.getElementById('inv_price_' + i).value = '';
