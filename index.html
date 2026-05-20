@@ -2539,21 +2539,33 @@ ${notasBlock}
 
 </body></html>`;
 
-  const iframe = document.createElement('iframe');
-  iframe.style.cssText = 'position:fixed;width:0;height:0;border:0;opacity:0;top:0;left:0';
-  document.body.appendChild(iframe);
-  const doc = iframe.contentDocument || iframe.contentWindow.document;
-  doc.open(); doc.write(html); doc.close();
   const pdfName = data.titulo + ' ' + data.numero;
-  setTimeout(() => {
-    const prevTitle = document.title;
-    document.title = pdfName; // iOS usa el título de la página principal para nombrar el PDF
-    try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch(e) { toast('Error al generar PDF', 'error'); }
+
+  // Parsear el HTML generado e inyectarlo en la página principal
+  // (iOS PWA usa el manifest name con iframe; window.print() sobre la página principal sí respeta document.title)
+  const parsed = new DOMParser().parseFromString(html, 'text/html');
+  const overlay = document.createElement('div');
+  overlay.id = '__sifa_print__';
+  overlay.style.display = 'none';
+  overlay.innerHTML = parsed.body.innerHTML;
+  document.body.appendChild(overlay);
+
+  const printCSS = document.createElement('style');
+  printCSS.id = '__sifa_print_css__';
+  printCSS.textContent = `@media print{body>*:not(#__sifa_print__){display:none!important}#__sifa_print__{display:block!important;font-family:Arial,sans-serif;color:#1a1a1a;font-size:10px}@page{margin:0.6cm;size:A4}}`;
+  document.head.appendChild(printCSS);
+
+  const prevTitle = document.title;
+  document.title = pdfName;
+
+  requestAnimationFrame(() => {
+    window.print();
     setTimeout(() => {
       document.title = prevTitle;
-      try { document.body.removeChild(iframe); } catch(e) {}
-    }, 5000);
-  }, 600);
+      overlay.remove();
+      printCSS.remove();
+    }, 4000);
+  });
 }
 
 function onSelectConsignatario() {
