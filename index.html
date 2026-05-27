@@ -973,8 +973,8 @@ if ('serviceWorker' in navigator) {
 
     <div class="form-actions">
       <button class="btn btn-secondary" onclick="closeModal('modalInvoice')">Cancelar</button>
-      <button class="btn btn-blue" onclick="guardarInvoice()">💾 Guardar</button>
-      <button class="btn btn-primary" onclick="generarInvoice()">📋 Generar PDF</button>
+      <button class="btn btn-blue" id="btnGuardarInvoice" onclick="guardarInvoice()">💾 Guardar</button>
+      <button class="btn btn-primary" id="btnGenerarInvoice" onclick="generarInvoice()">📋 Generar PDF</button>
     </div>
   </div>
 </div>
@@ -1450,35 +1450,39 @@ function saveMercancia() {
     // Capturar línea pendiente ANTES de cualquier cierre de modal
     const pendingLine = window._invLineaPendiente;
     window._invLineaPendiente = null;
+    const newProdId = editId ? null : data.id;
     try { save(); } catch(e) { console.warn('save error', e); }
     closeModal('modalMercancia');
     renderMercancias();
     updateBadges();
-    // Si vino desde el invoice (pendingLine) o el modal sigue abierto, actualizar selects
-    const invoiceModal = document.getElementById('modalInvoice');
-    if (!editId && (pendingLine != null || (invoiceModal && invoiceModal.classList.contains('open')))) {
-      // Asegurar que el invoice esté visible
-      if (invoiceModal && !invoiceModal.classList.contains('open')) invoiceModal.classList.add('open');
-      const _sorted = getMercanciasSorted();
-      [1,2,3,4,5,6,7,8,9,10].forEach(n => {
-        const s = document.getElementById('inv_prod_' + n);
-        if (!s) return;
-        const prev = s.value;
-        s.innerHTML = '<option value="">— Producto —</option>' +
-          _sorted.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
-          '<option value="__nuevo__" style="color:var(--green);font-weight:700">＋ Crear nuevo producto...</option>';
-        s.value = prev;
-      });
-      if (pendingLine != null) {
-        const s = document.getElementById('inv_prod_' + pendingLine);
-        if (s) {
-          s.value = data.id;
-          document.getElementById('inv_um_'    + pendingLine).value = data.unidad || 'KG';
-          document.getElementById('inv_cod_'   + pendingLine).value = data.codigo || '';
-          if (data.precio) { document.getElementById('inv_price_' + pendingLine).value = data.precio; calcLinea(pendingLine); }
+    // Actualizar selects del invoice después de que todos los re-renders síncronos terminen
+    if (!editId) {
+      setTimeout(() => {
+        const invoiceModal = document.getElementById('modalInvoice');
+        if (!invoiceModal) return;
+        if (!invoiceModal.classList.contains('open') && pendingLine == null) return;
+        if (!invoiceModal.classList.contains('open')) invoiceModal.classList.add('open');
+        const _sorted = getMercanciasSorted();
+        [1,2,3,4,5,6,7,8,9,10].forEach(n => {
+          const s = document.getElementById('inv_prod_' + n);
+          if (!s) return;
+          const prev = s.value;
+          s.innerHTML = '<option value="">— Producto —</option>' +
+            _sorted.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') +
+            '<option value="__nuevo__" style="color:var(--green);font-weight:700">＋ Crear nuevo producto...</option>';
+          s.value = prev;
+        });
+        if (pendingLine != null) {
+          const s = document.getElementById('inv_prod_' + pendingLine);
+          if (s) {
+            s.value = newProdId;
+            document.getElementById('inv_um_'    + pendingLine).value = data.unidad || 'KG';
+            document.getElementById('inv_cod_'   + pendingLine).value = data.codigo || '';
+            if (data.precio) { document.getElementById('inv_price_' + pendingLine).value = data.precio; calcLinea(pendingLine); }
+          }
+          toast('Producto "' + nombre + '" creado y seleccionado ✅');
         }
-        toast('Producto "' + nombre + '" creado y seleccionado ✅');
-      }
+      }, 0);
     }
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = 'Guardar Producto'; }
@@ -2141,66 +2145,83 @@ function convertirOfertaAFactura(invId) {
 }
 
 function guardarInvoice() {
+  const btn = document.getElementById('btnGuardarInvoice');
+  if (btn && btn.disabled) return;
   const data = getInvoiceData(); if (!data) return;
-  const idx  = invoices.findIndex(x => x.id === data.id);
-  if (idx >= 0) invoices[idx] = data; else invoices.push(data);
-  saveConsecutivo(data.numero);
+  if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
+  try {
+    const idx  = invoices.findIndex(x => x.id === data.id);
+    if (idx >= 0) invoices[idx] = data; else invoices.push(data);
+    saveConsecutivo(data.numero);
 
-  // Vincular a factura origen si viene de generarInvoiceDesdeFactura
-  const facturaOrigenId = document.getElementById('inv_id').dataset.facturaOrigen;
+    // Vincular a factura origen si viene de generarInvoiceDesdeFactura
+    const facturaOrigenId = document.getElementById('inv_id').dataset.facturaOrigen;
 
-  if (esFinanciero(data.tipoKey) && data.clienteId && data.total > 0) {
-    // Buscar por invoiceId o por facturaOrigen
-    const fExistente = facturas.find(f => f.invoiceId === data.id || f.id === facturaOrigenId);
-    if (fExistente) {
-      const i = facturas.findIndex(f => f.id === fExistente.id);
-      facturas[i] = { ...facturas[i], invoiceId: data.id, deuda: data.total,
-        clienteId: data.clienteId,
-        mercanciaId: data.lineas[0]?.prodId || facturas[i].mercanciaId,
-        fecha: data.fecha, numero: data.numero };
+    if (esFinanciero(data.tipoKey) && data.clienteId && data.total > 0) {
+      // Buscar por invoiceId o por facturaOrigen
+      const fExistente = facturas.find(f => f.invoiceId === data.id || f.id === facturaOrigenId);
+      if (fExistente) {
+        const i = facturas.findIndex(f => f.id === fExistente.id);
+        facturas[i] = { ...facturas[i], invoiceId: data.id, deuda: data.total,
+          clienteId: data.clienteId,
+          mercanciaId: data.lineas[0]?.prodId || facturas[i].mercanciaId,
+          fecha: data.fecha, numero: data.numero };
+      } else {
+        facturas.push({ id: uid(), invoiceId: data.id, fecha: data.fecha,
+          numero: data.numero, clienteId: data.clienteId,
+          mercanciaId: data.lineas[0]?.prodId || '', deuda: data.total, arrastre: 0 });
+      }
+      save();
+      toast('Documento guardado y deuda registrada ✅');
     } else {
-      facturas.push({ id: uid(), invoiceId: data.id, fecha: data.fecha,
-        numero: data.numero, clienteId: data.clienteId,
-        mercanciaId: data.lineas[0]?.prodId || '', deuda: data.total, arrastre: 0 });
+      toast('Documento guardado ✅');
     }
-    save();
-    toast('Documento guardado y deuda registrada ✅');
-  } else {
-    toast('Documento guardado ✅');
-  }
 
-  delete document.getElementById('inv_id').dataset.facturaOrigen;
-  saveInvoicesDB(); closeModal('modalInvoice'); renderInvoices(); renderDocumentos(); renderFacturas(); updateBadges();
-  showSection('invoices');
+    delete document.getElementById('inv_id').dataset.facturaOrigen;
+    try { saveInvoicesDB(); } catch(e) { console.warn('saveInvoicesDB error', e); }
+    closeModal('modalInvoice');
+    renderInvoices(); renderDocumentos(); renderFacturas(); updateBadges();
+    showSection('invoices');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Guardar'; }
+  }
 }
 
 function generarInvoice() {
+  const btn = document.getElementById('btnGenerarInvoice');
+  if (btn && btn.disabled) return;
   const data = getInvoiceData(); if (!data) return;
-  const idx  = invoices.findIndex(x => x.id === data.id);
-  if (idx >= 0) invoices[idx] = data; else invoices.push(data);
-  saveConsecutivo(data.numero);
+  if (btn) { btn.disabled = true; btn.textContent = 'Generando…'; }
+  try {
+    const idx  = invoices.findIndex(x => x.id === data.id);
+    if (idx >= 0) invoices[idx] = data; else invoices.push(data);
+    saveConsecutivo(data.numero);
 
-  const facturaOrigenId = document.getElementById('inv_id').dataset.facturaOrigen;
+    const facturaOrigenId = document.getElementById('inv_id').dataset.facturaOrigen;
 
-  if (esFinanciero(data.tipoKey) && data.clienteId && data.total > 0) {
-    const fExistente = facturas.find(f => f.invoiceId === data.id || f.id === facturaOrigenId);
-    if (fExistente) {
-      const i = facturas.findIndex(f => f.id === fExistente.id);
-      facturas[i] = { ...facturas[i], invoiceId: data.id, deuda: data.total,
-        clienteId: data.clienteId,
-        mercanciaId: data.lineas[0]?.prodId || facturas[i].mercanciaId,
-        fecha: data.fecha, numero: data.numero };
-    } else {
-      facturas.push({ id: uid(), invoiceId: data.id, fecha: data.fecha,
-        numero: data.numero, clienteId: data.clienteId,
-        mercanciaId: data.lineas[0]?.prodId || '', deuda: data.total, arrastre: 0 });
+    if (esFinanciero(data.tipoKey) && data.clienteId && data.total > 0) {
+      const fExistente = facturas.find(f => f.invoiceId === data.id || f.id === facturaOrigenId);
+      if (fExistente) {
+        const i = facturas.findIndex(f => f.id === fExistente.id);
+        facturas[i] = { ...facturas[i], invoiceId: data.id, deuda: data.total,
+          clienteId: data.clienteId,
+          mercanciaId: data.lineas[0]?.prodId || facturas[i].mercanciaId,
+          fecha: data.fecha, numero: data.numero };
+      } else {
+        facturas.push({ id: uid(), invoiceId: data.id, fecha: data.fecha,
+          numero: data.numero, clienteId: data.clienteId,
+          mercanciaId: data.lineas[0]?.prodId || '', deuda: data.total, arrastre: 0 });
+      }
+      save();
     }
-    save();
-  }
 
-  delete document.getElementById('inv_id').dataset.facturaOrigen;
-  saveInvoicesDB(); renderInvoices(); renderDocumentos(); renderFacturas(); updateBadges();
-  abrirInvoicePDF(data); closeModal('modalInvoice');
+    delete document.getElementById('inv_id').dataset.facturaOrigen;
+    try { saveInvoicesDB(); } catch(e) { console.warn('saveInvoicesDB error', e); }
+    renderInvoices(); renderDocumentos(); renderFacturas(); updateBadges();
+    abrirInvoicePDF(data); closeModal('modalInvoice');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '📋 Generar PDF'; }
+  }
 }
 
 // ── Render tabla FACTURAS (FA-xxxx, contabilizadas) ──
