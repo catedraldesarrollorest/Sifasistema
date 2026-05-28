@@ -1,4 +1,4 @@
-const CACHE = 'sifa-v5';
+const CACHE = 'sifa-v6';
 const ASSETS = ['./index.html', './libro_asiento.html'];
 
 self.addEventListener('install', e => {
