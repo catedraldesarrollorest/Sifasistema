@@ -471,6 +471,10 @@ if ('serviceWorker' in navigator) {
       <span class="nav-icon">💰</span><span class="nav-label">Cobros</span>
       <span class="badge" id="badge-pagos">0</span>
     </button>
+    <button class="nav-tab" onclick="showSection('gastos')" id="tab-gastos">
+      <span class="nav-icon">💸</span><span class="nav-label">Egresos</span>
+      <span class="badge" id="badge-gastos">0</span>
+    </button>
     <button class="nav-tab" onclick="showSection('invoices')" id="tab-invoices">
       <span class="nav-icon">📋</span><span class="nav-label">Invoices</span>
       <span class="badge" id="badge-invoices">0</span>
@@ -615,6 +619,40 @@ if ('serviceWorker' in navigator) {
     <div class="table-wrapper">
       <table><thead><tr><th>Fecha</th><th>N° Documento</th><th>Cliente</th><th>Monto</th><th>Notas</th><th>Acciones</th></tr></thead><tbody id="pagosTable"></tbody></table>
     </div>
+  </div>
+
+  <!-- EGRESOS -->
+  <div class="section" id="section-gastos">
+    <div class="page-header">
+      <div><div class="page-title">REGISTRO DE <span>EGRESOS</span></div><div class="page-sub">Gastos y salidas bancarias por estado de cuenta</div></div>
+    </div>
+    <div class="filters">
+      <select id="filtroMesGasto" onchange="renderGastos()">
+        <option value="">Todos los meses</option>
+        <option value="2026-01">Enero 2026</option>
+        <option value="2026-02">Febrero 2026</option>
+        <option value="2026-03">Marzo 2026</option>
+        <option value="2026-04">Abril 2026</option>
+        <option value="2026-05">Mayo 2026</option>
+        <option value="2026-06">Junio 2026</option>
+        <option value="2026-07">Julio 2026</option>
+        <option value="2026-08">Agosto 2026</option>
+      </select>
+      <select id="filtroCatGasto" onchange="renderGastos()">
+        <option value="">Todas las categorías</option>
+        <option value="Logística">Logística</option>
+        <option value="Nómina">Nómina</option>
+        <option value="Bancario">Bancario</option>
+        <option value="Servicios">Servicios</option>
+        <option value="Impuestos">Impuestos</option>
+        <option value="Operacional">Operacional</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
+    <div class="table-wrapper">
+      <table><thead><tr><th>Fecha</th><th>Descripción</th><th>Categoría</th><th>Monto</th><th>Fuente</th><th>Notas</th></tr></thead><tbody id="gastosTable"></tbody></table>
+    </div>
+    <div id="gastos-totals" style="display:flex;gap:24px;padding:14px 0 4px;flex-wrap:wrap;font-size:13px;color:var(--text2)"></div>
   </div>
 
   <!-- PRECIOS -->
@@ -1142,7 +1180,7 @@ function getEmpresa(key) { return getTodasEmpresas()[key] || null; }
 
 // ═══ STATE ═══
 let empresaActual = null, _logoBase64 = null;
-let clientes=[], mercancias=[], facturas=[], pagos=[];
+let clientes=[], mercancias=[], facturas=[], pagos=[], gastos=[];
 let invoices=[], calculos=[], anticipios=[];
 let concClienteId=null, excedentePendiente=null;
 
@@ -1158,6 +1196,7 @@ function cargarDatosEmpresa(emp) {
   invoices   = JSON.parse(localStorage.getItem(p + 'invoices')   || '[]');
   calculos   = JSON.parse(localStorage.getItem(p + 'calculos')   || '[]');
   anticipios = JSON.parse(localStorage.getItem(p + 'anticipos')  || '[]');
+  gastos     = JSON.parse(localStorage.getItem(p + 'gastos')     || '[]');
 }
 
 // ═══ SELECCIONAR EMPRESA ═══
@@ -1217,6 +1256,11 @@ function saveAnticipos() {
   localStorage.setItem(empresaActual.dbPrefix+'anticipos', JSON.stringify(anticipios));
   if (typeof _sifaSyncAll !== 'undefined') _sifaSyncAll('upsert', 'anticipos', anticipios);
 }
+function saveGastos() {
+  if (!empresaActual) return;
+  localStorage.setItem(empresaActual.dbPrefix+'gastos', JSON.stringify(gastos));
+  if (typeof _sifaSyncAll !== 'undefined') _sifaSyncAll('upsert', 'gastos', gastos);
+}
 
 // ═══ UTILS ═══
 function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2); }
@@ -1248,6 +1292,7 @@ const _SECTION_TITLES = {
   facturas:  'REGISTRO DE <span>FACTURAS</span>',
   pagos:     'REGISTRO DE <span>COBROS</span>',
   invoices:  'DOCUMENTOS <span>EMITIDOS</span>',
+  gastos:    'REGISTRO DE <span>EGRESOS</span>',
   calc:      'FORMACIÓN DE <span>PRECIOS</span>',
   empresas:  'SELECCIÓN DE <span>EMPRESA</span>',
 };
@@ -1291,6 +1336,7 @@ function showSection(id) {
   if (id === 'mercancias') renderMercancias();
   if (id === 'facturas')   renderFacturas();
   if (id === 'pagos')      renderPagos();
+  if (id === 'gastos')     renderGastos();
   if (id === 'invoices')   renderInvoices();
   if (id === 'calc')       renderCalc();
 }
@@ -1547,6 +1593,46 @@ function renderPagos() {
     const f=facturas.find(x=>x.id===p.facturaId), c=clientes.find(x=>x.id===f?.clienteId);
     return `<tr><td>${fmtDate(p.fecha)}</td><td class="mono">${f?f.numero:'—'}</td><td>${c?c.nombre:'—'}</td><td class="mono amount-pos">${fmtUSD(p.monto)}</td><td style="font-size:12px;color:var(--text2)">${p.notas||'—'}</td><td style="white-space:nowrap"><button class="btn btn-secondary btn-sm" onclick="editPago('${p.id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletePago('${p.id}')">✕</button></td></tr>`;
   }).join('');
+}
+
+function renderGastos() {
+  const tbody = document.getElementById('gastosTable');
+  const filtMes = document.getElementById('filtroMesGasto')?.value || '';
+  const filtCat = document.getElementById('filtroCatGasto')?.value || '';
+  let rows = [...gastos].sort((a,b) => a.fecha < b.fecha ? -1 : 1);
+  if (filtMes) rows = rows.filter(g => g.fecha.startsWith(filtMes));
+  if (filtCat) rows = rows.filter(g => g.categoria === filtCat);
+  const CATCOLOR = {
+    'Logística':'var(--blue)', 'Nómina':'var(--orange)', 'Bancario':'var(--text2)',
+    'Servicios':'var(--accent)', 'Impuestos':'var(--pink)', 'Operacional':'var(--green)', 'Otro':'var(--text2)'
+  };
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">💸</div><div class="empty-text">Sin egresos registrados</div></div></td></tr>`;
+  } else {
+    tbody.innerHTML = rows.map(g => {
+      const alerta = g.cpa ? `<span title="Revisar con CPA" style="color:var(--orange);font-weight:700">⚠️ </span>` : '';
+      const catColor = CATCOLOR[g.categoria] || 'var(--text2)';
+      return `<tr>
+        <td>${fmtDate(g.fecha)}</td>
+        <td style="font-size:12px">${alerta}${g.descripcion}</td>
+        <td><span style="font-size:11px;color:${catColor};font-weight:600;background:${catColor}22;padding:2px 7px;border-radius:20px">${g.categoria}</span></td>
+        <td class="mono amount-neg">${fmtUSD(g.monto)}</td>
+        <td style="font-size:11px;color:var(--text2)">${g.fuente||'—'}</td>
+        <td style="font-size:11px;color:var(--text2);max-width:180px">${g.notas||'—'}</td>
+      </tr>`;
+    }).join('');
+  }
+  // Totales por categoría
+  const totDiv = document.getElementById('gastos-totals');
+  if (totDiv) {
+    const cats = {};
+    rows.forEach(g => { cats[g.categoria] = (cats[g.categoria]||0) + g.monto; });
+    const total = rows.reduce((s,g) => s+g.monto, 0);
+    totDiv.innerHTML = `<span style="font-weight:700;color:var(--text)">Total: <span class="mono amount-neg">${fmtUSD(total)}</span></span>` +
+      Object.entries(cats).map(([cat,amt]) =>
+        `<span>${cat}: <span class="mono" style="color:${CATCOLOR[cat]||'var(--text)'}">${fmtUSD(amt)}</span></span>`
+      ).join('');
+  }
 }
 
 // ── Editar empresa desde el dashboard ──
@@ -2677,6 +2763,8 @@ function updateBadges() {
   document.getElementById('badge-invoices').textContent=invoices.length;
   document.getElementById('badge-calc').textContent=calculos.length;
   document.getElementById('badge-empresas').textContent=Object.keys(getTodasEmpresas()).length;
+  const bgGastos = document.getElementById('badge-gastos');
+  if (bgGastos) bgGastos.textContent = gastos.length;
 }
 
 // ═══ DATE ═══
@@ -3028,14 +3116,43 @@ function seedDALMiami() {
 
   localStorage.setItem(PREFIX+'facturas', JSON.stringify(facts));
   localStorage.setItem(PREFIX+'pagos',    JSON.stringify(pagos));
-  console.log('✅ Seed DAL Miami v2 completado — 4 clientes, 3 productos, 10 facturas, 7 cobros');
+
+  // ── 5. Egresos bancarios — Chase ****9521 (upsert por fecha+descripción) ──
+  // Formato: [fecha, descripcion, monto, categoria, fuente, notas, cpa]
+  // cpa=true → requiere revisión del contador
+  const egresos = [
+    // AGOSTO 2026 — Chase Business Complete Checking
+    ['2026-08-03', 'Experian* Credit Report',          9.99,   'Servicios',    'Chase ****9521 · Ago 2026', 'Monitoreo de crédito empresarial',                      false],
+    ['2026-08-12', 'USPS PO Doral FL',                13.05,   'Operacional',  'Chase ****9521 · Ago 2026', 'Envíos postales / correo',                              false],
+    ['2026-08-14', 'AT&T Bill Payment',              230.08,   'Servicios',    'Chase ****9521 · Ago 2026', 'Telecomunicaciones — teléfono/internet',                 false],
+    ['2026-08-17', 'Ring Multi Plan',                 10.69,   'Servicios',    'Chase ****9521 · Ago 2026', 'Seguridad / cámaras Ring',                              false],
+    ['2026-08-24', 'Infinity Kat 800-782-1020 AL',   139.78,   'Otro',         'Chase ****9521 · Ago 2026', 'Proveedor no identificado — confirmar con CPA',          true],
+    ['2026-08-11', 'Zelle → Miosoty Martin',        1000.00,   'Nómina',       'Chase ****9521 · Ago 2026', 'Pago a persona natural — confirmar relación laboral',    true],
+    ['2026-08-31', 'Southeast Toyota Finance',        526.13,   'Operacional',  'Chase ****9521 · Ago 2026', 'Pago de vehículo — confirmar % uso comercial',          true],
+    ['2026-08-31', 'Zelle → Anibal Abogado',        2500.00,   'Servicios',    'Chase ****9521 · Ago 2026', 'Honorarios legales — requiere factura/engagement letter',true],
+    ['2026-08-04', 'International Incoming Wire Fee',  15.00,   'Bancario',     'Chase ****9521 · Ago 2026', 'Comisión wire entrada Revolut/Caribbean Online',        false],
+    ['2026-08-05', 'International Incoming Wire Fee',  15.00,   'Bancario',     'Chase ****9521 · Ago 2026', 'Comisión wire entrada Revolut/Caribbean Online',        false],
+  ];
+
+  let gstos = JSON.parse(localStorage.getItem(PREFIX+'gastos')||'[]');
+  egresos.forEach(([fecha, descripcion, monto, categoria, fuente, notas, cpa]) => {
+    const yaExiste = gstos.find(g => g.fecha === fecha && g.descripcion === descripcion && g.monto === monto);
+    if (!yaExiste) gstos.push({id: uid(), fecha, descripcion, monto, categoria, fuente, notas, cpa});
+  });
+  localStorage.setItem(PREFIX+'gastos', JSON.stringify(gstos));
+
+  console.log('✅ Seed DAL Miami v2 completado — 4 clientes, 3 productos, 10 facturas, 7 cobros, ' + gstos.length + ' egresos');
 }
 
 // Ejecutar siempre al arrancar (v2 — reemplaza v1 defectuosa)
 setTimeout(() => {
-  // Limpiar seed anterior defectuoso si existía
   seedDALMiami();
   localStorage.setItem('sifa_seed_dalmiami_v2', '1');
+  // Re-cargar gastos en memoria si ya hay empresa activa
+  if (empresaActual) {
+    gastos = JSON.parse(localStorage.getItem(empresaActual.dbPrefix + 'gastos') || '[]');
+    updateBadges();
+  }
 }, 300);
 
 
